@@ -106,13 +106,13 @@
   },
   "suites": [
     {
-      "title": "test_my_page\\Dropdown.spec.js",
-      "file": "test_my_page/Dropdown.spec.js",
+      "title": "DropdownMultiSelect.spec.js",
+      "file": "DropdownMultiSelect.spec.js",
       "column": 0,
       "line": 0,
       "specs": [
         {
-          "title": "Handle Dropdown",
+          "title": "Handle Dropdown with Multiple Select",
           "ok": true,
           "tags": [],
           "tests": [
@@ -127,16 +127,22 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5919,
+                  "duration": 12325,
                   "errors": [],
                   "stdout": [
                     {
                       "text": "Number of options:  \u001b[33m7\u001b[39m\n"
+                    },
+                    {
+                      "text": "Number of options using page.$$():  \u001b[33m7\u001b[39m\n"
+                    },
+                    {
+                      "text": "Dropdown content:  \n      \n        Red\n      \n      \n        Blue\n      \n      \n        Green\n      \n      \n        Yellow\n      \n      \n        Red\n      \n      \n        White\n      \n      \n        Green\n      \n    \n"
                     }
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-05-29T08:02:01.815Z",
+                  "startTime": "2026-05-30T10:20:27.965Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -144,9 +150,9 @@
               "status": "expected"
             }
           ],
-          "id": "73bb605ea500eb1cde12-f969436e3d3e9b278f21",
-          "file": "test_my_page/Dropdown.spec.js",
-          "line": 7,
+          "id": "11274db1a629fa75e53f-a495b6f738fcc28ef266",
+          "file": "DropdownMultiSelect.spec.js",
+          "line": 4,
           "column": 5
         }
       ]
@@ -154,8 +160,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-05-29T08:02:01.294Z",
-    "duration": 6681.773,
+    "startTime": "2026-05-30T10:20:27.385Z",
+    "duration": 13191.438,
     "expected": 1,
     "skipped": 0,
     "unexpected": 0,

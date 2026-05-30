@@ -1,0 +1,25 @@
+Number of options:  7
+Number of options using page.$$():  7
+Dropdown content:  
+      
+        Red
+      
+      
+        Blue
+      
+      
+        Green
+      
+      
+        Yellow
+      
+      
+        Red
+      
+      
+        White
+      
+      
+        Green
+      
+    

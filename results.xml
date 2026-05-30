@@ -1,8 +1,32 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="6.681773">
-<testsuite name="test_my_page\Dropdown.spec.js" timestamp="2026-05-29T08:02:01.309Z" hostname="chromium" tests="1" failures="0" skipped="0" time="5.919" errors="0">
-<testcase name="Handle Dropdown" classname="test_my_page\Dropdown.spec.js" time="5.919">
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="13.191438">
+<testsuite name="DropdownMultiSelect.spec.js" timestamp="2026-05-30T10:20:27.404Z" hostname="chromium" tests="1" failures="0" skipped="0" time="12.325" errors="0">
+<testcase name="Handle Dropdown with Multiple Select" classname="DropdownMultiSelect.spec.js" time="12.325">
 <system-out>
 <![CDATA[Number of options:  [33m7[39m
+Number of options using page.$$():  [33m7[39m
+Dropdown content:  
+      
+        Red
+      
+      
+        Blue
+      
+      
+        Green
+      
+      
+        Yellow
+      
+      
+        Red
+      
+      
+        White
+      
+      
+        Green
+      
+    
 ]]>
 </system-out>
 </testcase>
