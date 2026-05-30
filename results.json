@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 1
+      "actualWorkers": 3
     },
     "preserveOutput": "always",
     "reporter": [
@@ -53,7 +53,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 3
         },
         "id": "chromium",
         "name": "chromium",
@@ -69,7 +69,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 3
         },
         "id": "firefox",
         "name": "firefox",
@@ -85,7 +85,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 3
         },
         "id": "webkit",
         "name": "webkit",
@@ -106,13 +106,13 @@
   },
   "suites": [
     {
-      "title": "DropdownHidden.spec.js",
-      "file": "DropdownHidden.spec.js",
+      "title": "Alerts.spec.js",
+      "file": "Alerts.spec.js",
       "column": 0,
       "line": 0,
       "specs": [
         {
-          "title": "Handle Hidden Dropdown Lists",
+          "title": "Alerts with OK Button",
           "ok": true,
           "tags": [],
           "tests": [
@@ -127,70 +127,16 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 26072,
+                  "duration": 7104,
                   "errors": [],
                   "stdout": [
                     {
-                      "text": "Account Assistant\n"
-                    },
-                    {
-                      "text": "Automaton Tester\n"
-                    },
-                    {
-                      "text": "Chief Executive Officer\n"
-                    },
-                    {
-                      "text": "Chief Financial Officer\n"
-                    },
-                    {
-                      "text": "Chief Technical Officer\n"
-                    },
-                    {
-                      "text": "Content Specialist\n"
-                    },
-                    {
-                      "text": "Customer Success Manager\n"
-                    },
-                    {
-                      "text": "Database Administrator\n"
-                    },
-                    {
-                      "text": "Finance Manager\n"
-                    },
-                    {
-                      "text": "Financial Analyst\n"
-                    },
-                    {
-                      "text": "Head of Support\n"
-                    },
-                    {
-                      "text": "HR Associate\n"
-                    },
-                    {
-                      "text": "HR Manager\n"
-                    },
-                    {
-                      "text": "IT Manager\n"
-                    },
-                    {
-                      "text": "Network Administrator\n"
-                    },
-                    {
-                      "text": "Payroll Administrator\n"
-                    },
-                    {
-                      "text": "Pre-Sales Coordinator\n"
-                    },
-                    {
-                      "text": "QA Engineer\n"
-                    },
-                    {
-                      "text": "Found the desired option!\n"
+                      "text": "Dialog message:  I am an alert box!\n"
                     }
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-05-30T14:23:06.008Z",
+                  "startTime": "2026-05-30T16:21:36.214Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -198,9 +144,88 @@
               "status": "expected"
             }
           ],
-          "id": "b021f0b41a281a2cd1de-b6c709d59bfb5575a9d1",
-          "file": "DropdownHidden.spec.js",
+          "id": "2a47a96fdfc7190b297c-c61b1a70f821fcc45cb8",
+          "file": "Alerts.spec.js",
           "line": 3,
+          "column": 5
+        },
+        {
+          "title": "Confirmation Dialog-Alert with OK and Cancel Button",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 7120,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Dialog message:  Press a button!\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-30T16:21:36.217Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2a47a96fdfc7190b297c-4510e197bf3b1323c082",
+          "file": "Alerts.spec.js",
+          "line": 21,
+          "column": 5
+        },
+        {
+          "title": "Prompt Dialog-Alert with OK and Cancel Button",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 15334,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Dialog message:  Please enter your name:\n"
+                    },
+                    {
+                      "text": "Default value:  Harry Potter\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-30T16:21:36.215Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2a47a96fdfc7190b297c-4c7c8442a54e3af4f085",
+          "file": "Alerts.spec.js",
+          "line": 45,
           "column": 5
         }
       ]
@@ -208,9 +233,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-05-30T14:23:05.379Z",
-    "duration": 26989.891000000003,
-    "expected": 1,
+    "startTime": "2026-05-30T16:21:35.649Z",
+    "duration": 16190.712,
+    "expected": 3,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

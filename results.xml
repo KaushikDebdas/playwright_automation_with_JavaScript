@@ -1,26 +1,21 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="26.989891000000004">
-<testsuite name="DropdownHidden.spec.js" timestamp="2026-05-30T14:23:05.395Z" hostname="chromium" tests="1" failures="0" skipped="0" time="26.072" errors="0">
-<testcase name="Handle Hidden Dropdown Lists" classname="DropdownHidden.spec.js" time="26.072">
+<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="16.190711999999998">
+<testsuite name="Alerts.spec.js" timestamp="2026-05-30T16:21:35.664Z" hostname="chromium" tests="3" failures="0" skipped="0" time="29.558" errors="0">
+<testcase name="Alerts with OK Button" classname="Alerts.spec.js" time="7.104">
 <system-out>
-<![CDATA[Account Assistant
-Automaton Tester
-Chief Executive Officer
-Chief Financial Officer
-Chief Technical Officer
-Content Specialist
-Customer Success Manager
-Database Administrator
-Finance Manager
-Financial Analyst
-Head of Support
-HR Associate
-HR Manager
-IT Manager
-Network Administrator
-Payroll Administrator
-Pre-Sales Coordinator
-QA Engineer
-Found the desired option!
+<![CDATA[Dialog message:  I am an alert box!
+]]>
+</system-out>
+</testcase>
+<testcase name="Confirmation Dialog-Alert with OK and Cancel Button" classname="Alerts.spec.js" time="7.12">
+<system-out>
+<![CDATA[Dialog message:  Press a button!
+]]>
+</system-out>
+</testcase>
+<testcase name="Prompt Dialog-Alert with OK and Cancel Button" classname="Alerts.spec.js" time="15.334">
+<system-out>
+<![CDATA[Dialog message:  Please enter your name:
+Default value:  Harry Potter
 ]]>
 </system-out>
 </testcase>
