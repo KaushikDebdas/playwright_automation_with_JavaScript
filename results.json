@@ -106,8 +106,8 @@
   },
   "suites": [
     {
-      "title": "DropdownMultiSelect.spec.js",
-      "file": "DropdownMultiSelect.spec.js",
+      "title": "test_my_page\\DropdownMultiSelect.spec.js",
+      "file": "test_my_page/DropdownMultiSelect.spec.js",
       "column": 0,
       "line": 0,
       "specs": [
@@ -127,22 +127,25 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 12325,
+                  "duration": 15972,
                   "errors": [],
                   "stdout": [
                     {
-                      "text": "Number of options:  \u001b[33m7\u001b[39m\n"
+                      "text": "Number of options:  \u001b[90mundefined\u001b[39m\n"
                     },
                     {
-                      "text": "Number of options using page.$$():  \u001b[33m7\u001b[39m\n"
+                      "text": "Number of options:  \u001b[33m5\u001b[39m\n"
                     },
                     {
-                      "text": "Dropdown content:  \n      \n        Red\n      \n      \n        Blue\n      \n      \n        Green\n      \n      \n        Yellow\n      \n      \n        Red\n      \n      \n        White\n      \n      \n        Green\n      \n    \n"
+                      "text": "Number of options using page.$$():  \u001b[33m5\u001b[39m\n"
+                    },
+                    {
+                      "text": "Dropdown content:  \n                English\n                Bengali\n                Spanish\n                French\n                Chinese\n              \n"
                     }
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-05-30T10:20:27.965Z",
+                  "startTime": "2026-05-30T11:26:48.167Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -150,8 +153,8 @@
               "status": "expected"
             }
           ],
-          "id": "11274db1a629fa75e53f-a495b6f738fcc28ef266",
-          "file": "DropdownMultiSelect.spec.js",
+          "id": "bd27db81d000a4d09777-2bcf58d2b25b83fa341a",
+          "file": "test_my_page/DropdownMultiSelect.spec.js",
           "line": 4,
           "column": 5
         }
@@ -160,8 +163,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-05-30T10:20:27.385Z",
-    "duration": 13191.438,
+    "startTime": "2026-05-30T11:26:47.622Z",
+    "duration": 16800.778,
     "expected": 1,
     "skipped": 0,
     "unexpected": 0,
