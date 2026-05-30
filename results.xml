@@ -1,17 +1,26 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="16.800777999999998">
-<testsuite name="test_my_page\DropdownMultiSelect.spec.js" timestamp="2026-05-30T11:26:47.638Z" hostname="chromium" tests="1" failures="0" skipped="0" time="15.972" errors="0">
-<testcase name="Handle Dropdown with Multiple Select" classname="test_my_page\DropdownMultiSelect.spec.js" time="15.972">
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="26.989891000000004">
+<testsuite name="DropdownHidden.spec.js" timestamp="2026-05-30T14:23:05.395Z" hostname="chromium" tests="1" failures="0" skipped="0" time="26.072" errors="0">
+<testcase name="Handle Hidden Dropdown Lists" classname="DropdownHidden.spec.js" time="26.072">
 <system-out>
-<![CDATA[Number of options:  [90mundefined[39m
-Number of options:  [33m5[39m
-Number of options using page.$$():  [33m5[39m
-Dropdown content:  
-                English
-                Bengali
-                Spanish
-                French
-                Chinese
-              
+<![CDATA[Account Assistant
+Automaton Tester
+Chief Executive Officer
+Chief Financial Officer
+Chief Technical Officer
+Content Specialist
+Customer Success Manager
+Database Administrator
+Finance Manager
+Financial Analyst
+Head of Support
+HR Associate
+HR Manager
+IT Manager
+Network Administrator
+Payroll Administrator
+Pre-Sales Coordinator
+QA Engineer
+Found the desired option!
 ]]>
 </system-out>
 </testcase>

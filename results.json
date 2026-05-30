@@ -106,13 +106,13 @@
   },
   "suites": [
     {
-      "title": "test_my_page\\DropdownMultiSelect.spec.js",
-      "file": "test_my_page/DropdownMultiSelect.spec.js",
+      "title": "DropdownHidden.spec.js",
+      "file": "DropdownHidden.spec.js",
       "column": 0,
       "line": 0,
       "specs": [
         {
-          "title": "Handle Dropdown with Multiple Select",
+          "title": "Handle Hidden Dropdown Lists",
           "ok": true,
           "tags": [],
           "tests": [
@@ -127,25 +127,70 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 15972,
+                  "duration": 26072,
                   "errors": [],
                   "stdout": [
                     {
-                      "text": "Number of options:  \u001b[90mundefined\u001b[39m\n"
+                      "text": "Account Assistant\n"
                     },
                     {
-                      "text": "Number of options:  \u001b[33m5\u001b[39m\n"
+                      "text": "Automaton Tester\n"
                     },
                     {
-                      "text": "Number of options using page.$$():  \u001b[33m5\u001b[39m\n"
+                      "text": "Chief Executive Officer\n"
                     },
                     {
-                      "text": "Dropdown content:  \n                English\n                Bengali\n                Spanish\n                French\n                Chinese\n              \n"
+                      "text": "Chief Financial Officer\n"
+                    },
+                    {
+                      "text": "Chief Technical Officer\n"
+                    },
+                    {
+                      "text": "Content Specialist\n"
+                    },
+                    {
+                      "text": "Customer Success Manager\n"
+                    },
+                    {
+                      "text": "Database Administrator\n"
+                    },
+                    {
+                      "text": "Finance Manager\n"
+                    },
+                    {
+                      "text": "Financial Analyst\n"
+                    },
+                    {
+                      "text": "Head of Support\n"
+                    },
+                    {
+                      "text": "HR Associate\n"
+                    },
+                    {
+                      "text": "HR Manager\n"
+                    },
+                    {
+                      "text": "IT Manager\n"
+                    },
+                    {
+                      "text": "Network Administrator\n"
+                    },
+                    {
+                      "text": "Payroll Administrator\n"
+                    },
+                    {
+                      "text": "Pre-Sales Coordinator\n"
+                    },
+                    {
+                      "text": "QA Engineer\n"
+                    },
+                    {
+                      "text": "Found the desired option!\n"
                     }
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-05-30T11:26:48.167Z",
+                  "startTime": "2026-05-30T14:23:06.008Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -153,9 +198,9 @@
               "status": "expected"
             }
           ],
-          "id": "bd27db81d000a4d09777-2bcf58d2b25b83fa341a",
-          "file": "test_my_page/DropdownMultiSelect.spec.js",
-          "line": 4,
+          "id": "b021f0b41a281a2cd1de-b6c709d59bfb5575a9d1",
+          "file": "DropdownHidden.spec.js",
+          "line": 3,
           "column": 5
         }
       ]
@@ -163,8 +208,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-05-30T11:26:47.622Z",
-    "duration": 16800.778,
+    "startTime": "2026-05-30T14:23:05.379Z",
+    "duration": 26989.891000000003,
     "expected": 1,
     "skipped": 0,
     "unexpected": 0,
