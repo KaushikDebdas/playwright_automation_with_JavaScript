@@ -16,7 +16,7 @@ test('Handle Hidden Dropdown Lists', async ({page}) =>{
     await page.waitForTimeout(2000);
 
     // Get all the options from the dropdown list
-    const getAllOptions = await page.$$("//div[@role='listbox']//span");
+    const getAllOptions = await page.$$("//div[@role='listbox']//span"); // using selectorhub debugger to get the xpath of all options in dropdown list
 
     // Iterate through the options and print their text content
     for(let option of getAllOptions)
