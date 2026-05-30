@@ -1,0 +1,3 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","3119","Home Page","chromium","Thu Sep 18 12:26:09 BDT 2025","passed","Thu Sep 18 12:26:12 BDT 2025","","AllureReportGeneration.spec.js","",""
+"","1599","Test3","chromium","Thu Sep 18 12:26:09 BDT 2025","failed","Thu Sep 18 12:26:10 BDT 2025","","AllureReportGeneration.spec.js","",""

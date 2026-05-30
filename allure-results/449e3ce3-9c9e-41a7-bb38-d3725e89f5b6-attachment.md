@@ -1,0 +1,184 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - link "Skip to Main Content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - button "Main Navigation" [active] [ref=e6] [cursor=pointer]
+      - link [ref=e9] [cursor=pointer]:
+        - /url: "f?p=102:1168:7492395470264:::::"
+        - img [ref=e10]
+      - list [ref=e13]:
+        - listitem [ref=e14]:
+          - link "Switch Branch" [ref=e15] [cursor=pointer]:
+            - /url: "javascript:apex.theme42.dialog('f?p=102:1121:7492395470264\\u0026p_dialog_cs=teNvWyF1TOyRuzeXa48dNOUmXWkSFWVMqQVCI4Nu4ZcRhhm_Cd6Cx8kceaqUID04wyrvAvQd5tS8254NqphaGw',{title:'Branch Switch',h:'300',w:'720',mxw:'960',modal:true,dialog:null,dlgCls:'t-Dialog-page--standard '+''},'',apex.gPageContext$)"
+            - generic [ref=e19]:
+              - generic [ref=e20]: 
+              - text: Switch Branch
+        - listitem [ref=e21]:
+          - link "29-JAN-2020" [ref=e22] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=e26]:
+              - generic [ref=e27]: 
+              - text: 29-JAN-2020
+        - listitem [ref=e28]:
+          - button "ERA UFL Admin Administrative HO (01) Image" [ref=e29] [cursor=pointer]:
+            - generic [ref=e31]:
+              - generic [ref=e32]:
+                - generic [ref=e33]: ERA UFL Admin
+                - text: Administrative HO (01)
+              - img "Image" [ref=e34]
+            - generic [ref=e35]: 
+  - generic [ref=e36]:
+    - navigation:
+      - generic:
+        - generic [ref=e37]:
+          - textbox "Search menu..." [ref=e38]
+          - button "Recent Navigation History" [ref=e39] [cursor=pointer]:
+            - generic [ref=e40]: 
+        - generic [ref=e41] [cursor=pointer]: 
+        - generic [ref=e42] [cursor=pointer]: 
+        - generic [ref=e43] [cursor=pointer]: 
+        - generic [ref=e44] [cursor=pointer]: 
+        - generic [ref=e45] [cursor=pointer]: 
+        - generic [ref=e46] [cursor=pointer]: 
+        - generic [ref=e47] [cursor=pointer]: 
+        - generic [ref=e48] [cursor=pointer]: 
+        - generic [ref=e49] [cursor=pointer]: 
+        - generic [ref=e50] [cursor=pointer]: 
+        - generic [ref=e51] [cursor=pointer]: 
+        - generic [ref=e52] [cursor=pointer]: 
+    - generic [ref=e53]:
+      - region "Dashboard" [ref=e58]:
+        - heading "Dashboard" [level=2] [ref=e61]
+      - generic [ref=e63]:
+        - main [ref=e64]:
+          - generic [ref=e66]:
+            - generic [ref=e67]:
+              - region "Cash Flow Status" [ref=e69]:
+                - heading "Cash Flow Status" [level=2] [ref=e72]
+                - generic [ref=e76]:
+                  - generic [ref=e81]:
+                    - generic [ref=e83]:
+                      - generic [ref=e84]: 9,999
+                      - generic [ref=e85]: Cash In
+                    - generic [ref=e87]:
+                      - generic [ref=e88]: 67,656
+                      - generic [ref=e89]: Cash Out
+                  - generic [ref=e94]:
+                    - generic [ref=e96]:
+                      - generic [ref=e97]: 1,200
+                      - generic [ref=e98]: Cash in Hand
+                    - generic [ref=e100]:
+                      - generic [ref=e101]: "200"
+                      - generic [ref=e102]: Net Profit Loss
+              - region "Cash In/ Out Flow Comparism" [ref=e104]:
+                - heading "Cash In/ Out Flow Comparism" [level=2] [ref=e107]
+                - 'application "Data Visualization: Line with Area: Cash In/ Out Flow Comparism" [ref=e111]':
+                  - img [ref=e112]:
+                    - generic [ref=e115]:
+                      - generic [ref=e143]:
+                        - generic [ref=e144]: Cash In
+                        - generic [ref=e146]: Cash Out
+                      - generic [ref=e148]:
+                        - generic [ref=e149]: "-600,000"
+                        - generic [ref=e150]: "-500,000"
+                        - generic [ref=e151]: "-400,000"
+                        - generic [ref=e152]: "-300,000"
+                        - generic [ref=e153]: "-200,000"
+                        - generic [ref=e154]: "-100,000"
+                        - generic [ref=e155]: "0"
+                        - generic [ref=e156]: 100,000
+                      - generic [ref=e157]:
+                        - generic [ref=e158]: Apr 24
+                        - generic [ref=e159]: May 24
+                        - generic [ref=e160]: Jun 24
+                        - generic [ref=e161]: Jul 24
+                  - img [ref=e162]
+            - generic [ref=e163]:
+              - region "Fund Positions" [ref=e165]:
+                - heading "Fund Positions" [level=2] [ref=e168]
+                - 'application "Data Visualization: Bar: Fund Positions" [ref=e172]':
+                  - img [ref=e173]:
+                    - generic [ref=e176]:
+                      - generic [ref=e190]:
+                        - generic [ref=e191]: "0"
+                        - generic [ref=e192]: "100"
+                        - generic [ref=e193]: "200"
+                        - generic [ref=e194]: "300"
+                        - generic [ref=e195]: "400"
+                        - generic [ref=e196]: "500"
+                        - generic [ref=e197]: "600"
+                      - generic [ref=e198]:
+                        - generic [ref=e199]:
+                          - generic [ref=e200]: Deposit
+                          - generic [ref=e201]: Payment
+                        - generic [ref=e202]:
+                          - generic [ref=e203]: Interest
+                          - generic [ref=e204]: Expense
+                        - generic [ref=e206]: Disburse ment
+                        - generic [ref=e207]:
+                          - generic [ref=e208]: Installment
+                          - generic [ref=e209]: Collection
+                        - generic [ref=e210]:
+                          - generic [ref=e211]: Deposit
+                          - generic [ref=e212]: Collection
+                        - generic [ref=e214]: Interest Income
+                        - generic [ref=e215]:
+                          - generic [ref=e216]: Operating
+                          - generic [ref=e217]: Income
+                        - generic [ref=e218]:
+                          - generic [ref=e219]: Operating
+                          - generic [ref=e220]: Expense
+                        - generic [ref=e221]: Provision
+                  - img [ref=e222]
+              - generic [ref=e223]:
+                - region "Overdue Status" [ref=e224]:
+                  - heading "Overdue Status" [level=2] [ref=e227]
+                  - generic [ref=e236]:
+                    - generic [ref=e238]:
+                      - generic [ref=e239]: "14"
+                      - generic [ref=e240]: Corporate
+                    - generic [ref=e242]:
+                      - generic [ref=e243]: "65"
+                      - generic [ref=e244]: SME
+                    - generic [ref=e246]:
+                      - generic [ref=e247]: "11"
+                      - generic [ref=e248]: Consumer
+                    - generic [ref=e250]:
+                      - generic [ref=e251]: "124"
+                      - generic [ref=e252]: Housing
+                    - generic [ref=e254]:
+                      - generic [ref=e255]: "57"
+                      - generic [ref=e256]: Total OD
+                - region "Operational Status" [ref=e257]:
+                  - heading "Operational Status" [level=2] [ref=e260]
+                  - generic [ref=e269]:
+                    - generic [ref=e271]:
+                      - generic [ref=e272]: "85"
+                      - generic [ref=e273]: No. of Deposit A/C
+                    - generic [ref=e275]:
+                      - generic [ref=e276]: "85"
+                      - generic [ref=e277]: No. of Loan A/C
+                    - generic [ref=e279]:
+                      - generic [ref=e280]: "11"
+                      - generic [ref=e281]: No. of Classified A/C
+                    - generic [ref=e283]:
+                      - generic [ref=e284]: "55"
+                      - generic [ref=e285]: No. of BL A/C
+                    - generic [ref=e287]:
+                      - generic [ref=e288]: "21"
+                      - generic [ref=e289]: Total Collection
+        - contentinfo [ref=e290]:
+          - generic [ref=e299]:
+            - text: Copyright ©
+            - link "ERA InfoTech Limited" [ref=e300] [cursor=pointer]:
+              - /url: https://www.erainfotechbd.com/
+            - text: All Rights Reserved.
+          - link "Start of page" [ref=e303] [cursor=pointer]:
+            - /url: "#top"
+            - generic [ref=e304]: 
+  - text:   
+```

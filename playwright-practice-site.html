@@ -1,0 +1,4409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlaywrightLab — Practice Site for Test Automation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg-elev: #161b22;
+    --bg-card: #1c2128;
+    --border: #30363d;
+    --border-soft: #21262d;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #6e7681;
+    --accent: #7ee787;
+    --accent-2: #79c0ff;
+    --accent-3: #ffa657;
+    --accent-4: #ff7b72;
+    --warn: #f0883e;
+    --success: #3fb950;
+    --danger: #f85149;
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+    --radius: 10px;
+  }
+
+  body.light {
+    --bg: #fafaf7;
+    --bg-elev: #ffffff;
+    --bg-card: #ffffff;
+    --border: #d4d4d0;
+    --border-soft: #e8e8e4;
+    --text: #1a1a1a;
+    --text-muted: #555;
+    --text-dim: #888;
+    --accent: #2f7d3d;
+    --accent-2: #0969da;
+    --accent-3: #bf5e00;
+    --accent-4: #cf222e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
+
+  h1, h2, h3, h4 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  /* === LAYOUT === */
+  .app {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+    transition: grid-template-columns 0.25s ease;
+  }
+
+  .app.collapsed { grid-template-columns: 0px 1fr; }
+
+  /* === SIDEBAR === */
+  .sidebar {
+    background: var(--bg-elev);
+    border-right: 1px solid var(--border);
+    padding: 24px 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: transform 0.25s ease, padding 0.25s ease;
+  }
+
+  .app.collapsed .sidebar {
+    transform: translateX(-100%);
+    padding: 24px 0;
+    border-right: none;
+  }
+
+  /* sidebar toggle button (sits in topbar) */
+  .menu-toggle {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+
+  .menu-toggle:hover { border-color: var(--accent); }
+
+  .menu-toggle svg { width: 16px; height: 16px; stroke: var(--text); }
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .logo-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .logo-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 28px;
+  }
+
+  .nav-section {
+    margin-bottom: 8px;
+  }
+
+  .nav-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 8px 10px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 6px;
+    transition: background 0.15s, color 0.15s;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .nav-title:hover { color: var(--text); background: var(--bg-card); }
+
+  .nav-title .chevron {
+    font-size: 10px;
+    transition: transform 0.2s ease;
+    color: var(--text-dim);
+  }
+
+  .nav-section.collapsed .chevron { transform: rotate(-90deg); }
+
+  .nav-links {
+    overflow: hidden;
+    max-height: 1000px;
+    transition: max-height 0.25s ease;
+  }
+
+  .nav-section.collapsed .nav-links {
+    max-height: 0;
+  }
+
+  .nav-link {
+    display: block;
+    padding: 6px 10px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13.5px;
+    border-radius: 6px;
+    transition: all 0.15s;
+    margin-bottom: 1px;
+  }
+
+  .nav-link:hover {
+    background: var(--bg-card);
+    color: var(--text);
+  }
+
+  .nav-subheading {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 600;
+    color: var(--accent-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 10px 10px 6px;
+    margin-top: 8px;
+    border-top: 1px dashed var(--border);
+    user-select: none;
+  }
+
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    text-transform: uppercase;
+  }
+
+  .badge.beginner { background: rgba(63, 185, 80, 0.15); color: var(--success); }
+  .badge.intermediate { background: rgba(255, 166, 87, 0.15); color: var(--accent-3); }
+  .badge.expert { background: rgba(248, 81, 73, 0.15); color: var(--danger); }
+  .badge.api { background: rgba(121, 192, 255, 0.15); color: var(--accent-2); }
+
+  /* === MAIN === */
+  .main { padding: 0; }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 40px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    background: rgba(13, 17, 23, 0.85);
+  }
+
+  body.light .topbar { background: rgba(250, 250, 247, 0.85); }
+
+  .topbar-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .topbar-actions { display: flex; gap: 12px; align-items: center; }
+
+  .theme-toggle, .mini-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    transition: all 0.15s;
+  }
+
+  .theme-toggle:hover, .mini-btn:hover {
+    border-color: var(--accent);
+  }
+
+  .content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px;
+  }
+
+  /* === HERO === */
+  .hero {
+    padding: 60px 0 40px;
+    border-bottom: 1px dashed var(--border);
+    margin-bottom: 50px;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(126, 231, 135, 0.08);
+    border: 1px solid rgba(126, 231, 135, 0.2);
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 .accent {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .hero p {
+    color: var(--text-muted);
+    font-size: 17px;
+    max-width: 640px;
+    margin-bottom: 32px;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    border-left: 2px solid var(--accent);
+    padding-left: 14px;
+  }
+
+  .stat-num {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+
+  /* === SECTIONS === */
+  .level-section {
+    margin-bottom: 80px;
+    scroll-margin-top: 80px;
+  }
+
+  .level-header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 8px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .level-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .level-header h2 {
+    font-size: 36px;
+  }
+
+  .level-desc {
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    max-width: 640px;
+  }
+
+  .sub-section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin: 48px 0 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border);
+    scroll-margin-top: 80px;
+    flex-wrap: wrap;
+  }
+
+  .sub-section-header h3 {
+    font-size: 24px;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .sub-section-desc {
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    max-width: 640px;
+    font-size: 14px;
+  }
+
+  /* === CARD === */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+    overflow: visible;
+    transition: border-color 0.15s;
+    scroll-margin-top: 80px;
+  }
+
+  .card:hover { border-color: var(--accent-2); }
+
+  .card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .card-title {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .card-body { padding: 24px 20px; }
+
+  .card-desc {
+    color: var(--text-muted);
+    font-size: 13.5px;
+    margin-bottom: 20px;
+    padding: 10px 14px;
+    background: var(--bg);
+    border-left: 3px solid var(--accent-2);
+    border-radius: 4px;
+  }
+
+  .card-desc strong { color: var(--text); }
+
+  .selectors-hint {
+    margin-top: 18px;
+    padding: 12px 14px;
+    background: var(--bg);
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .selectors-hint .label {
+    color: var(--accent);
+    font-weight: 600;
+    margin-right: 8px;
+  }
+
+  /* === FORMS === */
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .form-control,
+  input[type="text"], input[type="email"], input[type="password"],
+  input[type="number"], input[type="date"], input[type="search"],
+  input[type="tel"], input[type="url"],
+  textarea, select {
+    width: 100%;
+    padding: 9px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    transition: border 0.15s;
+  }
+
+  .form-control:focus,
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--accent-2);
+    box-shadow: 0 0 0 3px rgba(121, 192, 255, 0.15);
+  }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 18px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0d1117;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .btn-primary:hover { opacity: 0.9; }
+
+  .btn-danger { color: var(--danger); border-color: var(--danger); }
+  .btn-danger:hover { background: rgba(248,81,73,0.1); }
+
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* checkboxes / radios */
+  .check-row, .radio-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .check-item, .radio-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .check-item input, .radio-item input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  /* messages */
+  .msg {
+    margin-top: 14px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 13.5px;
+    font-family: 'JetBrains Mono', monospace;
+    display: none;
+  }
+
+  .msg.show { display: block; }
+  .msg.success { background: rgba(63,185,80,0.1); color: var(--success); border: 1px solid rgba(63,185,80,0.3); }
+  .msg.error { background: rgba(248,81,73,0.1); color: var(--danger); border: 1px solid rgba(248,81,73,0.3); }
+  .msg.info { background: rgba(121,192,255,0.1); color: var(--accent-2); border: 1px solid rgba(121,192,255,0.3); }
+
+  /* === CRUD TABLE === */
+  .crud-toolbar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .crud-toolbar .spacer { flex: 1; }
+
+  .selected-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .crud-table { font-size: 13.5px; }
+  .crud-table th, .crud-table td { vertical-align: middle; }
+  .crud-table th:first-child, .crud-table td:first-child { width: 36px; padding-right: 0; }
+  .crud-table tr.selected { background: rgba(121, 192, 255, 0.06); }
+  .crud-table tr.editing { background: rgba(255, 166, 87, 0.06); }
+
+  .crud-table input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .crud-table .inline-input {
+    width: 100%;
+    padding: 4px 8px;
+    background: var(--bg);
+    border: 1px solid var(--accent-3);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+  }
+
+  .crud-table .inline-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(126,231,135,0.15);
+  }
+
+  .crud-table select.inline-input { padding: 4px 8px; }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .status-pill::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .status-pill.active { background: rgba(63,185,80,0.12); color: var(--success); }
+  .status-pill.pending { background: rgba(255,166,87,0.12); color: var(--accent-3); }
+  .status-pill.inactive { background: rgba(110,118,129,0.15); color: var(--text-dim); }
+
+  .row-actions { display: flex; gap: 4px; }
+
+  .icon-btn {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.15s;
+    font-size: 13px;
+  }
+
+  .icon-btn:hover { border-color: var(--accent); }
+  .icon-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+  .icon-btn.success:hover { border-color: var(--accent); color: var(--accent); }
+
+  .crud-empty {
+    padding: 30px;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  .crud-loading {
+    padding: 30px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+
+  /* === GENERIC LAYOUT === */
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .row-2 { grid-template-columns: 1fr; }
+  }
+
+  /* === TABLES === */
+  .table-wrap { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  th, td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  th {
+    background: var(--bg);
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  th:hover { color: var(--accent); }
+
+  th.sort-asc::after { content: ' ↑'; color: var(--accent); }
+  th.sort-desc::after { content: ' ↓'; color: var(--accent); }
+
+  tbody tr:hover { background: var(--bg); }
+
+  .pagination {
+    display: flex;
+    gap: 4px;
+    margin-top: 16px;
+    justify-content: flex-end;
+  }
+
+  .page-btn {
+    padding: 5px 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .page-btn.active { background: var(--accent); color: #0d1117; border-color: var(--accent); }
+
+  /* === MODAL === */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-backdrop.show { display: flex; }
+
+  .modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .modal h3 { margin-bottom: 12px; }
+  .modal p { color: var(--text-muted); margin-bottom: 20px; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+  /* === TABS === */
+  .tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+
+  .tab {
+    padding: 9px 16px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .tab-panel { display: none; padding: 12px 0; }
+  .tab-panel.active { display: block; }
+
+  /* === ACCORDION === */
+  .accordion-item {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  .accordion-trigger {
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+    background: var(--bg);
+    border: none;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .accordion-trigger::after { content: '+'; color: var(--accent); font-size: 18px; }
+  .accordion-item.open .accordion-trigger::after { content: '−'; }
+
+  .accordion-content {
+    padding: 0 16px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s, padding 0.25s;
+    color: var(--text-muted);
+    font-size: 13.5px;
+  }
+
+  .accordion-item.open .accordion-content {
+    padding: 14px 16px;
+    max-height: 200px;
+  }
+
+  /* === TOOLTIP === */
+  .tooltip-trigger {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dashed var(--accent);
+    cursor: help;
+    color: var(--accent);
+  }
+
+  .tooltip-trigger::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-elev);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+    z-index: 10;
+  }
+
+  .tooltip-trigger:hover::after { opacity: 1; }
+
+  /* === PROGRESS === */
+  .progress {
+    width: 100%;
+    height: 8px;
+    background: var(--bg);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    width: 0%;
+    transition: width 0.3s;
+  }
+
+  /* === FILE UPLOAD === */
+  .dropzone {
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    padding: 32px 20px;
+    text-align: center;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .dropzone.dragover { border-color: var(--accent); background: rgba(126,231,135,0.05); }
+
+  /* === DRAG & DROP === */
+  .dnd-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .dnd-zone {
+    min-height: 140px;
+    padding: 14px;
+    background: var(--bg);
+    border: 2px dashed var(--border);
+    border-radius: 6px;
+  }
+
+  .dnd-zone-title {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .dnd-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    cursor: grab;
+    font-size: 13px;
+  }
+
+  .dnd-item:active { cursor: grabbing; }
+  .dnd-item.dragging { opacity: 0.5; }
+
+  /* === LOADER === */
+  .loader {
+    width: 24px;
+    height: 24px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* === TOAST === */
+  #toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .toast {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--text);
+    box-shadow: var(--shadow-lg);
+    animation: slidein 0.25s ease;
+    min-width: 240px;
+  }
+
+  @keyframes slidein {
+    from { transform: translateX(20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  /* === API DOCS === */
+  .api-endpoint {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    background: var(--bg);
+  }
+
+  .api-method {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-right: 10px;
+  }
+
+  .api-method.get { background: rgba(63,185,80,0.15); color: var(--success); }
+  .api-method.post { background: rgba(121,192,255,0.15); color: var(--accent-2); }
+  .api-method.put { background: rgba(255,166,87,0.15); color: var(--accent-3); }
+  .api-method.delete { background: rgba(248,81,73,0.15); color: var(--danger); }
+  .api-method.patch { background: rgba(210,153,194,0.15); color: #d299c2; }
+
+  .api-path { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text); }
+  .api-desc { color: var(--text-muted); font-size: 12.5px; margin-top: 6px; }
+
+  pre.code {
+    background: var(--bg);
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-size: 12.5px;
+    color: var(--text);
+    overflow-x: auto;
+    margin: 10px 0;
+  }
+
+  pre.code .kw { color: var(--accent-4); }
+  pre.code .str { color: var(--accent); }
+  pre.code .com { color: var(--text-dim); font-style: italic; }
+  pre.code .num { color: var(--accent-3); }
+
+  /* === SHADOW DOM === */
+  .shadow-host {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    background: var(--bg);
+  }
+
+  /* === INFINITE SCROLL CONTAINER === */
+  .scroll-container {
+    max-height: 240px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px;
+    background: var(--bg);
+  }
+
+  .scroll-item {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-soft);
+    font-size: 13px;
+  }
+
+  .scroll-item:last-child { border-bottom: none; }
+
+  /* === CANVAS === */
+  #drawCanvas {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    cursor: crosshair;
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    height: 240px;
+  }
+
+  /* === WIZARD === */
+  .wizard-steps {
+    display: flex;
+    gap: 0;
+    margin-bottom: 24px;
+  }
+
+  .wizard-step {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-right: none;
+    font-size: 12.5px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-muted);
+    position: relative;
+  }
+
+  .wizard-step:last-child { border-right: 1px solid var(--border); }
+  .wizard-step.active { background: var(--accent); color: #0d1117; border-color: var(--accent); }
+  .wizard-step.complete { color: var(--accent); }
+
+  /* === MISC === */
+  .small { font-size: 12px; color: var(--text-dim); }
+
+  .auth-status {
+    padding: 10px 14px;
+    border-radius: 6px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    margin-bottom: 14px;
+  }
+
+  iframe.demo-frame {
+    width: 100%;
+    height: 200px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+  }
+
+  /* === RESPONSIVE / MOBILE === */
+  /* Tablet and below: collapse sidebar, tighten paddings */
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 100vh;
+      z-index: 200;
+      transform: translateX(-100%);
+      box-shadow: var(--shadow-lg);
+    }
+    .app:not(.collapsed) .sidebar { transform: translateX(0); }
+    .app.collapsed .sidebar { transform: translateX(-100%); }
+    .content { padding: 24px 20px; }
+    .topbar { padding: 14px 16px; }
+    .level-header h2 { font-size: 28px; }
+    .sub-section-header h3 { font-size: 20px; }
+    /* Sidebar backdrop on mobile when open */
+    .app:not(.collapsed)::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 150;
+    }
+  }
+
+  /* Phones: tighter card padding, bigger touch targets, fix dropdowns */
+  @media (max-width: 600px) {
+    .content { padding: 16px 14px; }
+    .topbar { padding: 12px 14px; }
+    .topbar-title { display: none; }
+    .hero { padding: 32px 0 24px; margin-bottom: 32px; }
+    .hero p { font-size: 15px; }
+    .hero-stats { gap: 18px; }
+    .stat-num { font-size: 22px; }
+
+    .level-section { margin-bottom: 56px; }
+    .level-header { gap: 8px; flex-wrap: wrap; }
+    .level-header h2 { font-size: 24px; }
+    .sub-section-header { margin: 36px 0 8px; }
+    .sub-section-header h3 { font-size: 18px; }
+
+    .card-header { padding: 12px 14px; }
+    .card-body { padding: 16px 14px; }
+    .card-title { font-size: 16px; }
+    .card-desc { padding: 8px 10px; font-size: 13px; }
+
+    .btn-row { gap: 8px; }
+    .btn { padding: 9px 14px; font-size: 13.5px; }
+
+    /* === DROPDOWN MOBILE FIX === */
+    /* On small screens, the dropdown menu may overflow horizontally if the
+       dropdown is narrower than its content. Allow it to stretch slightly. */
+    .custom-dropdown { max-width: 100%; }
+    .cd-menu {
+      max-height: 240px;
+      /* Make sure menu can extend past card boundary */
+      left: -2px;
+      right: -2px;
+    }
+    .cd-option { padding: 10px 12px; font-size: 14px; } /* easier to tap */
+    .row-dropdown { max-width: 100%; }
+    .row-dropdown .cd-trigger { font-size: 13px; }
+
+    /* Tables: keep them scrollable horizontally instead of breaking layout */
+    .table-wrap { margin: 0 -14px; padding: 0 14px; }
+    th, td { padding: 8px 10px; font-size: 12.5px; }
+
+    /* CRUD toolbar wraps cleanly */
+    .crud-toolbar { flex-direction: column; align-items: stretch; }
+    .crud-toolbar input[type="search"] { max-width: 100% !important; }
+  }
+
+  /* Very small phones */
+  @media (max-width: 380px) {
+    .content { padding: 14px 10px; }
+    .card-header { padding: 10px 12px; }
+    .card-body { padding: 14px 12px; }
+    .level-header h2 { font-size: 22px; }
+    .hero h1 { font-size: 32px; }
+  }
+
+  /* code highlight inline */
+  code.inline {
+    background: var(--bg);
+    border: 1px solid var(--border-soft);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 12.5px;
+    color: var(--accent-2);
+  }
+
+  .footer {
+    margin-top: 80px;
+    padding: 30px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  /* === STATUS BADGES === */
+  .status-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-block;
+  }
+  .status-active { background: rgba(63,185,80,0.15); color: var(--success); border: 1px solid rgba(63,185,80,0.3); }
+  .status-inactive { background: rgba(110,118,129,0.15); color: var(--text-dim); border: 1px solid var(--border); }
+  .status-pending { background: rgba(255,166,87,0.15); color: var(--accent-3); border: 1px solid rgba(255,166,87,0.3); }
+  .status-closed { background: rgba(248,81,73,0.15); color: var(--danger); border: 1px solid rgba(248,81,73,0.3); }
+
+  /* === CRUD TABLE === */
+  .crud-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .crud-table input.crud-edit-input,
+  .crud-table select.crud-edit-input {
+    padding: 6px 8px;
+    font-size: 13px;
+    background: var(--bg-elev);
+    border: 1px solid var(--accent-2);
+    border-radius: 4px;
+    color: var(--text);
+    width: 100%;
+  }
+
+  .icon-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: inherit;
+    transition: all 0.15s;
+    margin-right: 4px;
+  }
+  .icon-btn:hover { border-color: var(--accent); color: var(--text); }
+  .icon-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+  .icon-btn.success:hover { border-color: var(--success); color: var(--success); }
+
+  /* === BANKING === */
+  .banking-locked {
+    opacity: 0.45;
+    pointer-events: none;
+    position: relative;
+    filter: grayscale(0.4);
+  }
+
+  .lock-overlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    background: rgba(13, 17, 23, 0.7);
+    backdrop-filter: blur(2px);
+    border-radius: var(--radius);
+    z-index: 5;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent-3);
+    pointer-events: auto;
+  }
+
+  .banking-locked .lock-overlay { display: flex; }
+
+  .customer-card {
+    background: linear-gradient(135deg, rgba(126,231,135,0.06), rgba(121,192,255,0.06));
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+  }
+
+  .customer-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .customer-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .customer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    font-size: 13px;
+  }
+
+  .customer-field-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .customer-field-value { color: var(--text); }
+
+  .account-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    background: var(--bg);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .account-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .account-icon.deposit { background: rgba(126,231,135,0.12); color: var(--accent); }
+  .account-icon.loan { background: rgba(255,166,87,0.12); color: var(--accent-3); }
+
+  .account-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+  }
+
+  .account-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  .account-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .account-amount {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--text-dim);
+    font-size: 13px;
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+  }
+
+  /* === CUSTOM DROPDOWN === */
+  .custom-dropdown {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .cd-trigger {
+    width: 100%;
+    padding: 9px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    transition: border 0.15s;
+    min-height: 38px;
+  }
+  .cd-trigger:hover { border-color: var(--accent-2); }
+  .cd-trigger:focus { outline: none; border-color: var(--accent-2); box-shadow: 0 0 0 3px rgba(121, 192, 255, 0.15); }
+  .cd-trigger[aria-expanded="true"] { border-color: var(--accent-2); }
+  .cd-trigger[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+  .cd-value { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cd-placeholder { color: var(--text-dim); }
+  .cd-chevron { transition: transform 0.15s; color: var(--text-muted); font-size: 11px; margin-left: 8px; flex-shrink: 0; }
+  .cd-trigger[aria-expanded="true"] .cd-chevron { transform: rotate(180deg); }
+
+  .cd-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    max-height: 260px;
+    overflow-y: auto;
+    z-index: 60;
+    box-shadow: var(--shadow-lg);
+    display: none;
+  }
+  .cd-menu.open { display: block; }
+
+  .cd-search-wrap {
+    padding: 8px;
+    border-bottom: 1px solid var(--border-soft);
+    position: sticky;
+    top: 0;
+    background: var(--bg-card);
+    z-index: 1;
+  }
+  .cd-search-wrap input {
+    width: 100%;
+    padding: 6px 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: inherit;
+  }
+  .cd-search-wrap input:focus { outline: none; border-color: var(--accent-2); }
+
+  .cd-option {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 13.5px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-soft);
+    transition: background 0.1s;
+  }
+  .cd-option:last-child { border-bottom: none; }
+  .cd-option:hover { background: var(--bg); }
+  .cd-option.selected { background: rgba(126,231,135,0.08); color: var(--accent); font-weight: 500; }
+  .cd-option.selected::after { content: '✓'; margin-left: auto; color: var(--accent); }
+  .cd-option.disabled { opacity: 0.4; cursor: not-allowed; }
+  .cd-option .cd-checkbox {
+    width: 14px; height: 14px;
+    accent-color: var(--accent);
+    margin: 0;
+  }
+
+  .cd-empty, .cd-loading {
+    padding: 20px;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+  .cd-loading { display: flex; justify-content: center; align-items: center; gap: 10px; }
+  .cd-loading .loader { width: 14px; height: 14px; border-width: 2px; }
+
+  .cd-group-label {
+    padding: 6px 12px;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  /* === CHIPS === */
+  .chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+    min-height: 24px;
+  }
+
+  .chip {
+    background: rgba(121, 192, 255, 0.1);
+    color: var(--accent-2);
+    border: 1px solid rgba(121, 192, 255, 0.3);
+    padding: 3px 4px 3px 10px;
+    border-radius: 14px;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+  }
+
+  .chip-remove {
+    background: rgba(255,255,255,0.05);
+    border: none;
+    color: var(--accent-2);
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.15s;
+  }
+  .chip-remove:hover { background: rgba(248,81,73,0.2); color: var(--danger); }
+
+  /* === Combobox === */
+  .combobox-input {
+    width: 100%;
+    padding: 9px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+  }
+  .combobox-input:focus { outline: none; border-color: var(--accent-2); }
+
+  .cd-create-hint {
+    padding: 8px 12px;
+    background: rgba(126,231,135,0.05);
+    color: var(--accent);
+    font-size: 12.5px;
+    border-bottom: 1px solid var(--border-soft);
+    cursor: pointer;
+  }
+  .cd-create-hint:hover { background: rgba(126,231,135,0.12); }
+  .cd-create-hint kbd {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text);
+    margin: 0 2px;
+  }
+
+  /* status dot for dropdown options */
+  .status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .status-dot.green { background: var(--accent); }
+  .status-dot.amber { background: var(--accent-3); }
+  .status-dot.red { background: var(--danger); }
+  .status-dot.gray { background: var(--text-dim); }
+
+  /* in-table dropdown */
+  .row-dropdown {
+    max-width: 160px;
+  }
+  .row-dropdown .cd-trigger { padding: 5px 10px; font-size: 12.5px; min-height: 30px; }
+</style>
+</head>
+<body>
+<div id="toast-container"></div>
+
+<div class="app" id="app">
+  <!-- ============= SIDEBAR ============= -->
+  <aside class="sidebar" id="sidebar">
+    <div class="logo"><span class="logo-dot"></span>PlaywrightLab</div>
+    <div class="logo-tag">// practice arena v1.0</div>
+
+    <div class="nav-section" data-testid="nav-section-start">
+      <button class="nav-title" data-testid="nav-toggle-start" onclick="toggleNavSection(this)">
+        <span>Start Here</span><span class="chevron">▼</span>
+      </button>
+      <div class="nav-links">
+        <a href="#overview" class="nav-link">Overview</a>
+        <a href="#how-to-use" class="nav-link">How to use</a>
+      </div>
+    </div>
+
+    <div class="nav-section" data-testid="nav-section-beginner">
+      <button class="nav-title" data-testid="nav-toggle-beginner" onclick="toggleNavSection(this)">
+        <span>Beginner</span><span class="chevron">▼</span>
+      </button>
+      <div class="nav-links">
+        <a href="#login" class="nav-link">Login Form</a>
+        <a href="#signup" class="nav-link">Registration</a>
+        <a href="#buttons" class="nav-link">Buttons & Clicks</a>
+        <a href="#inputs" class="nav-link">Form Inputs</a>
+        <a href="#checkbox" class="nav-link">Checkboxes</a>
+        <a href="#radio" class="nav-link">Radio Buttons</a>
+        <a href="#dropdown" class="nav-link">Dropdowns</a>
+        <a href="#links" class="nav-link">Links & Navigation</a>
+        <a href="#assertions" class="nav-link">Text Assertions</a>
+      </div>
+    </div>
+
+    <div class="nav-section" data-testid="nav-section-intermediate">
+      <button class="nav-title" data-testid="nav-toggle-intermediate" onclick="toggleNavSection(this)">
+        <span>Intermediate</span><span class="chevron">▼</span>
+      </button>
+      <div class="nav-links">
+        <a href="#dynamic" class="nav-link">Dynamic Loading</a>
+        <a href="#alerts" class="nav-link">JS Alerts</a>
+        <a href="#modal" class="nav-link">Modal Dialog</a>
+        <a href="#iframe" class="nav-link">iFrame</a>
+        <a href="#upload" class="nav-link">File Upload</a>
+        <a href="#download" class="nav-link">File Download</a>
+        <a href="#table" class="nav-link">Data Table</a>
+        <a href="#crud-table" class="nav-link">CRUD Table</a>
+        <a href="#datepicker" class="nav-link">Date Picker</a>
+        <a href="#tabs" class="nav-link">Tabs</a>
+        <a href="#accordion" class="nav-link">Accordion</a>
+        <a href="#tooltip" class="nav-link">Tooltip / Hover</a>
+        <a href="#dnd" class="nav-link">Drag & Drop</a>
+        <a href="#autocomplete" class="nav-link">Autocomplete</a>
+        <a href="#progress" class="nav-link">Progress Bar</a>
+      </div>
+    </div>
+
+    <div class="nav-section" data-testid="nav-section-expert">
+      <button class="nav-title" data-testid="nav-toggle-expert" onclick="toggleNavSection(this)">
+        <span>Expert</span><span class="chevron">▼</span>
+      </button>
+      <div class="nav-links">
+        <a href="#shadowdom" class="nav-link">Shadow DOM</a>
+        <a href="#lazyload" class="nav-link">Lazy Loading</a>
+        <a href="#infinite" class="nav-link">Infinite Scroll</a>
+        <a href="#auth" class="nav-link">JWT Auth Flow</a>
+        <a href="#race" class="nav-link">Race Conditions</a>
+        <a href="#canvas" class="nav-link">Canvas Drawing</a>
+        <a href="#wizard" class="nav-link">Multi-step Wizard</a>
+        <a href="#realtime" class="nav-link">Realtime Updates</a>
+        <a href="#crud" class="nav-link">Dynamic CRUD Table</a>
+        <div class="nav-subheading" data-testid="nav-subheading-dropdowns">Advanced Dropdowns</div>
+        <a href="#dd-custom" class="nav-link">Custom (Dynamic IDs)</a>
+        <a href="#dd-search" class="nav-link">Searchable</a>
+        <a href="#dd-multi" class="nav-link">Multi-Select Chips</a>
+        <a href="#dd-async" class="nav-link">Async-loaded</a>
+        <a href="#dd-cascade" class="nav-link">Cascading</a>
+        <a href="#dd-combo" class="nav-link">Combobox (Type/Pick)</a>
+        <a href="#dd-grouped" class="nav-link">Grouped + Status</a>
+        <a href="#dd-table" class="nav-link">In-Table Dropdowns</a>
+      </div>
+    </div>
+
+    <div class="nav-section" data-testid="nav-section-banking">
+      <button class="nav-title" data-testid="nav-toggle-banking" onclick="toggleNavSection(this)">
+        <span>Banking Workflow</span><span class="chevron">▼</span>
+      </button>
+      <div class="nav-links">
+        <a href="#onboarding" class="nav-link">Customer Onboarding</a>
+        <a href="#deposit-account" class="nav-link">Open Deposit Account</a>
+        <a href="#loan-account" class="nav-link">Open Loan Account</a>
+        <a href="#accounts-summary" class="nav-link">Accounts Summary</a>
+      </div>
+    </div>
+
+    <div class="nav-section" data-testid="nav-section-api">
+      <button class="nav-title" data-testid="nav-toggle-api" onclick="toggleNavSection(this)">
+        <span>API Testing</span><span class="chevron">▼</span>
+      </button>
+      <div class="nav-links">
+        <a href="#api-intro" class="nav-link">Public APIs</a>
+        <a href="#api-mock" class="nav-link">Mock Endpoints</a>
+        <a href="#api-examples" class="nav-link">Test Examples</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============= MAIN ============= -->
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" id="menuToggle" data-testid="menu-toggle" aria-label="Toggle menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+        <div class="topbar-title">~/playwright-practice</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="mini-btn" id="resetBtn" data-testid="reset-state">Reset State</button>
+        <button class="theme-toggle" id="themeBtn" data-testid="theme-toggle">☾ Dark</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- ===== HERO ===== -->
+      <section class="hero" id="overview">
+        <span class="hero-tag">// for QA engineers learning Playwright</span>
+        <h1>A practice gym <span class="accent">for your tests.</span></h1>
+        <p>Every component below is intentionally designed to be automated. Stable selectors, predictable states, increasing difficulty &mdash; from your first <code class="inline">click()</code> to multi-step auth flows with race conditions.</p>
+        <div class="hero-stats">
+          <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Components</div></div>
+          <div class="stat"><div class="stat-num">5</div><div class="stat-label">Skill levels</div></div>
+          <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Test scenarios</div></div>
+          <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Offline ready</div></div>
+        </div>
+      </section>
+
+      <!-- ===== HOW TO USE ===== -->
+      <section class="card" id="how-to-use">
+        <div class="card-header">
+          <div class="card-title">How to use this site</div>
+        </div>
+        <div class="card-body">
+          <p style="color: var(--text-muted); margin-bottom: 14px;">Save this HTML file locally and serve it (or just open it in your browser). Point Playwright at <code class="inline">file://</code> path or run a local server:</p>
+          <pre class="code"><span class="com"># Quickest: just use the file path</span>
+<span class="kw">await</span> page.goto(<span class="str">'file:///path/to/playwright-practice-site.html'</span>);
+
+<span class="com"># Or with python's built-in server (recommended for API tests)</span>
+$ python3 -m http.server 8080
+<span class="kw">await</span> page.goto(<span class="str">'http://localhost:8080/playwright-practice-site.html'</span>);</pre>
+          <p style="color: var(--text-muted); margin-top: 14px;">Every interactive element has a <code class="inline">data-testid</code> attribute, plus meaningful <code class="inline">id</code>, <code class="inline">name</code>, and ARIA labels &mdash; practice every selector strategy.</p>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- ============= BEGINNER LEVEL =============== -->
+      <!-- ============================================ -->
+      <section class="level-section" id="beginner">
+        <div class="level-header">
+          <span class="level-num">01 ──</span>
+          <h2>Beginner</h2>
+          <span class="badge beginner">Level 1</span>
+        </div>
+        <p class="level-desc">Foundational interactions. Master <code class="inline">fill()</code>, <code class="inline">click()</code>, <code class="inline">check()</code>, basic assertions, and the different ways to locate elements.</p>
+
+        <!-- LOGIN FORM -->
+        <div class="card" id="login">
+          <div class="card-header">
+            <div class="card-title"><span class="card-num">B-01</span>Login Form</div>
+          </div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Fill inputs, click submit, assert success/error messages. Valid creds: <code class="inline">admin</code> / <code class="inline">admin123</code></div>
+            <form id="loginForm" data-testid="login-form" onsubmit="handleLogin(event)">
+              <div class="form-group">
+                <label for="loginUsername">Username</label>
+                <input type="text" id="loginUsername" name="username" data-testid="login-username" placeholder="enter your username" required>
+              </div>
+              <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" name="password" data-testid="login-password" placeholder="enter your password" required>
+              </div>
+              <div class="check-item" style="margin-bottom: 14px;">
+                <input type="checkbox" id="rememberMe" data-testid="login-remember">
+                <label for="rememberMe" style="margin: 0;">Remember me</label>
+              </div>
+              <button type="submit" class="btn btn-primary" data-testid="login-submit">Sign in</button>
+              <button type="button" class="btn" data-testid="login-reset" onclick="document.getElementById('loginForm').reset()">Reset</button>
+            </form>
+            <div class="msg" id="loginMsg" data-testid="login-message"></div>
+            <div class="selectors-hint"><span class="label">Hint:</span>page.getByTestId('login-username').fill('admin')</div>
+          </div>
+        </div>
+
+        <!-- REGISTRATION -->
+        <div class="card" id="signup">
+          <div class="card-header">
+            <div class="card-title"><span class="card-num">B-02</span>Registration Form</div>
+          </div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Multi-field validation, conditional errors, password matching, terms-and-conditions checkbox.</div>
+            <form id="signupForm" data-testid="signup-form" onsubmit="handleSignup(event)">
+              <div class="row-2">
+                <div class="form-group">
+                  <label for="firstName">First name</label>
+                  <input type="text" id="firstName" data-testid="signup-firstname" required>
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Last name</label>
+                  <input type="text" id="lastName" data-testid="signup-lastname" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" data-testid="signup-email" required>
+              </div>
+              <div class="row-2">
+                <div class="form-group">
+                  <label for="signupPwd">Password (min 6)</label>
+                  <input type="password" id="signupPwd" data-testid="signup-password" minlength="6" required>
+                </div>
+                <div class="form-group">
+                  <label for="signupPwd2">Confirm password</label>
+                  <input type="password" id="signupPwd2" data-testid="signup-password-confirm" required>
+                </div>
+              </div>
+              <div class="check-item" style="margin-bottom: 14px;">
+                <input type="checkbox" id="terms" data-testid="signup-terms" required>
+                <label for="terms" style="margin: 0;">I accept the terms and conditions</label>
+              </div>
+              <button type="submit" class="btn btn-primary" data-testid="signup-submit">Create account</button>
+            </form>
+            <div class="msg" id="signupMsg" data-testid="signup-message"></div>
+          </div>
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="card" id="buttons">
+          <div class="card-header">
+            <div class="card-title"><span class="card-num">B-03</span>Buttons & Click Events</div>
+          </div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Single click, double click, right-click (context menu), disabled state, dynamic enable.</div>
+            <div class="btn-row">
+              <button class="btn btn-primary" data-testid="btn-single" onclick="recordClick('single')">Single Click</button>
+              <button class="btn" data-testid="btn-double" ondblclick="recordClick('double')">Double Click</button>
+              <button class="btn" data-testid="btn-context" oncontextmenu="event.preventDefault(); recordClick('right')">Right Click</button>
+              <button class="btn" data-testid="btn-disabled" disabled>Disabled</button>
+              <button class="btn btn-danger" data-testid="btn-enable-toggle" onclick="toggleDisabled()">Toggle Disable</button>
+            </div>
+            <div class="msg show info" data-testid="click-output" id="clickOutput">Last click: <span id="lastClick">none</span></div>
+          </div>
+        </div>
+
+        <!-- INPUTS -->
+        <div class="card" id="inputs">
+          <div class="card-header">
+            <div class="card-title"><span class="card-num">B-04</span>Form Input Types</div>
+          </div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Different input types, attribute assertions, <code class="inline">page.getByLabel()</code>, <code class="inline">page.getByPlaceholder()</code>.</div>
+            <div class="row-2">
+              <div class="form-group"><label>Text</label><input type="text" data-testid="input-text" placeholder="any text"></div>
+              <div class="form-group"><label>Email</label><input type="email" data-testid="input-email" placeholder="you@domain.com"></div>
+              <div class="form-group"><label>Number</label><input type="number" data-testid="input-number" min="0" max="100"></div>
+              <div class="form-group"><label>Tel</label><input type="tel" data-testid="input-tel" placeholder="+1 555 0100"></div>
+              <div class="form-group"><label>URL</label><input type="url" data-testid="input-url" placeholder="https://"></div>
+              <div class="form-group"><label>Search</label><input type="search" data-testid="input-search" placeholder="search…"></div>
+            </div>
+            <div class="form-group"><label>Textarea</label><textarea data-testid="input-textarea" placeholder="multi-line input"></textarea></div>
+            <div class="form-group"><label>Read-only</label><input type="text" data-testid="input-readonly" value="cannot edit me" readonly></div>
+            <div class="form-group"><label>Disabled</label><input type="text" data-testid="input-disabled" value="cannot focus" disabled></div>
+          </div>
+        </div>
+
+        <!-- CHECKBOX -->
+        <div class="card" id="checkbox">
+          <div class="card-header"><div class="card-title"><span class="card-num">B-05</span>Checkboxes</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> <code class="inline">check()</code>, <code class="inline">uncheck()</code>, asserting <code class="inline">isChecked()</code>, group selection.</div>
+            <div class="check-row">
+              <label class="check-item"><input type="checkbox" data-testid="cb-1" value="javascript"> JavaScript</label>
+              <label class="check-item"><input type="checkbox" data-testid="cb-2" value="python" checked> Python (pre-checked)</label>
+              <label class="check-item"><input type="checkbox" data-testid="cb-3" value="rust"> Rust</label>
+              <label class="check-item"><input type="checkbox" data-testid="cb-4" value="go"> Go</label>
+              <label class="check-item"><input type="checkbox" data-testid="cb-5" disabled> Disabled checkbox</label>
+            </div>
+            <button class="btn" data-testid="cb-show-selected" onclick="showSelectedCheckboxes()" style="margin-top: 14px;">Show Selected</button>
+            <div class="msg" id="cbOutput" data-testid="cb-output"></div>
+          </div>
+        </div>
+
+        <!-- RADIO -->
+        <div class="card" id="radio">
+          <div class="card-header"><div class="card-title"><span class="card-num">B-06</span>Radio Buttons</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Group selection, default selected, switching values.</div>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px;">Subscription plan:</p>
+            <div class="radio-row">
+              <label class="radio-item"><input type="radio" name="plan" value="free" data-testid="radio-free"> Free</label>
+              <label class="radio-item"><input type="radio" name="plan" value="pro" data-testid="radio-pro" checked> Pro</label>
+              <label class="radio-item"><input type="radio" name="plan" value="team" data-testid="radio-team"> Team</label>
+              <label class="radio-item"><input type="radio" name="plan" value="enterprise" data-testid="radio-enterprise"> Enterprise</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- DROPDOWNS -->
+        <div class="card" id="dropdown">
+          <div class="card-header"><div class="card-title"><span class="card-num">B-07</span>Dropdowns / Select</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> <code class="inline">selectOption()</code> by value, label, or index. Single &amp; multi-select.</div>
+            <div class="form-group">
+              <label>Country (single)</label>
+              <select data-testid="dropdown-country">
+                <option value="">— Select country —</option>
+                <option value="bd">Bangladesh</option>
+                <option value="us">United States</option>
+                <option value="uk">United Kingdom</option>
+                <option value="in">India</option>
+                <option value="de">Germany</option>
+                <option value="jp">Japan</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Languages (multiple — Ctrl/Cmd+click)</label>
+              <select data-testid="dropdown-languages" multiple size="5">
+                <option value="en">English</option>
+                <option value="bn">Bengali</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="zh">Chinese</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- LINKS -->
+        <div class="card" id="links">
+          <div class="card-header"><div class="card-title"><span class="card-num">B-08</span>Links & Navigation</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Click links, assert href, handle <code class="inline">target="_blank"</code> with <code class="inline">page.waitForEvent('popup')</code>.</div>
+            <div class="btn-row" style="flex-direction: column; align-items: flex-start; gap: 6px;">
+              <a href="#login" data-testid="link-internal">→ Internal: jump to Login section</a>
+              <a href="https://playwright.dev" target="_blank" rel="noopener" data-testid="link-external">→ External (new tab): Playwright docs</a>
+              <a href="#" onclick="event.preventDefault(); showToast('Link clicked!')" data-testid="link-no-href">→ Link with onclick (no real href)</a>
+              <a href="#beginner" data-testid="link-anchor">→ Anchor link</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ASSERTIONS -->
+        <div class="card" id="assertions">
+          <div class="card-header"><div class="card-title"><span class="card-num">B-09</span>Static Text & Assertions</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> <code class="inline">toHaveText()</code>, <code class="inline">toContainText()</code>, <code class="inline">toBeVisible()</code>, <code class="inline">toHaveAttribute()</code>.</div>
+            <h3 data-testid="assert-heading" style="margin-bottom:8px;font-size:20px;">The Quick Brown Fox</h3>
+            <p data-testid="assert-paragraph" style="color:var(--text-muted);margin-bottom:10px;">jumps over the lazy dog. This sentence contains every letter of the English alphabet.</p>
+            <p>Total chars in heading: <strong data-testid="assert-counter" id="assertCounter">20</strong></p>
+            <p>Random ID: <code class="inline" data-testid="assert-uuid" id="assertUuid">loading…</code></p>
+            <ul style="margin-top:10px;padding-left:20px;">
+              <li data-testid="assert-list-1">First item</li>
+              <li data-testid="assert-list-2">Second item</li>
+              <li data-testid="assert-list-3">Third item</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- ========== INTERMEDIATE LEVEL ============== -->
+      <!-- ============================================ -->
+      <section class="level-section" id="intermediate">
+        <div class="level-header">
+          <span class="level-num">02 ──</span>
+          <h2>Intermediate</h2>
+          <span class="badge intermediate">Level 2</span>
+        </div>
+        <p class="level-desc">Async behavior, dialog handling, complex widgets. Master <code class="inline">page.waitForSelector()</code>, dialog events, frames, downloads, and table interactions.</p>
+
+        <!-- DYNAMIC LOADING -->
+        <div class="card" id="dynamic">
+          <div class="card-header"><div class="card-title"><span class="card-num">I-01</span>Dynamic Loading</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Wait for element to appear after a delay (auto-waiting in action).</div>
+            <button class="btn btn-primary" data-testid="dyn-start" onclick="startDynamic()">Start Loading (3s)</button>
+            <div id="dynLoader" data-testid="dyn-loader" style="margin-top:14px;display:none;">
+              <span class="loader"></span> <span style="color:var(--text-muted);margin-left:8px;">Loading content…</span>
+            </div>
+            <div id="dynResult" data-testid="dyn-result" style="margin-top:14px;display:none;color:var(--accent);">
+              ✓ Content loaded successfully! Order #<span id="orderNum"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ALERTS -->
+        <div class="card" id="alerts">
+          <div class="card-header"><div class="card-title"><span class="card-num">I-02</span>JavaScript Alerts</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Handle <code class="inline">alert</code>, <code class="inline">confirm</code>, <code class="inline">prompt</code> with <code class="inline">page.on('dialog', ...)</code>.</div>
+            <div class="btn-row">
+              <button class="btn" data-testid="alert-simple" onclick="alert('You triggered a simple alert!')">Show Alert</button>
+              <button class="btn" data-testid="alert-confirm" onclick="handleConfirm()">Show Confirm</button>
+              <button class="btn" data-testid="alert-prompt" onclick="handlePrompt()">Show Prompt</button>
+            </div>
+            <div class="msg show info" data-testid="alert-result" id="alertResult">Result: <span id="alertResultText">—</span></div>
+          </div>
+        </div>
+
+        <!-- MODAL -->
+        <div class="card" id="modal">
+          <div class="card-header"><div class="card-title"><span class="card-num">I-03</span>Modal Dialog</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Open modal, interact with content inside, close via button or backdrop click. Tests focus management.</div>
+            <button class="btn btn-primary" data-testid="modal-open" onclick="openModal()">Open Modal</button>
+            <p data-testid="modal-result" id="modalResult" style="margin-top:10px;color:var(--text-muted);font-size:13px;">No action yet</p>
+          </div>
+        </div>
+
+        <!-- IFRAME -->
+        <div class="card" id="iframe">
+          <div class="card-header"><div class="card-title"><span class="card-num">I-04</span>iFrame Interaction</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Use <code class="inline">page.frameLocator()</code> to interact with elements inside the iframe.</div>
+            <iframe class="demo-frame" data-testid="demo-iframe" id="demoFrame" srcdoc='<html><head><style>body{font-family:sans-serif;background:#1c2128;color:#e6edf3;padding:20px;margin:0;}input,button{padding:6px 10px;border-radius:4px;border:1px solid #30363d;background:#0d1117;color:#e6edf3;font-family:sans-serif;}button{background:#7ee787;color:#0d1117;border:none;cursor:pointer;font-weight:600;}h3{margin-bottom:10px;}#frameOut{margin-top:10px;color:#7ee787;font-size:13px;}</style></head><body><h3>I am inside an iframe</h3><input id="frameInput" data-testid="iframe-input" placeholder="type here"><button data-testid="iframe-submit" onclick="document.getElementById(`frameOut`).textContent=`You typed: ` + document.getElementById(`frameInput`).value">Submit</button><div id="frameOut" data-testid="iframe-output"></div></body></html>'></iframe>
+          </div>
+        </div>
+
+        <!-- UPLOAD -->
+        <div class="card" id="upload">
+          <div class="card-header"><div class="card-title"><span class="card-num">I-05</span>File Upload</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> <code class="inline">setInputFiles()</code> for single &amp; multiple files. Drag-drop zone simulates real UX.</div>
+            <div class="form-group">
+              <label>Single file</label>
+              <input type="file" data-testid="upload-single" id="uploadSingle" onchange="handleFileSelect(this, 'uploadSingleResult')">
+              <p data-testid="upload-single-result" id="uploadSingleResult" class="small" style="margin-top:6px;"></p>
+            </div>
+            <div class="form-group">
+              <label>Multiple files</label>
+              <input type="file" data-testid="upload-multiple" id="uploadMultiple" multiple onchange="handleFileSelect(this, 'uploadMultipleResult')">
+              <p data-testid="upload-multiple-result" id="uploadMultipleResult" class="small" style="margin-top:6px;"></p>
+            </div>
+            <div class="dropzone" data-testid="upload-dropzone" id="dropzone">
+              <strong>Drop files here</strong>
+              <p class="small" style="margin-top:4px;">or click to browse</p>
+              <input type="file" id="dzInput" hidden multiple onchange="handleFileSelect(this, 'dzResult')">
+            </div>
+            <p data-testid="dropzone-result" id="dzResult" class="small" style="margin-top:10px;"></p>
+          </div>
+        </div>
+
+        <!-- DOWNLOAD -->
+        <div class="card" id="download">
+          <div class="card-header"><div class="card-title"><span class="card-num">I-06</span>File Download</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Use <code class="inline">page.waitForEvent('download')</code> to capture file, assert filename and contents.</div>
+            <button class="btn btn-primary" data-testid="dl-text" onclick="downloadFile('sample.txt', 'Hello from PlaywrightLab!')">Download .txt</button>
+            <button class="btn" data-testid="dl-json" onclick="downloadFile('data.json', JSON.stringify({user:'admin',role:'tester'},null,2))">Download .json</button>
+            <button class="btn" data-testid="dl-csv" onclick="downloadFile('report.csv', 'id,name,score\n1,Alice,95\n2,Bob,87\n3,Carol,92')">Download .csv</button>
+          </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="card" id="table">
+          <div class="card-header"><div class="card-title"><span class="card-num">I-07</span>Sortable / Filterable Table</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Click column header to sort, type in search to filter, paginate. Assert row counts and order.</div>
+            <input type="search" data-testid="table-search" id="tableSearch" placeholder="Search by name or country…" oninput="renderTable()" style="margin-bottom:14px;">
+            <div class="table-wrap">
+              <table data-testid="users-table">
+                <thead>
+                  <tr>
+                    <th data-sort="id">ID</th>
+                    <th data-sort="name">Name</th>
+                    <th data-sort="email">Email</th>
+                    <th data-sort="country">Country</th>
+                    <th data-sort="score">Score</th>
+                  </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+              </table>
+            </div>
+            <div class="pagination" id="tablePagination" data-testid="table-pagination"></div>
+          </div>
+        </div>
+
+        <!-- CRUD TABLE -->
+        <div class="card" id="crud-table">
+          <div class="card-header"><div class="card-title"><span class="card-num">I-08</span>Dynamic CRUD Table</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Async data load, add/edit/delete operations, inline editing, row selection with bulk delete, and confirmation dialogs. Real-world admin panel patterns.</div>
+
+            <div class="crud-toolbar">
+              <button class="btn btn-primary" data-testid="crud-add" onclick="crudOpenAdd()">+ Add User</button>
+              <button class="btn" data-testid="crud-reload" onclick="crudReload()">↻ Reload</button>
+              <button class="btn btn-danger" data-testid="crud-delete-selected" onclick="crudDeleteSelected()" disabled>🗑 Delete Selected</button>
+              <span class="spacer"></span>
+              <span class="selected-count" data-testid="crud-selected-count" id="crudSelectedCount">0 selected</span>
+            </div>
+
+            <!-- Add new user inline form (hidden by default) -->
+            <div id="crudAddForm" data-testid="crud-add-form" style="display:none;border:1px solid var(--accent-3);border-radius:6px;padding:14px;margin-bottom:14px;background:rgba(255,166,87,0.04);">
+              <strong style="display:block;margin-bottom:10px;font-size:13px;">New User</strong>
+              <div class="row-2">
+                <div class="form-group" style="margin-bottom:10px;">
+                  <label style="font-size:12px;">Name</label>
+                  <input type="text" id="crudNewName" data-testid="crud-new-name" placeholder="Full name">
+                </div>
+                <div class="form-group" style="margin-bottom:10px;">
+                  <label style="font-size:12px;">Email</label>
+                  <input type="email" id="crudNewEmail" data-testid="crud-new-email" placeholder="user@example.com">
+                </div>
+              </div>
+              <div class="row-2">
+                <div class="form-group" style="margin-bottom:10px;">
+                  <label style="font-size:12px;">Role</label>
+                  <select id="crudNewRole" data-testid="crud-new-role">
+                    <option value="Admin">Admin</option>
+                    <option value="Editor" selected>Editor</option>
+                    <option value="Viewer">Viewer</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin-bottom:10px;">
+                  <label style="font-size:12px;">Status</label>
+                  <select id="crudNewStatus" data-testid="crud-new-status">
+                    <option value="active">Active</option>
+                    <option value="pending" selected>Pending</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+              </div>
+              <div class="btn-row" style="margin-top:6px;">
+                <button class="btn btn-primary" data-testid="crud-save-new" onclick="crudSaveNew()">Save</button>
+                <button class="btn" data-testid="crud-cancel-new" onclick="crudCancelAdd()">Cancel</button>
+              </div>
+              <div class="msg" data-testid="crud-add-message" id="crudAddMessage"></div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="crud-table" data-testid="crud-table-element">
+                <thead>
+                  <tr>
+                    <th><input type="checkbox" data-testid="crud-select-all" id="crudSelectAll" onclick="crudToggleAll(this)"></th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th style="text-align:right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="crudTableBody"></tbody>
+              </table>
+            </div>
+
+            <div class="msg" data-testid="crud-toast" id="crudToast" style="margin-top:14px;"></div>
+            <p class="small" style="margin-top:10px;">Total users: <strong data-testid="crud-total-count" id="crudTotalCount">0</strong></p>
+
+            <div class="selectors-hint"><span class="label">Hint:</span>page.getByTestId('crud-add').click() &nbsp;|&nbsp; page.getByTestId('crud-row-{id}-edit') &nbsp;|&nbsp; page.getByTestId('crud-row-{id}-delete')</div>
+          </div>
+        </div>
+
+        <!-- DATEPICKER -->
+        <div class="card" id="datepicker">
+          <div class="card-header"><div class="card-title"><span class="card-num">I-09</span>Date Picker</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Native HTML5 date input. Use <code class="inline">fill()</code> with format <code class="inline">YYYY-MM-DD</code>.</div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Pick a date</label>
+                <input type="date" data-testid="date-single" id="dateSingle" onchange="showSelectedDate()">
+              </div>
+              <div class="form-group">
+                <label>Date &amp; time</label>
+                <input type="datetime-local" data-testid="date-datetime">
+              </div>
+            </div>
+            <p data-testid="date-output" id="dateOutput" class="small"></p>
+          </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="card" id="tabs">
+          <div class="card-header"><div class="card-title"><span class="card-num">I-10</span>Tabs</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Click tab, assert active tab and visible panel.</div>
+            <div class="tabs" role="tablist">
+              <button class="tab active" data-testid="tab-overview" data-tab="overview-panel" onclick="switchTab(this)">Overview</button>
+              <button class="tab" data-testid="tab-features" data-tab="features-panel" onclick="switchTab(this)">Features</button>
+              <button class="tab" data-testid="tab-pricing" data-tab="pricing-panel" onclick="switchTab(this)">Pricing</button>
+              <button class="tab" data-testid="tab-faq" data-tab="faq-panel" onclick="switchTab(this)">FAQ</button>
+            </div>
+            <div class="tab-panel active" id="overview-panel" data-testid="panel-overview">Welcome to the overview tab.</div>
+            <div class="tab-panel" id="features-panel" data-testid="panel-features">Here are our features.</div>
+            <div class="tab-panel" id="pricing-panel" data-testid="panel-pricing">Pricing starts at $0/mo.</div>
+            <div class="tab-panel" id="faq-panel" data-testid="panel-faq">Frequently asked questions.</div>
+          </div>
+        </div>
+
+        <!-- ACCORDION -->
+        <div class="card" id="accordion">
+          <div class="card-header"><div class="card-title"><span class="card-num">I-11</span>Accordion</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Expand/collapse panels, assert state via class change or visibility.</div>
+            <div class="accordion-item" data-testid="acc-1">
+              <button class="accordion-trigger" onclick="toggleAccordion(this)">What is Playwright?</button>
+              <div class="accordion-content">A modern end-to-end testing framework for the web by Microsoft.</div>
+            </div>
+            <div class="accordion-item" data-testid="acc-2">
+              <button class="accordion-trigger" onclick="toggleAccordion(this)">Which browsers does it support?</button>
+              <div class="accordion-content">Chromium, Firefox, and WebKit — all from a single API.</div>
+            </div>
+            <div class="accordion-item" data-testid="acc-3">
+              <button class="accordion-trigger" onclick="toggleAccordion(this)">Does it support mobile testing?</button>
+              <div class="accordion-content">Yes, via device emulation including viewport, user agent, and touch.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TOOLTIP -->
+        <div class="card" id="tooltip">
+          <div class="card-header"><div class="card-title"><span class="card-num">I-12</span>Tooltip / Hover</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Use <code class="inline">page.hover()</code> to trigger tooltip, then assert it's visible.</div>
+            <p>Hover the underlined word: <span class="tooltip-trigger" data-testid="tooltip-trigger" data-tooltip="Surprise! This is a tooltip.">hover me</span> — and the tooltip will appear above.</p>
+          </div>
+        </div>
+
+        <!-- DRAG & DROP -->
+        <div class="card" id="dnd">
+          <div class="card-header"><div class="card-title"><span class="card-num">I-13</span>Drag and Drop</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Use <code class="inline">page.dragAndDrop()</code> or manual mouse events to move items between zones.</div>
+            <div class="dnd-area">
+              <div class="dnd-zone" data-testid="dnd-source" id="dndSource">
+                <div class="dnd-zone-title">Source</div>
+                <div class="dnd-item" draggable="true" data-testid="dnd-item-1">📦 Item Alpha</div>
+                <div class="dnd-item" draggable="true" data-testid="dnd-item-2">📦 Item Beta</div>
+                <div class="dnd-item" draggable="true" data-testid="dnd-item-3">📦 Item Gamma</div>
+              </div>
+              <div class="dnd-zone" data-testid="dnd-target" id="dndTarget">
+                <div class="dnd-zone-title">Target</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AUTOCOMPLETE -->
+        <div class="card" id="autocomplete">
+          <div class="card-header"><div class="card-title"><span class="card-num">I-14</span>Autocomplete</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Type to trigger suggestions, click one, assert input value. Try typing "ja" or "ru".</div>
+            <div style="position: relative;">
+              <input type="text" data-testid="auto-input" id="autoInput" placeholder="Search programming language…" oninput="updateAutocomplete(this.value)" autocomplete="off">
+              <div id="autoSuggestions" data-testid="auto-suggestions" style="position:absolute;top:100%;left:0;right:0;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;margin-top:4px;max-height:180px;overflow-y:auto;display:none;z-index:50;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROGRESS BAR -->
+        <div class="card" id="progress">
+          <div class="card-header"><div class="card-title"><span class="card-num">I-15</span>Progress Bar</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Wait for progress to reach 100%. Use <code class="inline">expect.poll()</code> or wait for completion message.</div>
+            <div class="progress"><div class="progress-bar" data-testid="progress-bar" id="progressBar"></div></div>
+            <p class="small" data-testid="progress-text" id="progressText">0%</p>
+            <button class="btn btn-primary" data-testid="progress-start" onclick="startProgress()" style="margin-top:10px;">Start Progress</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- ============= EXPERT LEVEL ================= -->
+      <!-- ============================================ -->
+      <section class="level-section" id="expert">
+        <div class="level-header">
+          <span class="level-num">03 ──</span>
+          <h2>Expert</h2>
+          <span class="badge expert">Level 3</span>
+        </div>
+        <p class="level-desc">Advanced techniques. Shadow DOM piercing, lazy-loaded content, virtualized lists, JWT auth, race conditions, canvas, and complex state machines.</p>
+
+        <!-- SHADOW DOM -->
+        <div class="card" id="shadowdom">
+          <div class="card-header"><div class="card-title"><span class="card-num">E-01</span>Shadow DOM</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Playwright pierces Shadow DOM by default — but you'll learn it works without special tricks. Old WebDriver couldn't do this!</div>
+            <div class="shadow-host" id="shadowHost" data-testid="shadow-host"></div>
+            <p class="small" style="margin-top:10px;">Try selecting <code class="inline">page.getByTestId('shadow-input')</code> — it just works.</p>
+          </div>
+        </div>
+
+        <!-- LAZY LOAD -->
+        <div class="card" id="lazyload">
+          <div class="card-header"><div class="card-title"><span class="card-num">E-02</span>Lazy Loading</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Content loads only when scrolled into view (IntersectionObserver). Test scroll-then-assert flows.</div>
+            <div style="height: 200px; overflow-y: auto; border: 1px solid var(--border); border-radius: 6px; padding: 10px;" id="lazyContainer">
+              <div style="height: 250px; padding: 10px; color: var(--text-muted);">↓ Scroll down to trigger lazy load…</div>
+              <div id="lazyTarget" data-testid="lazy-target" style="padding: 16px; background: var(--bg); border: 1px dashed var(--border); border-radius: 6px;">
+                Loading…
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- INFINITE SCROLL -->
+        <div class="card" id="infinite">
+          <div class="card-header"><div class="card-title"><span class="card-num">E-03</span>Infinite Scroll</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Scroll to bottom triggers more items. Use <code class="inline">page.evaluate()</code> to scroll, or virtualize-aware locators.</div>
+            <div class="scroll-container" data-testid="infinite-container" id="infiniteContainer"></div>
+            <p class="small" style="margin-top:8px;">Items loaded: <span data-testid="infinite-count" id="infiniteCount">0</span></p>
+          </div>
+        </div>
+
+        <!-- AUTH FLOW -->
+        <div class="card" id="auth">
+          <div class="card-header"><div class="card-title"><span class="card-num">E-04</span>JWT Authentication Flow</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Login produces a fake JWT in localStorage, dashboard checks for token, logout clears it. Test full auth lifecycle. Reuse <code class="inline">storageState</code> for fast tests.</div>
+            <div class="auth-status" data-testid="auth-status" id="authStatus">Not authenticated</div>
+            <div id="authLogin" data-testid="auth-login-section">
+              <div class="row-2">
+                <div class="form-group"><label>User</label><input type="text" id="authUser" data-testid="auth-user" placeholder="any non-empty value"></div>
+                <div class="form-group"><label>Pass</label><input type="password" id="authPass" data-testid="auth-pass" placeholder="any non-empty value"></div>
+              </div>
+              <button class="btn btn-primary" data-testid="auth-login" onclick="doAuthLogin()">Login (get JWT)</button>
+            </div>
+            <div id="authDashboard" data-testid="auth-dashboard" style="display:none;">
+              <p style="color: var(--accent); margin-bottom: 10px;">✓ Welcome to the dashboard, <strong data-testid="auth-username-display" id="authUsernameDisplay"></strong>!</p>
+              <button class="btn btn-danger" data-testid="auth-logout" onclick="doAuthLogout()">Logout</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RACE CONDITIONS -->
+        <div class="card" id="race">
+          <div class="card-header"><div class="card-title"><span class="card-num">E-05</span>Race Conditions</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Multiple async ops with random delays. Tests must handle non-deterministic order. Click "Fire All" then assert final state.</div>
+            <button class="btn btn-primary" data-testid="race-fire" onclick="fireRace()">Fire 5 Async Operations</button>
+            <div id="raceList" data-testid="race-list" style="margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:13px;"></div>
+            <p class="small" style="margin-top:10px;">All complete: <span data-testid="race-status" id="raceStatus">no</span></p>
+          </div>
+        </div>
+
+        <!-- CANVAS -->
+        <div class="card" id="canvas">
+          <div class="card-header"><div class="card-title"><span class="card-num">E-06</span>Canvas Drawing</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Canvas content isn't in DOM. Use <code class="inline">mouse.move()</code>, <code class="inline">mouse.down()</code>, <code class="inline">mouse.up()</code>, then visual diff or pixel sampling via <code class="inline">page.evaluate()</code>.</div>
+            <canvas id="drawCanvas" data-testid="canvas-area" width="500" height="240"></canvas>
+            <button class="btn" data-testid="canvas-clear" onclick="clearCanvas()" style="margin-top:10px;">Clear</button>
+            <p class="small" style="margin-top:6px;">Strokes: <span data-testid="canvas-strokes" id="canvasStrokes">0</span></p>
+          </div>
+        </div>
+
+        <!-- WIZARD -->
+        <div class="card" id="wizard">
+          <div class="card-header"><div class="card-title"><span class="card-num">E-07</span>Multi-step Wizard</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Stateful flow across steps. Validation per step, back-navigation preserves data, final submit asserts collected payload.</div>
+            <div class="wizard-steps">
+              <div class="wizard-step active" data-testid="wiz-step-1">1. Personal</div>
+              <div class="wizard-step" data-testid="wiz-step-2">2. Address</div>
+              <div class="wizard-step" data-testid="wiz-step-3">3. Review</div>
+            </div>
+            <div id="wizPanel1" data-testid="wiz-panel-1">
+              <div class="form-group"><label>Full name</label><input type="text" id="wizName" data-testid="wiz-name"></div>
+              <div class="form-group"><label>Age</label><input type="number" id="wizAge" data-testid="wiz-age"></div>
+              <button class="btn btn-primary" data-testid="wiz-next-1" onclick="wizGo(2)">Next →</button>
+            </div>
+            <div id="wizPanel2" data-testid="wiz-panel-2" style="display:none;">
+              <div class="form-group"><label>City</label><input type="text" id="wizCity" data-testid="wiz-city"></div>
+              <div class="form-group"><label>Postal code</label><input type="text" id="wizPostal" data-testid="wiz-postal"></div>
+              <button class="btn" data-testid="wiz-back-2" onclick="wizGo(1)">← Back</button>
+              <button class="btn btn-primary" data-testid="wiz-next-2" onclick="wizGo(3)">Next →</button>
+            </div>
+            <div id="wizPanel3" data-testid="wiz-panel-3" style="display:none;">
+              <pre class="code" data-testid="wiz-review" id="wizReview"></pre>
+              <button class="btn" data-testid="wiz-back-3" onclick="wizGo(2)">← Back</button>
+              <button class="btn btn-primary" data-testid="wiz-submit" onclick="wizSubmit()">Submit</button>
+            </div>
+            <div class="msg" data-testid="wiz-result" id="wizResult"></div>
+          </div>
+        </div>
+
+        <!-- REALTIME -->
+        <div class="card" id="realtime">
+          <div class="card-header"><div class="card-title"><span class="card-num">E-08</span>Real-time Updates</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Counter updates every second. Test polling/waiting strategies — <code class="inline">expect.poll()</code> or <code class="inline">expect(locator).toHaveText()</code> with timeout.</div>
+            <p style="font-size:32px;font-family:'JetBrains Mono',monospace;color:var(--accent);" data-testid="rt-counter" id="rtCounter">0</p>
+            <div class="btn-row">
+              <button class="btn btn-primary" data-testid="rt-start" onclick="startRealtime()">Start</button>
+              <button class="btn" data-testid="rt-stop" onclick="stopRealtime()">Stop</button>
+              <button class="btn" data-testid="rt-reset" onclick="resetRealtime()">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CRUD TABLE -->
+        <div class="card" id="crud">
+          <div class="card-header"><div class="card-title"><span class="card-num">E-09</span>Dynamic CRUD Table</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Full create/read/update/delete table. Add new rows, inline-edit existing rows, delete with confirmation. Tests dynamic row counts, edit-mode state, and optimistic UI patterns.</div>
+            <div class="crud-toolbar">
+              <input type="search" data-testid="crud-search" id="crudSearch" placeholder="Search employees…" oninput="renderCrud()" style="max-width: 280px;">
+              <div>
+                <span class="small" style="margin-right: 10px;">Total: <strong data-testid="crud-count" id="crudCount">0</strong></span>
+                <button class="btn btn-primary" data-testid="crud-add" onclick="crudAdd()">+ Add Employee</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="crud-table" data-testid="crud-table">
+                <thead>
+                  <tr>
+                    <th style="width: 70px;">ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th style="width: 110px;">Status</th>
+                    <th style="width: 160px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="crudBody"></tbody>
+              </table>
+            </div>
+            <div class="msg" data-testid="crud-message" id="crudMsg"></div>
+          </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- =========== ADVANCED DROPDOWNS ============= -->
+        <!-- ============================================ -->
+        <div class="sub-section-header" id="dropdowns" data-testid="sub-section-dropdowns">
+          <h3>Advanced Dropdowns</h3>
+          <span class="badge expert">Real-world patterns</span>
+        </div>
+        <p class="sub-section-desc">Native <code class="inline">&lt;select&gt;</code> is rare in modern admin panels. These are the dropdowns you'll actually meet — custom div-based widgets, async-loaded options, dynamic IDs that change every render, cascading dependencies, and per-row dropdowns. Each card explains the pain point and the right Playwright approach.</p>
+
+        <!-- AD-01: Custom Div-based Dropdown with Dynamic IDs -->
+        <div class="card" id="dd-custom">
+          <div class="card-header"><div class="card-title"><span class="card-num">AD-01</span>Custom Div-based Dropdown · Dynamic IDs</div></div>
+          <div class="card-body">
+            <div class="card-desc">
+              <strong>The pain:</strong> This isn't a native <code class="inline">&lt;select&gt;</code> — it's built with divs (like React Select / MUI). Standard <code class="inline">selectOption()</code> won't work. Worse, every option has a freshly generated UUID as its <code class="inline">id</code> attribute on every render — selectors using those IDs will fail on the next page load. Click <em>"Re-render"</em> below and inspect the DOM to see IDs change.<br><br>
+              <strong>The right approach:</strong> Scope to the dropdown via stable <code class="inline">data-testid</code>, then locate options by their visible text or <code class="inline">data-value</code> attribute — never by the dynamic <code class="inline">id</code>.
+            </div>
+            <div class="form-group">
+              <label>Country (custom dropdown)</label>
+              <div class="custom-dropdown" data-testid="dd-custom">
+                <button type="button" class="cd-trigger" data-testid="dd-custom-trigger" onclick="cdToggle(this)" aria-expanded="false">
+                  <span class="cd-value cd-placeholder" data-testid="dd-custom-value-display">— Select country —</span>
+                  <span class="cd-chevron">▼</span>
+                </button>
+                <div class="cd-menu" data-testid="dd-custom-menu" id="ddCustomMenu"></div>
+                <input type="hidden" data-testid="dd-custom-value" id="ddCustomValue">
+              </div>
+            </div>
+            <div class="btn-row" style="margin-top: 14px;">
+              <button class="btn" data-testid="dd-custom-rerender" onclick="renderCustomDD(true)">Re-render (regenerate IDs)</button>
+              <button class="btn" data-testid="dd-custom-clear" onclick="clearCustomDD()">Clear selection</button>
+            </div>
+            <p class="small" style="margin-top:10px;">Selected: <strong data-testid="dd-custom-selected" id="ddCustomSelected">none</strong></p>
+            <div class="selectors-hint">
+              <span class="label">Use:</span>page.getByTestId('dd-custom-trigger').click(); page.getByRole('option', { name: 'Bangladesh' }).click()
+            </div>
+          </div>
+        </div>
+
+        <!-- AD-02: Searchable Dropdown -->
+        <div class="card" id="dd-search">
+          <div class="card-header"><div class="card-title"><span class="card-num">AD-02</span>Searchable Dropdown (Type to Filter)</div></div>
+          <div class="card-body">
+            <div class="card-desc">
+              <strong>Practice:</strong> Click trigger, type in search to narrow options, click match. Try typing "ja" — only Java, JavaScript, Japanese-related options remain. Forces you to combine fill + click in sequence.
+            </div>
+            <div class="form-group">
+              <label>Programming language</label>
+              <div class="custom-dropdown" data-testid="dd-search">
+                <button type="button" class="cd-trigger" data-testid="dd-search-trigger" onclick="cdToggle(this); setTimeout(() => document.getElementById('ddSearchInput').focus(), 50)" aria-expanded="false">
+                  <span class="cd-value cd-placeholder" data-testid="dd-search-value-display">— Pick a language —</span>
+                  <span class="cd-chevron">▼</span>
+                </button>
+                <div class="cd-menu" data-testid="dd-search-menu">
+                  <div class="cd-search-wrap">
+                    <input type="text" data-testid="dd-search-input" id="ddSearchInput" placeholder="Type to search…" oninput="filterSearchDD(this.value)" autocomplete="off">
+                  </div>
+                  <div id="ddSearchList"></div>
+                </div>
+              </div>
+            </div>
+            <p class="small" style="margin-top:10px;">Selected: <strong data-testid="dd-search-selected" id="ddSearchSelected">none</strong></p>
+          </div>
+        </div>
+
+        <!-- AD-03: Multi-Select with Chips -->
+        <div class="card" id="dd-multi">
+          <div class="card-header"><div class="card-title"><span class="card-num">AD-03</span>Multi-Select with Chips</div></div>
+          <div class="card-body">
+            <div class="card-desc">
+              <strong>Practice:</strong> Pick several options — each becomes a removable chip below. Click × on a chip to remove. Tests dynamic locator counts (<code class="inline">.count()</code>), per-chip interactions, and re-checking checkbox state.
+            </div>
+            <div class="form-group">
+              <label>Skills</label>
+              <div class="custom-dropdown" data-testid="dd-multi">
+                <button type="button" class="cd-trigger" data-testid="dd-multi-trigger" onclick="cdToggle(this)" aria-expanded="false">
+                  <span class="cd-value cd-placeholder" data-testid="dd-multi-counter" id="ddMultiCounter">— Select skills —</span>
+                  <span class="cd-chevron">▼</span>
+                </button>
+                <div class="cd-menu" data-testid="dd-multi-menu" id="ddMultiMenu"></div>
+              </div>
+              <div class="chips-container" data-testid="dd-multi-chips" id="ddMultiChips"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AD-04: Async-loaded Dropdown -->
+        <div class="card" id="dd-async">
+          <div class="card-header"><div class="card-title"><span class="card-num">AD-04</span>Async-loaded Dropdown</div></div>
+          <div class="card-body">
+            <div class="card-desc">
+              <strong>The pain:</strong> Options aren't in the DOM until you open the dropdown — they're fetched on first open with a 1.5s delay. Asserting on options before they load gives flaky tests.<br><br>
+              <strong>Practice:</strong> Open dropdown, wait for the loading state to disappear, then interact. Use <code class="inline">expect(locator).toBeVisible()</code> with a timeout, or wait for the loader to detach.
+            </div>
+            <div class="form-group">
+              <label>Department (loads from "API")</label>
+              <div class="custom-dropdown" data-testid="dd-async">
+                <button type="button" class="cd-trigger" data-testid="dd-async-trigger" onclick="cdToggle(this); loadAsyncDD()" aria-expanded="false">
+                  <span class="cd-value cd-placeholder" data-testid="dd-async-value-display">— Click to load —</span>
+                  <span class="cd-chevron">▼</span>
+                </button>
+                <div class="cd-menu" data-testid="dd-async-menu" id="ddAsyncMenu">
+                  <div class="cd-loading" data-testid="dd-async-loader"><span class="loader"></span> Loading options…</div>
+                </div>
+              </div>
+            </div>
+            <div class="btn-row" style="margin-top: 12px;">
+              <button class="btn" data-testid="dd-async-reset" onclick="resetAsyncDD()">Reset cache (force reload)</button>
+            </div>
+            <p class="small" style="margin-top:10px;">Selected: <strong data-testid="dd-async-selected" id="ddAsyncSelected">none</strong></p>
+          </div>
+        </div>
+
+        <!-- AD-05: Cascading Dropdowns -->
+        <div class="card" id="dd-cascade">
+          <div class="card-header"><div class="card-title"><span class="card-num">AD-05</span>Cascading Dropdowns (Country → State → City)</div></div>
+          <div class="card-body">
+            <div class="card-desc">
+              <strong>Practice:</strong> State is disabled until Country is picked. City is disabled until State is picked. Changing Country resets State + City. Tests dependent state, disabled assertions, and re-render after parent change.
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Country</label>
+                <div class="custom-dropdown" data-testid="dd-cascade-country">
+                  <button type="button" class="cd-trigger" data-testid="dd-cascade-country-trigger" onclick="cdToggle(this)" aria-expanded="false">
+                    <span class="cd-value cd-placeholder" data-testid="dd-cascade-country-value">— Select country —</span>
+                    <span class="cd-chevron">▼</span>
+                  </button>
+                  <div class="cd-menu" data-testid="dd-cascade-country-menu" id="ddCountryMenu"></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>State / Division</label>
+                <div class="custom-dropdown" data-testid="dd-cascade-state">
+                  <button type="button" class="cd-trigger" data-testid="dd-cascade-state-trigger" onclick="cdToggle(this)" aria-expanded="false" disabled>
+                    <span class="cd-value cd-placeholder" data-testid="dd-cascade-state-value">— Select country first —</span>
+                    <span class="cd-chevron">▼</span>
+                  </button>
+                  <div class="cd-menu" data-testid="dd-cascade-state-menu" id="ddStateMenu"></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>City</label>
+              <div class="custom-dropdown" data-testid="dd-cascade-city">
+                <button type="button" class="cd-trigger" data-testid="dd-cascade-city-trigger" onclick="cdToggle(this)" aria-expanded="false" disabled>
+                  <span class="cd-value cd-placeholder" data-testid="dd-cascade-city-value">— Select state first —</span>
+                  <span class="cd-chevron">▼</span>
+                </button>
+                <div class="cd-menu" data-testid="dd-cascade-city-menu" id="ddCityMenu"></div>
+              </div>
+            </div>
+            <p class="small" style="margin-top:10px;">Selection: <strong data-testid="dd-cascade-result" id="ddCascadeResult">none</strong></p>
+          </div>
+        </div>
+
+        <!-- AD-06: Combobox (Type or Pick) -->
+        <div class="card" id="dd-combo">
+          <div class="card-header"><div class="card-title"><span class="card-num">AD-06</span>Combobox · Type or Pick (Creates New)</div></div>
+          <div class="card-body">
+            <div class="card-desc">
+              <strong>Practice:</strong> Type to filter — if no match exists, press <kbd>Enter</kbd> to create a new entry. Tests keyboard interactions (<code class="inline">page.keyboard.press('Enter')</code>) and assertion that the newly created tag now appears in the option list.
+            </div>
+            <div class="form-group">
+              <label>Tag (pick or create)</label>
+              <div class="custom-dropdown" data-testid="dd-combo">
+                <input type="text" class="combobox-input" data-testid="dd-combo-input" id="ddComboInput"
+                  placeholder="Type a tag name…"
+                  onfocus="openComboDD()"
+                  oninput="filterComboDD(this.value)"
+                  onkeydown="onComboKeyDown(event)"
+                  autocomplete="off">
+                <div class="cd-menu" data-testid="dd-combo-menu" id="ddComboMenu"></div>
+              </div>
+            </div>
+            <p class="small" style="margin-top:10px;">All tags: <span data-testid="dd-combo-all" id="ddComboAll">—</span></p>
+          </div>
+        </div>
+
+        <!-- AD-07: Grouped Dropdown with Status -->
+        <div class="card" id="dd-grouped">
+          <div class="card-header"><div class="card-title"><span class="card-num">AD-07</span>Grouped Dropdown with Status Indicators</div></div>
+          <div class="card-body">
+            <div class="card-desc">
+              <strong>Practice:</strong> Options are grouped under headers, some are disabled, each shows a colored status dot. Tests <code class="inline">isDisabled()</code> assertions, scoped locators within groups, and visual state via class.
+            </div>
+            <div class="form-group">
+              <label>Assign server</label>
+              <div class="custom-dropdown" data-testid="dd-grouped">
+                <button type="button" class="cd-trigger" data-testid="dd-grouped-trigger" onclick="cdToggle(this)" aria-expanded="false">
+                  <span class="cd-value cd-placeholder" data-testid="dd-grouped-value-display">— Pick a server —</span>
+                  <span class="cd-chevron">▼</span>
+                </button>
+                <div class="cd-menu" data-testid="dd-grouped-menu" id="ddGroupedMenu"></div>
+              </div>
+            </div>
+            <p class="small" style="margin-top:10px;">Selected: <strong data-testid="dd-grouped-selected" id="ddGroupedSelected">none</strong></p>
+          </div>
+        </div>
+
+        <!-- AD-08: In-Table Dropdowns -->
+        <div class="card" id="dd-table">
+          <div class="card-header"><div class="card-title"><span class="card-num">AD-08</span>In-Table Dropdowns (Per-Row Independent State)</div></div>
+          <div class="card-body">
+            <div class="card-desc">
+              <strong>The pain:</strong> Each row has its own status dropdown with a dynamic ID. You can't target by ID — you must scope by row first (e.g., row containing "alice@org.com"), then find the dropdown <em>within</em> that row.<br><br>
+              <strong>Practice:</strong> Use <code class="inline">page.locator('tr', { has: page.getByText('alice@org.com') }).getByTestId('row-status-trigger')</code>.
+            </div>
+            <div class="table-wrap">
+              <table data-testid="dd-table-table">
+                <thead>
+                  <tr>
+                    <th>Employee</th>
+                    <th>Email</th>
+                    <th style="width: 200px;">Status</th>
+                    <th style="width: 200px;">Role</th>
+                  </tr>
+                </thead>
+                <tbody id="ddTableBody"></tbody>
+              </table>
+            </div>
+            <p class="small" style="margin-top:10px;">State changes log: <span data-testid="dd-table-log" id="ddTableLog">—</span></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- ============ BANKING WORKFLOW ============== -->
+      <!-- ============================================ -->
+      <section class="level-section" id="banking">
+        <div class="level-header">
+          <span class="level-num">04 ──</span>
+          <h2>Banking Workflow</h2>
+          <span class="badge api">Real-world flow</span>
+        </div>
+        <p class="level-desc">A complete end-to-end customer journey: onboard a customer, then open deposit and loan accounts under that customer profile. Tests stateful workflows, conditional UI unlocking, and cross-component data dependencies.</p>
+
+        <!-- ONBOARDING -->
+        <div class="card" id="onboarding">
+          <div class="card-header"><div class="card-title"><span class="card-num">BW-01</span>Customer Onboarding</div></div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Multi-field form, validation, persistent state across cards. After onboarding, deposit &amp; loan sections unlock. Use <code class="inline">storageState</code> or <code class="inline">page.evaluate()</code> to seed customers in localStorage for faster tests.</div>
+
+            <!-- Customer summary (shown after onboarding) -->
+            <div id="customerCard" data-testid="customer-card" style="display:none;"></div>
+
+            <!-- Onboarding form -->
+            <form id="onboardForm" data-testid="onboard-form" onsubmit="handleOnboard(event)">
+              <div class="row-2">
+                <div class="form-group">
+                  <label for="onbName">Full Name *</label>
+                  <input type="text" id="onbName" data-testid="onb-name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                  <label for="onbNid">National ID / Passport *</label>
+                  <input type="text" id="onbNid" data-testid="onb-nid" required placeholder="1234567890123" pattern="[0-9A-Za-z]{8,20}">
+                </div>
+              </div>
+              <div class="row-2">
+                <div class="form-group">
+                  <label for="onbDob">Date of Birth *</label>
+                  <input type="date" id="onbDob" data-testid="onb-dob" required>
+                </div>
+                <div class="form-group">
+                  <label for="onbPhone">Phone *</label>
+                  <input type="tel" id="onbPhone" data-testid="onb-phone" required placeholder="+880 1700 000000">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="onbEmail">Email *</label>
+                <input type="email" id="onbEmail" data-testid="onb-email" required placeholder="customer@example.com">
+              </div>
+              <div class="form-group">
+                <label for="onbAddress">Address *</label>
+                <textarea id="onbAddress" data-testid="onb-address" required placeholder="House, Road, Area, City"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="onbOccupation">Occupation</label>
+                <select id="onbOccupation" data-testid="onb-occupation">
+                  <option value="">— Select —</option>
+                  <option value="Salaried">Salaried</option>
+                  <option value="Business">Business</option>
+                  <option value="Student">Student</option>
+                  <option value="Retired">Retired</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="check-item" style="margin-bottom: 14px;">
+                <input type="checkbox" id="onbConsent" data-testid="onb-consent" required>
+                <label for="onbConsent" style="margin: 0;">I confirm the information provided is accurate</label>
+              </div>
+              <button type="submit" class="btn btn-primary" data-testid="onb-submit">Onboard Customer</button>
+              <button type="button" class="btn" data-testid="onb-reset" onclick="document.getElementById('onboardForm').reset()">Reset</button>
+            </form>
+            <div class="msg" data-testid="onb-message" id="onbMsg"></div>
+          </div>
+        </div>
+
+        <!-- DEPOSIT ACCOUNT -->
+        <div class="card" id="deposit-account">
+          <div class="card-header">
+            <div class="card-title"><span class="card-num">BW-02</span>Open Deposit Account</div>
+            <span class="status-badge status-pending" data-testid="deposit-lock-badge" id="depositLockBadge">🔒 Locked</span>
+          </div>
+          <div class="card-body" style="position: relative;">
+            <div id="depositSection" data-testid="deposit-section" class="banking-locked">
+              <div class="lock-overlay">🔒 Onboard a customer first to unlock</div>
+              <div class="card-desc"><strong>Practice:</strong> Conditional fields (FDR shows tenure picker), dependent validation, dynamic account ID generation. Asserting on toast notifications and table updates.</div>
+              <form id="depositForm" data-testid="deposit-form" onsubmit="handleDepositOpen(event)">
+                <div class="row-2">
+                  <div class="form-group">
+                    <label for="depType">Account Type *</label>
+                    <select id="depType" data-testid="dep-type" required onchange="onDepTypeChange()">
+                      <option value="">— Select —</option>
+                      <option value="Savings">Savings Account</option>
+                      <option value="Current">Current Account</option>
+                      <option value="FDR">Fixed Deposit (FDR)</option>
+                      <option value="DPS">Deposit Pension Scheme (DPS)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="depCurrency">Currency *</label>
+                    <select id="depCurrency" data-testid="dep-currency" required>
+                      <option value="BDT">BDT — Bangladeshi Taka</option>
+                      <option value="USD">USD — US Dollar</option>
+                      <option value="EUR">EUR — Euro</option>
+                      <option value="GBP">GBP — British Pound</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row-2">
+                  <div class="form-group">
+                    <label for="depAmount">Initial Deposit *</label>
+                    <input type="number" id="depAmount" data-testid="dep-amount" min="500" step="100" required placeholder="Min 500">
+                  </div>
+                  <div class="form-group" id="depTenureGroup" style="display:none;">
+                    <label for="depTenure">Tenure (months) *</label>
+                    <select id="depTenure" data-testid="dep-tenure">
+                      <option value="3">3 months</option>
+                      <option value="6">6 months</option>
+                      <option value="12" selected>12 months</option>
+                      <option value="24">24 months</option>
+                      <option value="36">36 months</option>
+                      <option value="60">60 months</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="depBranch">Branch</label>
+                  <select id="depBranch" data-testid="dep-branch">
+                    <option value="Dhaka Main">Dhaka Main</option>
+                    <option value="Gulshan">Gulshan</option>
+                    <option value="Chattogram">Chattogram</option>
+                    <option value="Sylhet">Sylhet</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="depNominee">Nominee Name</label>
+                  <input type="text" id="depNominee" data-testid="dep-nominee" placeholder="Optional">
+                </div>
+                <button type="submit" class="btn btn-primary" data-testid="dep-submit">Open Deposit Account</button>
+              </form>
+              <div class="msg" data-testid="dep-message" id="depMsg"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LOAN ACCOUNT -->
+        <div class="card" id="loan-account">
+          <div class="card-header">
+            <div class="card-title"><span class="card-num">BW-03</span>Open Loan Account</div>
+            <span class="status-badge status-pending" data-testid="loan-lock-badge" id="loanLockBadge">🔒 Locked</span>
+          </div>
+          <div class="card-body" style="position: relative;">
+            <div id="loanSection" data-testid="loan-section" class="banking-locked">
+              <div class="lock-overlay">🔒 Onboard a customer first to unlock</div>
+              <div class="card-desc"><strong>Practice:</strong> Computed fields (EMI calculator updates live), range inputs, complex validation (loan amount must be within type limits). Asserting on calculated values.</div>
+              <form id="loanForm" data-testid="loan-form" onsubmit="handleLoanOpen(event)">
+                <div class="row-2">
+                  <div class="form-group">
+                    <label for="loanType">Loan Type *</label>
+                    <select id="loanType" data-testid="loan-type" required onchange="updateEMI()">
+                      <option value="">— Select —</option>
+                      <option value="Personal" data-rate="12">Personal Loan (12%)</option>
+                      <option value="Home" data-rate="9">Home Loan (9%)</option>
+                      <option value="Auto" data-rate="10">Auto Loan (10%)</option>
+                      <option value="Education" data-rate="8">Education Loan (8%)</option>
+                      <option value="Business" data-rate="11">Business Loan (11%)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="loanAmount">Loan Amount (BDT) *</label>
+                    <input type="number" id="loanAmount" data-testid="loan-amount" min="50000" step="10000" required placeholder="Min 50,000" oninput="updateEMI()">
+                  </div>
+                </div>
+                <div class="row-2">
+                  <div class="form-group">
+                    <label for="loanTenure">Tenure (months) *</label>
+                    <input type="number" id="loanTenure" data-testid="loan-tenure" min="6" max="360" value="24" required oninput="updateEMI()">
+                  </div>
+                  <div class="form-group">
+                    <label>Estimated Monthly EMI</label>
+                    <input type="text" data-testid="loan-emi" id="loanEmi" readonly value="—" style="background: var(--bg-elev); color: var(--accent); font-family: 'JetBrains Mono', monospace; font-weight: 600;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="loanPurpose">Purpose of Loan *</label>
+                  <textarea id="loanPurpose" data-testid="loan-purpose" required placeholder="Briefly describe…"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Employment Status *</label>
+                  <div class="radio-row" style="flex-direction: row; flex-wrap: wrap; gap: 16px;">
+                    <label class="radio-item"><input type="radio" name="employment" value="Salaried" data-testid="loan-emp-salaried" checked> Salaried</label>
+                    <label class="radio-item"><input type="radio" name="employment" value="Self-employed" data-testid="loan-emp-self"> Self-employed</label>
+                    <label class="radio-item"><input type="radio" name="employment" value="Business" data-testid="loan-emp-business"> Business Owner</label>
+                  </div>
+                </div>
+                <div class="check-item" style="margin-bottom: 14px;">
+                  <input type="checkbox" id="loanTerms" data-testid="loan-terms" required>
+                  <label for="loanTerms" style="margin: 0;">I agree to the loan terms and credit check</label>
+                </div>
+                <button type="submit" class="btn btn-primary" data-testid="loan-submit">Submit Loan Application</button>
+              </form>
+              <div class="msg" data-testid="loan-message" id="loanMsg"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACCOUNTS SUMMARY -->
+        <div class="card" id="accounts-summary">
+          <div class="card-header">
+            <div class="card-title"><span class="card-num">BW-04</span>Customer Accounts Summary</div>
+            <button class="btn icon-btn danger" data-testid="reset-banking" onclick="resetBanking()">Clear all data</button>
+          </div>
+          <div class="card-body">
+            <div class="card-desc"><strong>Practice:</strong> Aggregated view of created accounts. Test row counts, filter by type, close account (status change). Combine with API testing — fetch account list via mock endpoint.</div>
+            <div class="tabs" role="tablist">
+              <button class="tab active" data-testid="acc-tab-all" data-acc-tab="all" onclick="switchAccountsTab(this)">All</button>
+              <button class="tab" data-testid="acc-tab-deposits" data-acc-tab="deposit" onclick="switchAccountsTab(this)">Deposits</button>
+              <button class="tab" data-testid="acc-tab-loans" data-acc-tab="loan" onclick="switchAccountsTab(this)">Loans</button>
+            </div>
+            <div id="accountsList" data-testid="accounts-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- ============== API TESTING ================= -->
+      <!-- ============================================ -->
+      <section class="level-section" id="api">
+        <div class="level-header">
+          <span class="level-num">05 ──</span>
+          <h2>API Testing</h2>
+          <span class="badge api">REST</span>
+        </div>
+        <p class="level-desc">Playwright includes <code class="inline">request</code> &mdash; a built-in HTTP client perfect for API tests, auth setup, and hybrid UI+API workflows. Use the public APIs below to practice without setting up a backend.</p>
+
+        <!-- API INTRO -->
+        <div class="card" id="api-intro">
+          <div class="card-header"><div class="card-title"><span class="card-num">A-01</span>Recommended Public APIs</div></div>
+          <div class="card-body">
+            <div class="card-desc">All APIs below are free, require no auth (mostly), and accept GET/POST/PUT/DELETE. Perfect for learning.</div>
+            <div class="api-endpoint">
+              <strong>JSONPlaceholder</strong> — fake REST API for testing<br>
+              <span class="api-path">https://jsonplaceholder.typicode.com</span>
+              <p class="api-desc">Simulates real responses but doesn't actually persist data. Great for status code &amp; payload assertions.</p>
+            </div>
+            <div class="api-endpoint">
+              <strong>ReqRes</strong> — hosted REST mock<br>
+              <span class="api-path">https://reqres.in/api</span>
+              <p class="api-desc">Includes login/register endpoints with token responses — ideal for auth flow tests.</p>
+            </div>
+            <div class="api-endpoint">
+              <strong>DummyJSON</strong> — faker-style data, real persistence simulation<br>
+              <span class="api-path">https://dummyjson.com</span>
+              <p class="api-desc">Auth, products, carts, posts, comments — most comprehensive for end-to-end practice.</p>
+            </div>
+            <div class="api-endpoint">
+              <strong>Fake Store API</strong> — e-commerce mock<br>
+              <span class="api-path">https://fakestoreapi.com</span>
+              <p class="api-desc">Products, carts, users — practice e-commerce test scenarios.</p>
+            </div>
+            <div class="api-endpoint">
+              <strong>Restful-Booker</strong> — hotel booking with real auth<br>
+              <span class="api-path">https://restful-booker.herokuapp.com</span>
+              <p class="api-desc">Token-based auth, full CRUD on bookings. Excellent for chained API tests.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- MOCK ENDPOINTS -->
+        <div class="card" id="api-mock">
+          <div class="card-header"><div class="card-title"><span class="card-num">A-02</span>Endpoint Reference (use any of the APIs above)</div></div>
+          <div class="card-body">
+            <div class="card-desc">Copy these patterns to <code class="inline">request.get/post/put/delete</code> calls.</div>
+            <div class="api-endpoint">
+              <span class="api-method get">GET</span><span class="api-path">/posts</span>
+              <p class="api-desc">List all posts. Assert <code class="inline">status() === 200</code>, response is array, length &gt; 0.</p>
+            </div>
+            <div class="api-endpoint">
+              <span class="api-method get">GET</span><span class="api-path">/posts/1</span>
+              <p class="api-desc">Single resource. Assert <code class="inline">id === 1</code>, body has <code class="inline">title</code>, <code class="inline">userId</code>.</p>
+            </div>
+            <div class="api-endpoint">
+              <span class="api-method post">POST</span><span class="api-path">/posts</span>
+              <p class="api-desc">Create resource. Send JSON body, assert <code class="inline">201</code>, response includes the new <code class="inline">id</code>.</p>
+            </div>
+            <div class="api-endpoint">
+              <span class="api-method put">PUT</span><span class="api-path">/posts/1</span>
+              <p class="api-desc">Replace resource. Assert updated fields are returned.</p>
+            </div>
+            <div class="api-endpoint">
+              <span class="api-method patch">PATCH</span><span class="api-path">/posts/1</span>
+              <p class="api-desc">Partial update. Only the changed field should differ.</p>
+            </div>
+            <div class="api-endpoint">
+              <span class="api-method delete">DELETE</span><span class="api-path">/posts/1</span>
+              <p class="api-desc">Remove resource. Assert <code class="inline">200</code> or <code class="inline">204</code>, then GET should 404.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- API EXAMPLES -->
+        <div class="card" id="api-examples">
+          <div class="card-header"><div class="card-title"><span class="card-num">A-03</span>Playwright API Test Examples</div></div>
+          <div class="card-body">
+            <div class="card-desc">Drop these into your <code class="inline">.spec.ts</code> files to start practicing immediately.</div>
+
+            <h4 style="margin: 16px 0 8px;">1. Simple GET assertion</h4>
+            <pre class="code"><span class="kw">import</span> { test, expect } <span class="kw">from</span> <span class="str">'@playwright/test'</span>;
+
+test(<span class="str">'GET /posts/1 returns expected post'</span>, <span class="kw">async</span> ({ request }) =&gt; {
+  <span class="kw">const</span> res = <span class="kw">await</span> request.get(<span class="str">'https://jsonplaceholder.typicode.com/posts/1'</span>);
+  expect(res.status()).toBe(<span class="num">200</span>);
+
+  <span class="kw">const</span> body = <span class="kw">await</span> res.json();
+  expect(body).toHaveProperty(<span class="str">'id'</span>, <span class="num">1</span>);
+  expect(body.title).toBeTruthy();
+});</pre>
+
+            <h4 style="margin: 16px 0 8px;">2. POST with body</h4>
+            <pre class="code">test(<span class="str">'POST /posts creates a resource'</span>, <span class="kw">async</span> ({ request }) =&gt; {
+  <span class="kw">const</span> res = <span class="kw">await</span> request.post(<span class="str">'https://jsonplaceholder.typicode.com/posts'</span>, {
+    data: { title: <span class="str">'My Test'</span>, body: <span class="str">'Hello'</span>, userId: <span class="num">1</span> }
+  });
+  expect(res.status()).toBe(<span class="num">201</span>);
+  <span class="kw">const</span> body = <span class="kw">await</span> res.json();
+  expect(body.title).toBe(<span class="str">'My Test'</span>);
+});</pre>
+
+            <h4 style="margin: 16px 0 8px;">3. Auth flow with token capture</h4>
+            <pre class="code">test(<span class="str">'login then use token'</span>, <span class="kw">async</span> ({ request }) =&gt; {
+  <span class="com">// Step 1: login</span>
+  <span class="kw">const</span> login = <span class="kw">await</span> request.post(<span class="str">'https://dummyjson.com/auth/login'</span>, {
+    data: { username: <span class="str">'emilys'</span>, password: <span class="str">'emilyspass'</span> }
+  });
+  expect(login.ok()).toBeTruthy();
+  <span class="kw">const</span> { accessToken } = <span class="kw">await</span> login.json();
+
+  <span class="com">// Step 2: use token</span>
+  <span class="kw">const</span> me = <span class="kw">await</span> request.get(<span class="str">'https://dummyjson.com/auth/me'</span>, {
+    headers: { Authorization: <span class="str">`Bearer ${accessToken}`</span> }
+  });
+  expect(me.status()).toBe(<span class="num">200</span>);
+});</pre>
+
+            <h4 style="margin: 16px 0 8px;">4. Hybrid UI + API (login via API, then test UI)</h4>
+            <pre class="code">test(<span class="str">'API login + UI assertion'</span>, <span class="kw">async</span> ({ page, request }) =&gt; {
+  <span class="com">// Get token via API (faster than UI login)</span>
+  <span class="kw">const</span> res = <span class="kw">await</span> request.post(<span class="str">'https://dummyjson.com/auth/login'</span>, {
+    data: { username: <span class="str">'emilys'</span>, password: <span class="str">'emilyspass'</span> }
+  });
+  <span class="kw">const</span> { accessToken } = <span class="kw">await</span> res.json();
+
+  <span class="com">// Inject into localStorage before page loads</span>
+  <span class="kw">await</span> page.addInitScript(token =&gt; {
+    localStorage.setItem(<span class="str">'token'</span>, token);
+  }, accessToken);
+
+  <span class="kw">await</span> page.goto(<span class="str">'/dashboard'</span>);
+  <span class="kw">await</span> expect(page.getByTestId(<span class="str">'welcome-msg'</span>)).toBeVisible();
+});</pre>
+
+            <h4 style="margin: 16px 0 8px;">5. Mocking API responses (network interception)</h4>
+            <pre class="code">test(<span class="str">'mock API response'</span>, <span class="kw">async</span> ({ page }) =&gt; {
+  <span class="kw">await</span> page.route(<span class="str">'**/api/users'</span>, route =&gt; {
+    route.fulfill({
+      status: <span class="num">200</span>,
+      body: JSON.stringify([{ id: <span class="num">1</span>, name: <span class="str">'Mocked User'</span> }])
+    });
+  });
+
+  <span class="kw">await</span> page.goto(<span class="str">'/users'</span>);
+  <span class="kw">await</span> expect(page.getByText(<span class="str">'Mocked User'</span>)).toBeVisible();
+});</pre>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">
+        Built for Playwright learners. Save this file, host it locally, and write your tests against it.<br>
+        Every component has a <code class="inline">data-testid</code>. Happy testing.
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- MODAL TEMPLATE -->
+<div class="modal-backdrop" id="modalBackdrop" data-testid="modal-backdrop" onclick="if(event.target===this)closeModal('backdrop')">
+  <div class="modal" data-testid="modal-dialog">
+    <h3 data-testid="modal-title">Confirm action</h3>
+    <p data-testid="modal-body">Are you sure you want to proceed with this action? This is a test modal you can interact with.</p>
+    <div class="modal-actions">
+      <button class="btn" data-testid="modal-cancel" onclick="closeModal('cancel')">Cancel</button>
+      <button class="btn btn-primary" data-testid="modal-confirm" onclick="closeModal('confirm')">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============== THEME ============== */
+const themeBtn = document.getElementById('themeBtn');
+themeBtn.onclick = () => {
+  document.body.classList.toggle('light');
+  themeBtn.textContent = document.body.classList.contains('light') ? '☀ Light' : '☾ Dark';
+};
+
+/* ============== SIDEBAR TOGGLE ============== */
+const app = document.getElementById('app');
+const menuToggle = document.getElementById('menuToggle');
+
+// restore saved state
+if (localStorage.getItem('pw_sidebar_collapsed') === '1') {
+  app.classList.add('collapsed');
+}
+
+menuToggle.onclick = () => {
+  app.classList.toggle('collapsed');
+  localStorage.setItem('pw_sidebar_collapsed', app.classList.contains('collapsed') ? '1' : '0');
+};
+
+// auto-collapse on small screens (first visit)
+if (window.innerWidth < 900 && localStorage.getItem('pw_sidebar_collapsed') === null) {
+  app.classList.add('collapsed');
+}
+
+// On mobile: clicking a nav-link auto-collapses the sidebar so user can see content
+document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    if (window.innerWidth <= 900) {
+      app.classList.add('collapsed');
+      localStorage.setItem('pw_sidebar_collapsed', '1');
+    }
+  });
+});
+
+// On mobile: clicking the backdrop (the ::before overlay) closes the sidebar.
+// Pseudo-elements aren't clickable, so we listen on the .app container and
+// detect clicks to the left of/below the sidebar.
+app.addEventListener('click', (e) => {
+  if (window.innerWidth > 900) return;
+  if (app.classList.contains('collapsed')) return;
+  // If the click target is inside the sidebar or the menu-toggle, ignore.
+  if (e.target.closest('.sidebar') || e.target.closest('#menuToggle')) return;
+  app.classList.add('collapsed');
+  localStorage.setItem('pw_sidebar_collapsed', '1');
+});
+
+/* ============== NAV SECTION COLLAPSE ============== */
+function toggleNavSection(btn) {
+  const section = btn.closest('.nav-section');
+  section.classList.toggle('collapsed');
+  // persist per-section state
+  const id = section.dataset.testid;
+  const collapsed = {};
+  try { Object.assign(collapsed, JSON.parse(localStorage.getItem('pw_nav_collapsed') || '{}')); } catch(e) {}
+  collapsed[id] = section.classList.contains('collapsed');
+  localStorage.setItem('pw_nav_collapsed', JSON.stringify(collapsed));
+}
+
+// restore nav section state
+try {
+  const saved = JSON.parse(localStorage.getItem('pw_nav_collapsed') || '{}');
+  Object.entries(saved).forEach(([id, isCollapsed]) => {
+    if (isCollapsed) {
+      const sec = document.querySelector(`[data-testid="${id}"]`);
+      if (sec) sec.classList.add('collapsed');
+    }
+  });
+} catch(e) {}
+
+/* ============== TOAST ============== */
+function showToast(message, type = 'info') {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.setAttribute('data-testid', 'toast');
+  t.textContent = message;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+/* ============== RESET ============== */
+document.getElementById('resetBtn').onclick = () => {
+  localStorage.clear();
+  location.reload();
+};
+
+/* ============== LOGIN ============== */
+function handleLogin(e) {
+  e.preventDefault();
+  const u = document.getElementById('loginUsername').value;
+  const p = document.getElementById('loginPassword').value;
+  const msg = document.getElementById('loginMsg');
+  msg.classList.remove('success', 'error');
+  msg.classList.add('show');
+  if (u === 'admin' && p === 'admin123') {
+    msg.classList.add('success');
+    msg.textContent = '✓ Login successful! Welcome, ' + u;
+  } else {
+    msg.classList.add('error');
+    msg.textContent = '✗ Invalid credentials. Try admin / admin123';
+  }
+}
+
+/* ============== SIGNUP ============== */
+function handleSignup(e) {
+  e.preventDefault();
+  const p1 = document.getElementById('signupPwd').value;
+  const p2 = document.getElementById('signupPwd2').value;
+  const msg = document.getElementById('signupMsg');
+  msg.classList.remove('success', 'error');
+  msg.classList.add('show');
+  if (p1 !== p2) {
+    msg.classList.add('error');
+    msg.textContent = '✗ Passwords do not match';
+    return;
+  }
+  msg.classList.add('success');
+  msg.textContent = '✓ Account created! ID: ' + Math.floor(Math.random() * 100000);
+}
+
+/* ============== BUTTONS ============== */
+function recordClick(type) {
+  document.getElementById('lastClick').textContent = type + ' (' + new Date().toLocaleTimeString() + ')';
+}
+function toggleDisabled() {
+  const b = document.querySelector('[data-testid="btn-disabled"]');
+  b.disabled = !b.disabled;
+  b.textContent = b.disabled ? 'Disabled' : 'Enabled';
+}
+
+/* ============== CHECKBOX ============== */
+function showSelectedCheckboxes() {
+  const sel = Array.from(document.querySelectorAll('[data-testid^="cb-"]:checked')).map(c => c.value).join(', ');
+  const msg = document.getElementById('cbOutput');
+  msg.classList.add('show', 'info');
+  msg.textContent = 'Selected: ' + (sel || 'none');
+}
+
+/* ============== ASSERTIONS ============== */
+document.getElementById('assertUuid').textContent = 'uuid-' + Math.random().toString(36).substring(2, 12);
+
+/* ============== DYNAMIC LOADING ============== */
+function startDynamic() {
+  document.getElementById('dynLoader').style.display = 'block';
+  document.getElementById('dynResult').style.display = 'none';
+  setTimeout(() => {
+    document.getElementById('dynLoader').style.display = 'none';
+    document.getElementById('dynResult').style.display = 'block';
+    document.getElementById('orderNum').textContent = Math.floor(Math.random() * 1000000);
+  }, 3000);
+}
+
+/* ============== ALERTS ============== */
+function handleConfirm() {
+  const r = confirm('Do you confirm this action?');
+  document.getElementById('alertResultText').textContent = r ? 'Confirmed (true)' : 'Cancelled (false)';
+}
+function handlePrompt() {
+  const r = prompt('Please enter your name:');
+  document.getElementById('alertResultText').textContent = r ? 'You entered: ' + r : 'Prompt cancelled';
+}
+
+/* ============== MODAL ============== */
+function openModal() {
+  document.getElementById('modalBackdrop').classList.add('show');
+}
+function closeModal(via) {
+  document.getElementById('modalBackdrop').classList.remove('show');
+  document.getElementById('modalResult').textContent = 'Modal closed via: ' + via;
+}
+
+/* ============== FILE UPLOAD ============== */
+function handleFileSelect(input, resultId) {
+  const r = document.getElementById(resultId);
+  if (input.files.length === 0) { r.textContent = ''; return; }
+  const names = Array.from(input.files).map(f => `${f.name} (${f.size}B)`).join(', ');
+  r.textContent = 'Uploaded: ' + names;
+}
+const dz = document.getElementById('dropzone');
+dz.onclick = () => document.getElementById('dzInput').click();
+['dragenter', 'dragover'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('dragover'); }));
+['dragleave', 'drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('dragover'); }));
+dz.addEventListener('drop', e => {
+  document.getElementById('dzInput').files = e.dataTransfer.files;
+  handleFileSelect(document.getElementById('dzInput'), 'dzResult');
+});
+
+/* ============== DOWNLOAD ============== */
+function downloadFile(filename, content) {
+  const blob = new Blob([content], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+/* ============== TABLE ============== */
+const tableData = [
+  { id: 1, name: 'Alice Chen', email: 'alice@example.com', country: 'United States', score: 95 },
+  { id: 2, name: 'Bob Hassan', email: 'bob@example.com', country: 'Bangladesh', score: 87 },
+  { id: 3, name: 'Carol Singh', email: 'carol@example.com', country: 'India', score: 92 },
+  { id: 4, name: 'David Müller', email: 'david@example.com', country: 'Germany', score: 78 },
+  { id: 5, name: 'Eva Tanaka', email: 'eva@example.com', country: 'Japan', score: 88 },
+  { id: 6, name: 'Frank Smith', email: 'frank@example.com', country: 'United Kingdom', score: 73 },
+  { id: 7, name: 'Grace Lee', email: 'grace@example.com', country: 'United States', score: 99 },
+  { id: 8, name: 'Henry Park', email: 'henry@example.com', country: 'South Korea', score: 84 },
+  { id: 9, name: 'Iris Patel', email: 'iris@example.com', country: 'India', score: 91 },
+  { id: 10, name: 'Jack Wilson', email: 'jack@example.com', country: 'Australia', score: 76 },
+  { id: 11, name: 'Kate Brown', email: 'kate@example.com', country: 'Canada', score: 89 },
+  { id: 12, name: 'Liam Khan', email: 'liam@example.com', country: 'Bangladesh', score: 94 },
+  { id: 13, name: 'Mia Garcia', email: 'mia@example.com', country: 'Spain', score: 81 },
+  { id: 14, name: 'Nora Olsen', email: 'nora@example.com', country: 'Norway', score: 86 },
+  { id: 15, name: 'Oscar Rossi', email: 'oscar@example.com', country: 'Italy', score: 79 },
+];
+let tablePage = 1, tableSort = { col: 'id', dir: 'asc' };
+const PAGE_SIZE = 5;
+
+function renderTable() {
+  const search = document.getElementById('tableSearch').value.toLowerCase();
+  let data = tableData.filter(r =>
+    r.name.toLowerCase().includes(search) || r.country.toLowerCase().includes(search)
+  );
+  data.sort((a, b) => {
+    const va = a[tableSort.col], vb = b[tableSort.col];
+    if (typeof va === 'number') return tableSort.dir === 'asc' ? va - vb : vb - va;
+    return tableSort.dir === 'asc' ? String(va).localeCompare(String(vb)) : String(vb).localeCompare(String(va));
+  });
+  const totalPages = Math.max(1, Math.ceil(data.length / PAGE_SIZE));
+  if (tablePage > totalPages) tablePage = totalPages;
+  const start = (tablePage - 1) * PAGE_SIZE;
+  const pageRows = data.slice(start, start + PAGE_SIZE);
+
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = pageRows.map(r => `
+    <tr data-testid="row-${r.id}">
+      <td>${r.id}</td>
+      <td>${r.name}</td>
+      <td>${r.email}</td>
+      <td>${r.country}</td>
+      <td>${r.score}</td>
+    </tr>`).join('') || `<tr><td colspan="5" style="text-align:center;color:var(--text-dim);">No matches</td></tr>`;
+
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    th.classList.remove('sort-asc', 'sort-desc');
+    if (th.dataset.sort === tableSort.col) th.classList.add('sort-' + tableSort.dir);
+  });
+
+  const pag = document.getElementById('tablePagination');
+  pag.innerHTML = '';
+  for (let i = 1; i <= totalPages; i++) {
+    const b = document.createElement('button');
+    b.className = 'page-btn' + (i === tablePage ? ' active' : '');
+    b.textContent = i;
+    b.dataset.testid = 'page-' + i;
+    b.onclick = () => { tablePage = i; renderTable(); };
+    pag.appendChild(b);
+  }
+}
+document.querySelectorAll('th[data-sort]').forEach(th => {
+  th.onclick = () => {
+    if (tableSort.col === th.dataset.sort) tableSort.dir = tableSort.dir === 'asc' ? 'desc' : 'asc';
+    else { tableSort.col = th.dataset.sort; tableSort.dir = 'asc'; }
+    renderTable();
+  };
+});
+renderTable();
+
+/* ============== DATEPICKER ============== */
+function showSelectedDate() {
+  const v = document.getElementById('dateSingle').value;
+  document.getElementById('dateOutput').textContent = v ? 'Selected: ' + v : '';
+}
+
+/* ============== TABS ============== */
+function switchTab(btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.tab).classList.add('active');
+}
+
+/* ============== ACCORDION ============== */
+function toggleAccordion(btn) {
+  btn.parentElement.classList.toggle('open');
+}
+
+/* ============== AUTOCOMPLETE ============== */
+const langList = ['JavaScript', 'TypeScript', 'Python', 'Java', 'Ruby', 'Rust', 'Go', 'C++', 'C#', 'Swift', 'Kotlin', 'PHP', 'Scala', 'Haskell', 'Elixir', 'Erlang', 'Lua', 'Dart', 'Perl', 'R'];
+function updateAutocomplete(q) {
+  const box = document.getElementById('autoSuggestions');
+  if (!q) { box.style.display = 'none'; return; }
+  const matches = langList.filter(l => l.toLowerCase().startsWith(q.toLowerCase())).slice(0, 8);
+  if (matches.length === 0) { box.style.display = 'none'; return; }
+  box.innerHTML = matches.map((m, i) =>
+    `<div data-testid="auto-suggestion-${i}" style="padding:8px 12px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--border-soft);" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''" onclick="selectAuto('${m}')">${m}</div>`
+  ).join('');
+  box.style.display = 'block';
+}
+function selectAuto(v) {
+  document.getElementById('autoInput').value = v;
+  document.getElementById('autoSuggestions').style.display = 'none';
+}
+
+/* ============== PROGRESS ============== */
+function startProgress() {
+  let v = 0;
+  const bar = document.getElementById('progressBar');
+  const txt = document.getElementById('progressText');
+  bar.style.width = '0%'; txt.textContent = '0%';
+  const intv = setInterval(() => {
+    v += 5;
+    bar.style.width = v + '%';
+    txt.textContent = v >= 100 ? '✓ Complete' : v + '%';
+    if (v >= 100) clearInterval(intv);
+  }, 200);
+}
+
+/* ============== DRAG & DROP ============== */
+let dragged = null;
+document.querySelectorAll('.dnd-item').forEach(item => {
+  item.addEventListener('dragstart', e => { dragged = item; item.classList.add('dragging'); });
+  item.addEventListener('dragend', () => { item.classList.remove('dragging'); dragged = null; });
+});
+['dndSource', 'dndTarget'].forEach(id => {
+  const z = document.getElementById(id);
+  z.addEventListener('dragover', e => { e.preventDefault(); });
+  z.addEventListener('drop', e => { e.preventDefault(); if (dragged) z.appendChild(dragged); });
+});
+
+/* ============== SHADOW DOM ============== */
+const shadowHost = document.getElementById('shadowHost');
+const shadow = shadowHost.attachShadow({ mode: 'open' });
+shadow.innerHTML = `
+  <style>
+    .inner { font-family: sans-serif; padding: 14px; background: rgba(126,231,135,0.05); border: 1px solid rgba(126,231,135,0.3); border-radius: 6px; }
+    input { padding: 8px; border-radius: 4px; border: 1px solid #30363d; background: #0d1117; color: #e6edf3; margin-right: 8px; font-size: 14px; }
+    button { padding: 8px 14px; border-radius: 4px; border: none; background: #7ee787; color: #0d1117; cursor: pointer; font-weight: 600; font-size: 14px; }
+    p { margin-top: 10px; color: #7ee787; font-size: 13px; }
+  </style>
+  <div class="inner">
+    <strong>Shadow DOM Component</strong><br>
+    <span style="font-size:12px;opacity:0.7;">This input lives inside #shadow-root</span><br><br>
+    <input type="text" data-testid="shadow-input" placeholder="type inside shadow DOM" id="shInput">
+    <button data-testid="shadow-button" id="shBtn">Submit</button>
+    <p data-testid="shadow-output" id="shOut"></p>
+  </div>
+`;
+shadow.getElementById('shBtn').onclick = () => {
+  shadow.getElementById('shOut').textContent = '✓ Got: ' + shadow.getElementById('shInput').value;
+};
+
+/* ============== LAZY LOAD ============== */
+const lazyTarget = document.getElementById('lazyTarget');
+const lazyObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      setTimeout(() => {
+        lazyTarget.innerHTML = '<strong style="color:var(--accent);">✓ Lazy content loaded!</strong><br><span style="color:var(--text-muted);font-size:13px;">This appeared because you scrolled it into view at ' + new Date().toLocaleTimeString() + '</span>';
+      }, 600);
+      lazyObs.disconnect();
+    }
+  });
+}, { root: document.getElementById('lazyContainer'), threshold: 0.5 });
+lazyObs.observe(lazyTarget);
+
+/* ============== INFINITE SCROLL ============== */
+const inf = document.getElementById('infiniteContainer');
+let infCount = 0;
+function loadMoreItems() {
+  for (let i = 0; i < 8; i++) {
+    infCount++;
+    const d = document.createElement('div');
+    d.className = 'scroll-item';
+    d.dataset.testid = 'scroll-item-' + infCount;
+    d.textContent = `Item #${infCount} — ${['News', 'Update', 'Note', 'Alert'][infCount % 4]}`;
+    inf.appendChild(d);
+  }
+  document.getElementById('infiniteCount').textContent = infCount;
+}
+loadMoreItems();
+inf.addEventListener('scroll', () => {
+  if (inf.scrollTop + inf.clientHeight >= inf.scrollHeight - 20 && infCount < 60) {
+    loadMoreItems();
+  }
+});
+
+/* ============== AUTH ============== */
+function genFakeJWT(user) {
+  const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+  const payload = btoa(JSON.stringify({ sub: user, iat: Date.now(), exp: Date.now() + 3600000 }));
+  return `${header}.${payload}.signature_${Math.random().toString(36).substring(2, 18)}`;
+}
+function refreshAuthUI() {
+  const token = localStorage.getItem('pw_token');
+  const user = localStorage.getItem('pw_user');
+  const status = document.getElementById('authStatus');
+  if (token) {
+    status.innerHTML = `Authenticated · <span style="color:var(--accent);">${user}</span> · token: <code style="font-size:11px;">${token.substring(0, 30)}…</code>`;
+    document.getElementById('authLogin').style.display = 'none';
+    document.getElementById('authDashboard').style.display = 'block';
+    document.getElementById('authUsernameDisplay').textContent = user;
+  } else {
+    status.textContent = 'Not authenticated';
+    document.getElementById('authLogin').style.display = 'block';
+    document.getElementById('authDashboard').style.display = 'none';
+  }
+}
+function doAuthLogin() {
+  const u = document.getElementById('authUser').value.trim();
+  const p = document.getElementById('authPass').value.trim();
+  if (!u || !p) { showToast('Username and password required'); return; }
+  const tok = genFakeJWT(u);
+  localStorage.setItem('pw_token', tok);
+  localStorage.setItem('pw_user', u);
+  refreshAuthUI();
+}
+function doAuthLogout() {
+  localStorage.removeItem('pw_token');
+  localStorage.removeItem('pw_user');
+  refreshAuthUI();
+}
+refreshAuthUI();
+
+/* ============== RACE ============== */
+function fireRace() {
+  const list = document.getElementById('raceList');
+  const status = document.getElementById('raceStatus');
+  list.innerHTML = '';
+  status.textContent = 'no';
+  let done = 0;
+  const total = 5;
+  for (let i = 1; i <= total; i++) {
+    const delay = 200 + Math.random() * 2300;
+    const row = document.createElement('div');
+    row.dataset.testid = 'race-task-' + i;
+    row.textContent = `Task ${i}: ⏳ pending…`;
+    list.appendChild(row);
+    setTimeout(() => {
+      row.textContent = `Task ${i}: ✓ done in ${Math.round(delay)}ms`;
+      row.style.color = 'var(--accent)';
+      done++;
+      if (done === total) status.textContent = 'yes';
+    }, delay);
+  }
+}
+
+/* ============== CANVAS ============== */
+const canvas = document.getElementById('drawCanvas');
+const ctx = canvas.getContext('2d');
+let drawing = false, strokes = 0;
+ctx.strokeStyle = '#7ee787'; ctx.lineWidth = 2; ctx.lineCap = 'round';
+canvas.addEventListener('mousedown', e => {
+  drawing = true;
+  ctx.beginPath();
+  const r = canvas.getBoundingClientRect();
+  ctx.moveTo(e.clientX - r.left, e.clientY - r.top);
+});
+canvas.addEventListener('mousemove', e => {
+  if (!drawing) return;
+  const r = canvas.getBoundingClientRect();
+  ctx.lineTo(e.clientX - r.left, e.clientY - r.top);
+  ctx.stroke();
+});
+canvas.addEventListener('mouseup', () => {
+  if (drawing) { drawing = false; strokes++; document.getElementById('canvasStrokes').textContent = strokes; }
+});
+canvas.addEventListener('mouseleave', () => { drawing = false; });
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  strokes = 0;
+  document.getElementById('canvasStrokes').textContent = 0;
+}
+
+/* ============== WIZARD ============== */
+function wizGo(step) {
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById('wizPanel' + i).style.display = i === step ? 'block' : 'none';
+    const s = document.querySelector(`[data-testid="wiz-step-${i}"]`);
+    s.classList.remove('active', 'complete');
+    if (i < step) s.classList.add('complete');
+    if (i === step) s.classList.add('active');
+  }
+  if (step === 3) {
+    const data = {
+      name: document.getElementById('wizName').value,
+      age: document.getElementById('wizAge').value,
+      city: document.getElementById('wizCity').value,
+      postal: document.getElementById('wizPostal').value
+    };
+    document.getElementById('wizReview').textContent = JSON.stringify(data, null, 2);
+  }
+}
+function wizSubmit() {
+  const msg = document.getElementById('wizResult');
+  msg.classList.add('show', 'success');
+  msg.textContent = '✓ Submitted! Reference #' + Math.floor(Math.random() * 1000000);
+}
+
+/* ============== REALTIME ============== */
+let rtIntv = null, rtVal = 0;
+function startRealtime() {
+  if (rtIntv) return;
+  rtIntv = setInterval(() => {
+    rtVal++;
+    document.getElementById('rtCounter').textContent = rtVal;
+  }, 1000);
+}
+function stopRealtime() {
+  clearInterval(rtIntv); rtIntv = null;
+}
+function resetRealtime() {
+  stopRealtime();
+  rtVal = 0;
+  document.getElementById('rtCounter').textContent = 0;
+}
+
+/* ============== CRUD TABLE ============== */
+let crudData = [
+  { id: 1, name: 'Sara Ahmed', email: 'sara@era.bd', dept: 'Engineering', status: 'Active' },
+  { id: 2, name: 'Rahim Khan', email: 'rahim@era.bd', dept: 'Product', status: 'Active' },
+  { id: 3, name: 'Tania Islam', email: 'tania@era.bd', dept: 'QA', status: 'Inactive' },
+  { id: 4, name: 'Mahmud Hasan', email: 'mahmud@era.bd', dept: 'Engineering', status: 'Active' },
+];
+let crudNextId = 5;
+let crudEditingId = null;
+
+function renderCrud() {
+  const search = (document.getElementById('crudSearch')?.value || '').toLowerCase();
+  const tbody = document.getElementById('crudBody');
+  const filtered = crudData.filter(r =>
+    r.name.toLowerCase().includes(search) ||
+    r.email.toLowerCase().includes(search) ||
+    r.dept.toLowerCase().includes(search)
+  );
+
+  tbody.innerHTML = filtered.length ? filtered.map(r => {
+    if (crudEditingId === r.id) {
+      return `
+        <tr data-testid="crud-row-${r.id}" data-editing="true">
+          <td>${r.id}</td>
+          <td><input class="crud-edit-input" data-testid="crud-edit-name-${r.id}" id="ce-name-${r.id}" value="${escapeHtml(r.name)}"></td>
+          <td><input class="crud-edit-input" data-testid="crud-edit-email-${r.id}" id="ce-email-${r.id}" value="${escapeHtml(r.email)}"></td>
+          <td>
+            <select class="crud-edit-input" data-testid="crud-edit-dept-${r.id}" id="ce-dept-${r.id}">
+              ${['Engineering','Product','QA','Design','Sales','Finance','HR'].map(d => `<option ${d===r.dept?'selected':''}>${d}</option>`).join('')}
+            </select>
+          </td>
+          <td>
+            <select class="crud-edit-input" data-testid="crud-edit-status-${r.id}" id="ce-status-${r.id}">
+              <option ${r.status==='Active'?'selected':''}>Active</option>
+              <option ${r.status==='Inactive'?'selected':''}>Inactive</option>
+            </select>
+          </td>
+          <td>
+            <button class="icon-btn success" data-testid="crud-save-${r.id}" onclick="crudSave(${r.id})">✓ Save</button>
+            <button class="icon-btn" data-testid="crud-cancel-${r.id}" onclick="crudCancel()">Cancel</button>
+          </td>
+        </tr>`;
+    }
+    return `
+      <tr data-testid="crud-row-${r.id}">
+        <td>${r.id}</td>
+        <td data-testid="crud-name-${r.id}">${escapeHtml(r.name)}</td>
+        <td data-testid="crud-email-${r.id}">${escapeHtml(r.email)}</td>
+        <td data-testid="crud-dept-${r.id}">${escapeHtml(r.dept)}</td>
+        <td><span class="status-badge status-${r.status.toLowerCase()}" data-testid="crud-status-${r.id}">${r.status}</span></td>
+        <td>
+          <button class="icon-btn" data-testid="crud-edit-${r.id}" onclick="crudEdit(${r.id})">✎ Edit</button>
+          <button class="icon-btn danger" data-testid="crud-delete-${r.id}" onclick="crudDelete(${r.id})">🗑 Delete</button>
+        </td>
+      </tr>`;
+  }).join('') : `<tr><td colspan="6" style="text-align:center;color:var(--text-dim);padding:20px;" data-testid="crud-empty">No employees found</td></tr>`;
+
+  document.getElementById('crudCount').textContent = crudData.length;
+}
+
+function crudAdd() {
+  const id = crudNextId++;
+  crudData.unshift({ id, name: '', email: '', dept: 'Engineering', status: 'Active' });
+  crudEditingId = id;
+  renderCrud();
+  setTimeout(() => document.getElementById('ce-name-' + id)?.focus(), 50);
+}
+
+function crudEdit(id) {
+  crudEditingId = id;
+  renderCrud();
+}
+
+function crudCancel() {
+  // if it was a brand-new empty row, drop it
+  const row = crudData.find(r => r.id === crudEditingId);
+  if (row && !row.name && !row.email) {
+    crudData = crudData.filter(r => r.id !== crudEditingId);
+  }
+  crudEditingId = null;
+  renderCrud();
+}
+
+function crudSave(id) {
+  const name = document.getElementById('ce-name-' + id).value.trim();
+  const email = document.getElementById('ce-email-' + id).value.trim();
+  const dept = document.getElementById('ce-dept-' + id).value;
+  const status = document.getElementById('ce-status-' + id).value;
+  const msg = document.getElementById('crudMsg');
+  msg.classList.remove('show', 'success', 'error');
+
+  if (!name || !email) {
+    msg.classList.add('show', 'error');
+    msg.textContent = '✗ Name and email are required';
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    msg.classList.add('show', 'error');
+    msg.textContent = '✗ Invalid email format';
+    return;
+  }
+  const row = crudData.find(r => r.id === id);
+  Object.assign(row, { name, email, dept, status });
+  crudEditingId = null;
+  renderCrud();
+  msg.classList.add('show', 'success');
+  msg.textContent = '✓ Saved employee #' + id;
+}
+
+function crudDelete(id) {
+  if (!confirm('Delete this employee?')) return;
+  crudData = crudData.filter(r => r.id !== id);
+  renderCrud();
+  const msg = document.getElementById('crudMsg');
+  msg.classList.remove('show', 'success', 'error');
+  msg.classList.add('show', 'info');
+  msg.textContent = 'Deleted employee #' + id;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+renderCrud();
+
+/* ============================================== */
+/* ============== ADVANCED DROPDOWNS ============ */
+/* ============================================== */
+
+// generates a fresh "unstable" UUID-style id every time
+function dynId() {
+  return 'opt-' + Math.random().toString(36).slice(2, 11) + '-' + Date.now().toString(36);
+}
+
+let openCustomDropdown = null;
+
+function cdClose(dd) {
+  if (!dd) return;
+  const trigger = dd.querySelector('.cd-trigger');
+  const menu = dd.querySelector('.cd-menu');
+  if (trigger) trigger.setAttribute('aria-expanded', 'false');
+  if (menu) menu.classList.remove('open');
+  if (openCustomDropdown === dd) openCustomDropdown = null;
+}
+
+function cdOpen(dd) {
+  // close any other open dropdown
+  if (openCustomDropdown && openCustomDropdown !== dd) cdClose(openCustomDropdown);
+  const trigger = dd.querySelector('.cd-trigger');
+  const menu = dd.querySelector('.cd-menu');
+  if (trigger) trigger.setAttribute('aria-expanded', 'true');
+  if (menu) menu.classList.add('open');
+  openCustomDropdown = dd;
+}
+
+function cdToggle(triggerEl) {
+  const dd = triggerEl.closest('.custom-dropdown');
+  if (!dd || triggerEl.disabled) return;
+  const isOpen = triggerEl.getAttribute('aria-expanded') === 'true';
+  if (isOpen) cdClose(dd); else cdOpen(dd);
+}
+
+// Click outside to close
+document.addEventListener('click', (e) => {
+  if (openCustomDropdown && !openCustomDropdown.contains(e.target)) {
+    cdClose(openCustomDropdown);
+  }
+});
+
+// Escape to close
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && openCustomDropdown) cdClose(openCustomDropdown);
+});
+
+/* === AD-01: Custom Dropdown with Dynamic IDs === */
+const customDDOptions = [
+  { value: 'BD', label: 'Bangladesh' },
+  { value: 'US', label: 'United States' },
+  { value: 'UK', label: 'United Kingdom' },
+  { value: 'IN', label: 'India' },
+  { value: 'DE', label: 'Germany' },
+  { value: 'JP', label: 'Japan' },
+  { value: 'BR', label: 'Brazil' },
+  { value: 'AU', label: 'Australia' },
+  { value: 'CA', label: 'Canada' },
+  { value: 'KR', label: 'South Korea' }
+];
+
+function renderCustomDD(showToastMsg) {
+  const menu = document.getElementById('ddCustomMenu');
+  menu.innerHTML = customDDOptions.map(o =>
+    `<div class="cd-option" id="${dynId()}" role="option" data-value="${o.value}" data-label="${o.label}" onclick="selectCustomDD(this)">${o.label}</div>`
+  ).join('');
+  if (showToastMsg) showToast('IDs regenerated — inspect the DOM to compare');
+}
+
+function selectCustomDD(opt) {
+  const dd = opt.closest('.custom-dropdown');
+  const val = opt.dataset.value;
+  const label = opt.dataset.label;
+  const display = dd.querySelector('[data-testid="dd-custom-value-display"]');
+  display.textContent = label;
+  display.classList.remove('cd-placeholder');
+  document.getElementById('ddCustomValue').value = val;
+  document.getElementById('ddCustomSelected').textContent = `${label} (${val})`;
+  dd.querySelectorAll('.cd-option').forEach(o => o.classList.remove('selected'));
+  opt.classList.add('selected');
+  cdClose(dd);
+}
+
+function clearCustomDD() {
+  document.querySelector('[data-testid="dd-custom-value-display"]').textContent = '— Select country —';
+  document.querySelector('[data-testid="dd-custom-value-display"]').classList.add('cd-placeholder');
+  document.getElementById('ddCustomValue').value = '';
+  document.getElementById('ddCustomSelected').textContent = 'none';
+  document.querySelectorAll('#ddCustomMenu .cd-option').forEach(o => o.classList.remove('selected'));
+}
+
+renderCustomDD();
+
+/* === AD-02: Searchable Dropdown === */
+const langOptions = ['JavaScript', 'TypeScript', 'Python', 'Java', 'Ruby', 'Rust', 'Go', 'C++', 'C#', 'Swift', 'Kotlin', 'PHP', 'Scala', 'Haskell', 'Elixir', 'Erlang', 'Lua', 'Dart', 'Perl', 'R', 'Clojure', 'F#', 'OCaml', 'Julia', 'Crystal', 'Nim'];
+let searchDDQuery = '';
+
+function renderSearchDD() {
+  const list = document.getElementById('ddSearchList');
+  const q = searchDDQuery.toLowerCase();
+  const filtered = langOptions.filter(l => l.toLowerCase().includes(q));
+  list.innerHTML = filtered.length
+    ? filtered.map(l => `<div class="cd-option" id="${dynId()}" role="option" data-value="${l}" onclick="selectSearchDD('${l}')">${l}</div>`).join('')
+    : '<div class="cd-empty" data-testid="dd-search-empty">No results found</div>';
+}
+function filterSearchDD(q) { searchDDQuery = q; renderSearchDD(); }
+function selectSearchDD(val) {
+  const dd = document.querySelector('[data-testid="dd-search"]');
+  const display = dd.querySelector('[data-testid="dd-search-value-display"]');
+  display.textContent = val;
+  display.classList.remove('cd-placeholder');
+  document.getElementById('ddSearchSelected').textContent = val;
+  document.getElementById('ddSearchInput').value = '';
+  searchDDQuery = '';
+  cdClose(dd);
+}
+renderSearchDD();
+
+/* === AD-03: Multi-Select with Chips === */
+const skillOptions = ['Playwright', 'Cypress', 'Selenium', 'Jest', 'Mocha', 'Pytest', 'TestNG', 'JUnit', 'Postman', 'k6', 'JMeter', 'Cucumber'];
+let selectedSkills = new Set();
+
+function renderMultiDD() {
+  const menu = document.getElementById('ddMultiMenu');
+  menu.innerHTML = skillOptions.map(s => {
+    const checked = selectedSkills.has(s);
+    return `<div class="cd-option ${checked ? 'selected' : ''}" id="${dynId()}" role="option" data-value="${s}" onclick="toggleMulti('${s}')">
+      <input type="checkbox" class="cd-checkbox" ${checked ? 'checked' : ''} data-testid="dd-multi-checkbox-${s.toLowerCase()}" tabindex="-1" readonly>
+      <span>${s}</span>
+    </div>`;
+  }).join('');
+  renderChips();
+}
+function toggleMulti(s) {
+  if (selectedSkills.has(s)) selectedSkills.delete(s);
+  else selectedSkills.add(s);
+  renderMultiDD();
+}
+function removeChip(s) {
+  selectedSkills.delete(s);
+  renderMultiDD();
+}
+function renderChips() {
+  const chips = document.getElementById('ddMultiChips');
+  const counter = document.getElementById('ddMultiCounter');
+  if (selectedSkills.size === 0) {
+    chips.innerHTML = '';
+    counter.textContent = '— Select skills —';
+    counter.classList.add('cd-placeholder');
+  } else {
+    chips.innerHTML = Array.from(selectedSkills).map(s =>
+      `<span class="chip" data-testid="chip-${s.toLowerCase()}">${s}<button type="button" class="chip-remove" data-testid="chip-remove-${s.toLowerCase()}" onclick="event.stopPropagation(); removeChip('${s}')" aria-label="Remove ${s}">×</button></span>`
+    ).join('');
+    counter.textContent = `${selectedSkills.size} skill${selectedSkills.size > 1 ? 's' : ''} selected`;
+    counter.classList.remove('cd-placeholder');
+  }
+}
+renderMultiDD();
+
+/* === AD-04: Async-loaded Dropdown === */
+let asyncDDLoaded = false;
+let asyncDDLoading = false;
+const departments = ['Engineering', 'Product', 'Design', 'Sales', 'Customer Success', 'Finance', 'Legal', 'People Ops'];
+
+function loadAsyncDD() {
+  if (asyncDDLoaded || asyncDDLoading) return;
+  asyncDDLoading = true;
+  setTimeout(() => {
+    const menu = document.getElementById('ddAsyncMenu');
+    menu.innerHTML = departments.map(d =>
+      `<div class="cd-option" id="${dynId()}" role="option" data-value="${d}" onclick="selectAsyncDD('${d}')">${d}</div>`
+    ).join('');
+    asyncDDLoaded = true;
+    asyncDDLoading = false;
+  }, 1500);
+}
+function selectAsyncDD(val) {
+  const dd = document.querySelector('[data-testid="dd-async"]');
+  const display = dd.querySelector('[data-testid="dd-async-value-display"]');
+  display.textContent = val;
+  display.classList.remove('cd-placeholder');
+  document.getElementById('ddAsyncSelected').textContent = val;
+  cdClose(dd);
+}
+function resetAsyncDD() {
+  asyncDDLoaded = false;
+  asyncDDLoading = false;
+  document.getElementById('ddAsyncMenu').innerHTML = '<div class="cd-loading" data-testid="dd-async-loader"><span class="loader"></span> Loading options…</div>';
+  showToast('Cache cleared — next open will reload');
+}
+
+/* === AD-05: Cascading Dropdowns === */
+const geoData = {
+  'Bangladesh': {
+    'Dhaka Division': ['Dhaka', 'Gazipur', 'Narayanganj', 'Tangail'],
+    'Chattogram Division': ['Chattogram', "Cox's Bazar", 'Comilla'],
+    'Sylhet Division': ['Sylhet', 'Habiganj', 'Moulvibazar']
+  },
+  'India': {
+    'Maharashtra': ['Mumbai', 'Pune', 'Nagpur'],
+    'Karnataka': ['Bangalore', 'Mysore', 'Hubli'],
+    'West Bengal': ['Kolkata', 'Howrah', 'Durgapur']
+  },
+  'United States': {
+    'California': ['San Francisco', 'Los Angeles', 'San Diego'],
+    'New York': ['New York City', 'Buffalo', 'Albany'],
+    'Texas': ['Houston', 'Austin', 'Dallas']
+  }
+};
+
+let cascade = { country: null, state: null, city: null };
+
+function renderCountryDD() {
+  document.getElementById('ddCountryMenu').innerHTML = Object.keys(geoData).map(c =>
+    `<div class="cd-option" id="${dynId()}" role="option" data-value="${c}" onclick="selectCountry('${c}')">${c}</div>`
+  ).join('');
+}
+function selectCountry(c) {
+  cascade.country = c; cascade.state = null; cascade.city = null;
+  setCascadeDisplay('country', c);
+  setCascadeDisplay('state', null, '— Select state —');
+  setCascadeDisplay('city', null, '— Select state first —');
+  document.querySelector('[data-testid="dd-cascade-state-trigger"]').disabled = false;
+  document.querySelector('[data-testid="dd-cascade-city-trigger"]').disabled = true;
+  renderStateDD();
+  document.getElementById('ddCityMenu').innerHTML = '';
+  cdClose(document.querySelector('[data-testid="dd-cascade-country"]'));
+  updateCascadeResult();
+}
+function renderStateDD() {
+  if (!cascade.country) return;
+  document.getElementById('ddStateMenu').innerHTML = Object.keys(geoData[cascade.country]).map(s =>
+    `<div class="cd-option" id="${dynId()}" role="option" data-value="${s}" onclick="selectState('${s}')">${s}</div>`
+  ).join('');
+}
+function selectState(s) {
+  cascade.state = s; cascade.city = null;
+  setCascadeDisplay('state', s);
+  setCascadeDisplay('city', null, '— Select city —');
+  document.querySelector('[data-testid="dd-cascade-city-trigger"]').disabled = false;
+  renderCityDD();
+  cdClose(document.querySelector('[data-testid="dd-cascade-state"]'));
+  updateCascadeResult();
+}
+function renderCityDD() {
+  if (!cascade.country || !cascade.state) return;
+  document.getElementById('ddCityMenu').innerHTML = geoData[cascade.country][cascade.state].map(ci =>
+    `<div class="cd-option" id="${dynId()}" role="option" data-value="${ci}" onclick="selectCity('${ci.replace(/'/g, "\\'")}')">${ci}</div>`
+  ).join('');
+}
+function selectCity(c) {
+  cascade.city = c;
+  setCascadeDisplay('city', c);
+  cdClose(document.querySelector('[data-testid="dd-cascade-city"]'));
+  updateCascadeResult();
+}
+function setCascadeDisplay(level, val, placeholder) {
+  const display = document.querySelector(`[data-testid="dd-cascade-${level}-value"]`);
+  if (val) {
+    display.textContent = val;
+    display.classList.remove('cd-placeholder');
+  } else {
+    display.textContent = placeholder || '— —';
+    display.classList.add('cd-placeholder');
+  }
+}
+function updateCascadeResult() {
+  const parts = [cascade.country, cascade.state, cascade.city].filter(Boolean);
+  document.getElementById('ddCascadeResult').textContent = parts.length ? parts.join(' › ') : 'none';
+}
+renderCountryDD();
+
+/* === AD-06: Combobox === */
+let comboTags = ['urgent', 'review', 'blocked'];
+let comboQuery = '';
+
+function openComboDD() {
+  const dd = document.querySelector('[data-testid="dd-combo"]');
+  cdOpen(dd);
+  renderComboDD();
+}
+function filterComboDD(q) {
+  comboQuery = q;
+  const dd = document.querySelector('[data-testid="dd-combo"]');
+  if (!openCustomDropdown) cdOpen(dd);
+  renderComboDD();
+}
+function renderComboDD() {
+  const menu = document.getElementById('ddComboMenu');
+  const q = comboQuery.toLowerCase().trim();
+  const matches = comboTags.filter(t => t.toLowerCase().includes(q));
+  let html = '';
+  if (q && !comboTags.some(t => t.toLowerCase() === q)) {
+    html += `<div class="cd-create-hint" data-testid="dd-combo-create" onclick="createComboTag()">+ Create "<strong>${escapeHtml(comboQuery)}</strong>" — press <kbd>Enter</kbd></div>`;
+  }
+  if (matches.length) {
+    html += matches.map(t =>
+      `<div class="cd-option" id="${dynId()}" role="option" data-value="${t}" onclick="pickComboTag('${t}')">${t}</div>`
+    ).join('');
+  } else if (!q) {
+    html += '<div class="cd-empty">No tags yet — type to create one</div>';
+  }
+  menu.innerHTML = html;
+  document.getElementById('ddComboAll').textContent = comboTags.length ? comboTags.join(', ') : '—';
+}
+function pickComboTag(t) {
+  document.getElementById('ddComboInput').value = t;
+  comboQuery = t;
+  cdClose(document.querySelector('[data-testid="dd-combo"]'));
+}
+function createComboTag() {
+  const newTag = comboQuery.trim();
+  if (!newTag || comboTags.includes(newTag)) return;
+  comboTags.push(newTag);
+  document.getElementById('ddComboInput').value = newTag;
+  comboQuery = newTag;
+  renderComboDD();
+  cdClose(document.querySelector('[data-testid="dd-combo"]'));
+  showToast(`Created tag "${newTag}"`);
+}
+function onComboKeyDown(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const q = comboQuery.trim();
+    if (!q) return;
+    if (comboTags.some(t => t.toLowerCase() === q.toLowerCase())) {
+      pickComboTag(comboTags.find(t => t.toLowerCase() === q.toLowerCase()));
+    } else {
+      createComboTag();
+    }
+  } else if (e.key === 'Escape') {
+    cdClose(document.querySelector('[data-testid="dd-combo"]'));
+  }
+}
+renderComboDD();
+
+/* === AD-07: Grouped Dropdown === */
+const serverGroups = [
+  { name: 'Production', servers: [
+    { id: 'prod-01', label: 'prod-01.eu-west', status: 'green' },
+    { id: 'prod-02', label: 'prod-02.eu-west', status: 'green' },
+    { id: 'prod-03', label: 'prod-03.us-east', status: 'amber' }
+  ]},
+  { name: 'Staging', servers: [
+    { id: 'stage-01', label: 'stage-01.dev', status: 'green' },
+    { id: 'stage-02', label: 'stage-02.dev', status: 'red', disabled: true }
+  ]},
+  { name: 'Decommissioned', servers: [
+    { id: 'old-01', label: 'legacy-01', status: 'gray', disabled: true },
+    { id: 'old-02', label: 'legacy-02', status: 'gray', disabled: true }
+  ]}
+];
+
+function renderGroupedDD() {
+  const menu = document.getElementById('ddGroupedMenu');
+  menu.innerHTML = serverGroups.map(g =>
+    `<div class="cd-group-label" data-testid="group-label-${g.name.toLowerCase()}">${g.name}</div>` +
+    g.servers.map(s =>
+      `<div class="cd-option ${s.disabled ? 'disabled' : ''}" id="${dynId()}" role="option" data-value="${s.id}" data-status="${s.status}" ${!s.disabled ? `onclick="selectGroupedDD('${s.id}', '${s.label}')"` : ''}>
+        <span class="status-dot ${s.status}"></span>
+        <span>${s.label}</span>
+      </div>`
+    ).join('')
+  ).join('');
+}
+function selectGroupedDD(id, label) {
+  const dd = document.querySelector('[data-testid="dd-grouped"]');
+  const display = dd.querySelector('[data-testid="dd-grouped-value-display"]');
+  display.textContent = label;
+  display.classList.remove('cd-placeholder');
+  document.getElementById('ddGroupedSelected').textContent = `${label} (${id})`;
+  cdClose(dd);
+}
+renderGroupedDD();
+
+/* === AD-08: In-Table Dropdowns === */
+const tableEmployees = [
+  { id: 'emp-1', name: 'Alice Khan', email: 'alice@org.com', status: 'Active', role: 'Engineer' },
+  { id: 'emp-2', name: 'Bob Rahman', email: 'bob@org.com', status: 'On Leave', role: 'Manager' },
+  { id: 'emp-3', name: 'Carol Hossain', email: 'carol@org.com', status: 'Active', role: 'Designer' },
+  { id: 'emp-4', name: 'David Islam', email: 'david@org.com', status: 'Suspended', role: 'Engineer' }
+];
+const statusOptions = ['Active', 'On Leave', 'Suspended', 'Terminated'];
+const roleOptions = ['Engineer', 'Manager', 'Designer', 'Analyst'];
+
+function renderDDTable() {
+  const tbody = document.getElementById('ddTableBody');
+  tbody.innerHTML = tableEmployees.map(e => `
+    <tr data-testid="dd-table-row-${e.id}" data-employee-id="${e.id}">
+      <td>${escapeHtml(e.name)}</td>
+      <td>${escapeHtml(e.email)}</td>
+      <td>
+        <div class="custom-dropdown row-dropdown" data-testid="row-status-${e.id}">
+          <button type="button" class="cd-trigger" data-testid="row-status-trigger" onclick="cdToggle(this)" aria-expanded="false">
+            <span class="cd-value">${e.status}</span>
+            <span class="cd-chevron">▼</span>
+          </button>
+          <div class="cd-menu" data-testid="row-status-menu">
+            ${statusOptions.map(s =>
+              `<div class="cd-option ${s === e.status ? 'selected' : ''}" id="${dynId()}" role="option" data-value="${s}" onclick="changeRowStatus('${e.id}', '${s}')">${s}</div>`
+            ).join('')}
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="custom-dropdown row-dropdown" data-testid="row-role-${e.id}">
+          <button type="button" class="cd-trigger" data-testid="row-role-trigger" onclick="cdToggle(this)" aria-expanded="false">
+            <span class="cd-value">${e.role}</span>
+            <span class="cd-chevron">▼</span>
+          </button>
+          <div class="cd-menu" data-testid="row-role-menu">
+            ${roleOptions.map(r =>
+              `<div class="cd-option ${r === e.role ? 'selected' : ''}" id="${dynId()}" role="option" data-value="${r}" onclick="changeRowRole('${e.id}', '${r}')">${r}</div>`
+            ).join('')}
+          </div>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+function changeRowStatus(empId, newStatus) {
+  const emp = tableEmployees.find(e => e.id === empId);
+  const old = emp.status;
+  emp.status = newStatus;
+  document.getElementById('ddTableLog').textContent = `${emp.name}: ${old} → ${newStatus}`;
+  renderDDTable();
+}
+function changeRowRole(empId, newRole) {
+  const emp = tableEmployees.find(e => e.id === empId);
+  const old = emp.role;
+  emp.role = newRole;
+  document.getElementById('ddTableLog').textContent = `${emp.name} role: ${old} → ${newRole}`;
+  renderDDTable();
+}
+renderDDTable();
+
+/* ============== BANKING WORKFLOW ============== */
+function getCustomer() {
+  try { return JSON.parse(localStorage.getItem('pw_customer') || 'null'); } catch(e) { return null; }
+}
+function setCustomer(c) {
+  if (c) localStorage.setItem('pw_customer', JSON.stringify(c));
+  else localStorage.removeItem('pw_customer');
+  refreshBankingUI();
+}
+function getAccounts() {
+  try { return JSON.parse(localStorage.getItem('pw_accounts') || '[]'); } catch(e) { return []; }
+}
+function setAccounts(arr) {
+  localStorage.setItem('pw_accounts', JSON.stringify(arr));
+  renderAccounts();
+}
+
+function handleOnboard(e) {
+  e.preventDefault();
+  const customer = {
+    id: 'CUST-' + Math.floor(100000 + Math.random() * 900000),
+    fullName: document.getElementById('onbName').value.trim(),
+    nid: document.getElementById('onbNid').value.trim(),
+    dob: document.getElementById('onbDob').value,
+    phone: document.getElementById('onbPhone').value.trim(),
+    email: document.getElementById('onbEmail').value.trim(),
+    address: document.getElementById('onbAddress').value.trim(),
+    occupation: document.getElementById('onbOccupation').value || 'Not specified',
+    onboardedAt: new Date().toLocaleString()
+  };
+  setCustomer(customer);
+  const msg = document.getElementById('onbMsg');
+  msg.classList.remove('show', 'error', 'info');
+  msg.classList.add('show', 'success');
+  msg.textContent = '✓ Customer onboarded successfully! ID: ' + customer.id;
+  showToast('Customer ' + customer.id + ' onboarded');
+  document.getElementById('onboardForm').reset();
+}
+
+function refreshBankingUI() {
+  const c = getCustomer();
+  const card = document.getElementById('customerCard');
+  const form = document.getElementById('onboardForm');
+  const depSection = document.getElementById('depositSection');
+  const loanSection = document.getElementById('loanSection');
+  const depBadge = document.getElementById('depositLockBadge');
+  const loanBadge = document.getElementById('loanLockBadge');
+
+  if (c) {
+    card.style.display = 'block';
+    card.innerHTML = `
+      <div class="customer-card">
+        <div class="customer-card-header">
+          <div>
+            <div style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em;">Onboarded Customer</div>
+            <div style="font-size: 18px; font-weight: 600; margin-top: 2px;" data-testid="customer-name">${escapeHtml(c.fullName)}</div>
+          </div>
+          <div style="text-align: right;">
+            <div class="customer-id" data-testid="customer-id">${c.id}</div>
+            <button class="icon-btn danger" data-testid="customer-clear" onclick="clearCustomer()" style="margin-top: 6px;">Remove</button>
+          </div>
+        </div>
+        <div class="customer-grid">
+          <div><div class="customer-field-label">NID/Passport</div><div class="customer-field-value" data-testid="customer-nid">${escapeHtml(c.nid)}</div></div>
+          <div><div class="customer-field-label">Date of Birth</div><div class="customer-field-value" data-testid="customer-dob">${c.dob}</div></div>
+          <div><div class="customer-field-label">Phone</div><div class="customer-field-value" data-testid="customer-phone">${escapeHtml(c.phone)}</div></div>
+          <div><div class="customer-field-label">Email</div><div class="customer-field-value" data-testid="customer-email">${escapeHtml(c.email)}</div></div>
+          <div><div class="customer-field-label">Occupation</div><div class="customer-field-value" data-testid="customer-occupation">${escapeHtml(c.occupation)}</div></div>
+          <div><div class="customer-field-label">Onboarded</div><div class="customer-field-value">${c.onboardedAt}</div></div>
+        </div>
+      </div>
+    `;
+    form.style.display = 'none';
+    depSection.classList.remove('banking-locked');
+    loanSection.classList.remove('banking-locked');
+    depBadge.className = 'status-badge status-active';
+    depBadge.textContent = '✓ Unlocked';
+    loanBadge.className = 'status-badge status-active';
+    loanBadge.textContent = '✓ Unlocked';
+  } else {
+    card.style.display = 'none';
+    form.style.display = 'block';
+    depSection.classList.add('banking-locked');
+    loanSection.classList.add('banking-locked');
+    depBadge.className = 'status-badge status-pending';
+    depBadge.textContent = '🔒 Locked';
+    loanBadge.className = 'status-badge status-pending';
+    loanBadge.textContent = '🔒 Locked';
+  }
+}
+
+function clearCustomer() {
+  if (!confirm('Remove this customer? Existing accounts will remain but become unlinked.')) return;
+  setCustomer(null);
+  document.getElementById('onbMsg').classList.remove('show');
+}
+
+function resetBanking() {
+  if (!confirm('Clear customer + all accounts?')) return;
+  localStorage.removeItem('pw_customer');
+  localStorage.removeItem('pw_accounts');
+  refreshBankingUI();
+  renderAccounts();
+  showToast('Banking data cleared');
+}
+
+/* === Deposit === */
+function onDepTypeChange() {
+  const t = document.getElementById('depType').value;
+  const tenureGroup = document.getElementById('depTenureGroup');
+  tenureGroup.style.display = (t === 'FDR' || t === 'DPS') ? 'block' : 'none';
+}
+
+function handleDepositOpen(e) {
+  e.preventDefault();
+  const c = getCustomer();
+  if (!c) return;
+  const type = document.getElementById('depType').value;
+  const account = {
+    id: 'DEP-' + Math.floor(1000000 + Math.random() * 9000000),
+    customerId: c.id,
+    customerName: c.fullName,
+    kind: 'deposit',
+    type: type,
+    currency: document.getElementById('depCurrency').value,
+    amount: Number(document.getElementById('depAmount').value),
+    tenure: (type === 'FDR' || type === 'DPS') ? Number(document.getElementById('depTenure').value) : null,
+    branch: document.getElementById('depBranch').value,
+    nominee: document.getElementById('depNominee').value || '—',
+    status: 'Active',
+    createdAt: new Date().toLocaleString()
+  };
+  const list = getAccounts();
+  list.push(account);
+  setAccounts(list);
+
+  const msg = document.getElementById('depMsg');
+  msg.classList.remove('show', 'error');
+  msg.classList.add('show', 'success');
+  msg.textContent = `✓ Deposit account opened! Account #${account.id} (${type}) — ${account.amount.toLocaleString()} ${account.currency}`;
+  showToast('Deposit account ' + account.id + ' created');
+  document.getElementById('depositForm').reset();
+  document.getElementById('depTenureGroup').style.display = 'none';
+}
+
+/* === Loan === */
+function updateEMI() {
+  const amount = Number(document.getElementById('loanAmount').value);
+  const tenure = Number(document.getElementById('loanTenure').value);
+  const typeSelect = document.getElementById('loanType');
+  const opt = typeSelect.options[typeSelect.selectedIndex];
+  const rate = opt && opt.dataset.rate ? Number(opt.dataset.rate) : 0;
+  const out = document.getElementById('loanEmi');
+
+  if (!amount || !tenure || !rate) { out.value = '—'; return; }
+  const monthlyRate = rate / 100 / 12;
+  const emi = (amount * monthlyRate * Math.pow(1 + monthlyRate, tenure)) / (Math.pow(1 + monthlyRate, tenure) - 1);
+  out.value = 'BDT ' + Math.round(emi).toLocaleString() + ' /month';
+}
+
+function handleLoanOpen(e) {
+  e.preventDefault();
+  const c = getCustomer();
+  if (!c) return;
+  const employment = document.querySelector('input[name="employment"]:checked').value;
+  const account = {
+    id: 'LOAN-' + Math.floor(1000000 + Math.random() * 9000000),
+    customerId: c.id,
+    customerName: c.fullName,
+    kind: 'loan',
+    type: document.getElementById('loanType').value,
+    amount: Number(document.getElementById('loanAmount').value),
+    tenure: Number(document.getElementById('loanTenure').value),
+    emi: document.getElementById('loanEmi').value,
+    purpose: document.getElementById('loanPurpose').value,
+    employment,
+    status: 'Pending Approval',
+    createdAt: new Date().toLocaleString()
+  };
+  const list = getAccounts();
+  list.push(account);
+  setAccounts(list);
+
+  const msg = document.getElementById('loanMsg');
+  msg.classList.remove('show', 'error');
+  msg.classList.add('show', 'success');
+  msg.textContent = `✓ Loan application submitted! Reference #${account.id} (${account.type}) — Status: Pending Approval`;
+  showToast('Loan ' + account.id + ' submitted');
+  document.getElementById('loanForm').reset();
+  document.getElementById('loanEmi').value = '—';
+}
+
+/* === Accounts list === */
+let accTab = 'all';
+function switchAccountsTab(btn) {
+  document.querySelectorAll('[data-acc-tab]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  accTab = btn.dataset.accTab;
+  renderAccounts();
+}
+
+function renderAccounts() {
+  const list = document.getElementById('accountsList');
+  if (!list) return;
+  const all = getAccounts();
+  const filtered = accTab === 'all' ? all : all.filter(a => a.kind === accTab);
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<div class="empty-state" data-testid="accounts-empty">No accounts to display. Open a deposit or loan account first.</div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(a => `
+    <div class="account-card" data-testid="account-card-${a.id}">
+      <div class="account-icon ${a.kind}">${a.kind === 'deposit' ? '💰' : '🏦'}</div>
+      <div>
+        <div class="account-id" data-testid="account-id-${a.id}">${a.id}</div>
+        <div class="account-title" data-testid="account-title-${a.id}">${escapeHtml(a.type)} ${a.kind === 'deposit' ? 'Account' : 'Loan'}</div>
+        <div class="account-meta">
+          ${escapeHtml(a.customerName)} · ${a.kind === 'deposit' ? (a.branch + ' branch') : (a.tenure + ' months @ ' + a.emi)} · Created ${a.createdAt}
+        </div>
+      </div>
+      <div style="text-align: right;">
+        <div class="account-amount" data-testid="account-amount-${a.id}">
+          ${a.kind === 'deposit' ? a.currency + ' ' + a.amount.toLocaleString() : 'BDT ' + a.amount.toLocaleString()}
+        </div>
+        <div style="margin-top: 6px;">
+          <span class="status-badge status-${a.status === 'Active' ? 'active' : a.status === 'Closed' ? 'closed' : 'pending'}" data-testid="account-status-${a.id}">${a.status}</span>
+          ${a.status !== 'Closed' ? `<button class="icon-btn danger" data-testid="account-close-${a.id}" onclick="closeAccount('${a.id}')" style="margin-left: 6px;">Close</button>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function closeAccount(id) {
+  if (!confirm('Close account ' + id + '?')) return;
+  const list = getAccounts();
+  const acc = list.find(a => a.id === id);
+  if (acc) {
+    acc.status = 'Closed';
+    setAccounts(list);
+    showToast('Account ' + id + ' closed');
+  }
+}
+
+refreshBankingUI();
+renderAccounts();
+</script>
+</body>
+</html>

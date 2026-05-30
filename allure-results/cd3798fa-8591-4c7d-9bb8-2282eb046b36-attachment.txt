@@ -1,0 +1,2 @@
+My Page URL is: https://automation-testing-website.netlify.app/
+My Page Title is: PlaywrightLab — Practice Site for Test Automation

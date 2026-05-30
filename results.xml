@@ -1,0 +1,10 @@
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="6.681773">
+<testsuite name="test_my_page\Dropdown.spec.js" timestamp="2026-05-29T08:02:01.309Z" hostname="chromium" tests="1" failures="0" skipped="0" time="5.919" errors="0">
+<testcase name="Handle Dropdown" classname="test_my_page\Dropdown.spec.js" time="5.919">
+<system-out>
+<![CDATA[Number of options:  [33m7[39m
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>
