@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 3
+      "actualWorkers": 1
     },
     "preserveOutput": "always",
     "reporter": [
@@ -53,7 +53,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 3
+          "actualWorkers": 1
         },
         "id": "chromium",
         "name": "chromium",
@@ -69,7 +69,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 3
+          "actualWorkers": 1
         },
         "id": "firefox",
         "name": "firefox",
@@ -85,7 +85,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 3
+          "actualWorkers": 1
         },
         "id": "webkit",
         "name": "webkit",
@@ -106,14 +106,14 @@
   },
   "suites": [
     {
-      "title": "Alerts.spec.js",
-      "file": "Alerts.spec.js",
+      "title": "iFrameNested.spec.js",
+      "file": "iFrameNested.spec.js",
       "column": 0,
       "line": 0,
       "specs": [
         {
-          "title": "Alerts with OK Button",
-          "ok": true,
+          "title": "iFrame Handling",
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -126,106 +126,52 @@
                 {
                   "workerIndex": 0,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 7104,
-                  "errors": [],
-                  "stdout": [
+                  "status": "timedOut",
+                  "duration": 30046,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
                     {
-                      "text": "Dialog message:  I am an alert box!\n"
-                    }
-                  ],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-05-30T16:21:36.214Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "2a47a96fdfc7190b297c-c61b1a70f821fcc45cb8",
-          "file": "Alerts.spec.js",
-          "line": 3,
-          "column": 5
-        },
-        {
-          "title": "Confirmation Dialog-Alert with OK and Cancel Button",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 30000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium",
-              "projectName": "chromium",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 1,
-                  "status": "passed",
-                  "duration": 7120,
-                  "errors": [],
-                  "stdout": [
-                    {
-                      "text": "Dialog message:  Press a button!\n"
-                    }
-                  ],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-05-30T16:21:36.217Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "2a47a96fdfc7190b297c-4510e197bf3b1323c082",
-          "file": "Alerts.spec.js",
-          "line": 21,
-          "column": 5
-        },
-        {
-          "title": "Prompt Dialog-Alert with OK and Cancel Button",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 30000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium",
-              "projectName": "chromium",
-              "results": [
-                {
-                  "workerIndex": 2,
-                  "parallelIndex": 2,
-                  "status": "passed",
-                  "duration": 15334,
-                  "errors": [],
-                  "stdout": [
-                    {
-                      "text": "Dialog message:  Please enter your name:\n"
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                     },
                     {
-                      "text": "Default value:  Harry Potter\n"
+                      "location": {
+                        "file": "F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\tests\\iFrameNested.spec.js",
+                        "column": 86,
+                        "line": 21
+                      },
+                      "message": "Error: locator.check: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('//*[@id=\"i9\"]/div[3]/div//input[@type=\"checkbox\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 19 |\u001b[39m     \u001b[36mconst\u001b[39m childFrame \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m frame3\u001b[33m.\u001b[39mchildFrames()\u001b[33m;\u001b[39m \u001b[90m// Get the child frames of the current frame\u001b[39m\n \u001b[90m 20 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m\"Total Nested iFrames inside frame3:\"\u001b[39m\u001b[33m,\u001b[39m childFrame\u001b[33m.\u001b[39mlength)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m childFrame[\u001b[35m0\u001b[39m]\u001b[33m.\u001b[39mlocator(\u001b[32m'//*[@id=\"i9\"]/div[3]/div//input[@type=\"checkbox\"]'\u001b[39m)\u001b[33m.\u001b[39mcheck()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m5000\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// Wait for 5 seconds\u001b[39m\n \u001b[90m 24 |\u001b[39m\u001b[0m\n\u001b[2m    at F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\tests\\iFrameNested.spec.js:21:86\u001b[22m"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "text": "Total iFrames: \u001b[33m2\u001b[39m\n"
+                    },
+                    {
+                      "text": "Total Nested iFrames inside frame3: \u001b[33m1\u001b[39m\n"
                     }
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-05-30T16:21:36.215Z",
+                  "startTime": "2026-05-31T17:26:14.007Z",
                   "annotations": [],
-                  "attachments": []
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\test-results\\iFrameNested-iFrame-Handling-chromium\\error-context.md"
+                    }
+                  ]
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
-          "id": "2a47a96fdfc7190b297c-4c7c8442a54e3af4f085",
-          "file": "Alerts.spec.js",
-          "line": 45,
+          "id": "a49e81e2cacd5aaa0b3b-cb5b3b691bb7b1296014",
+          "file": "iFrameNested.spec.js",
+          "line": 3,
           "column": 5
         }
       ]
@@ -233,11 +179,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-05-30T16:21:35.649Z",
-    "duration": 16190.712,
-    "expected": 3,
+    "startTime": "2026-05-31T17:26:13.473Z",
+    "duration": 30850.972999999998,
+    "expected": 0,
     "skipped": 0,
-    "unexpected": 0,
+    "unexpected": 1,
     "flaky": 0
   }
 }

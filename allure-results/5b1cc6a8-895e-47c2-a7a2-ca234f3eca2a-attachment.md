@@ -1,0 +1,325 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - link "Ui.Vision by a9t9 software - Image-Driven Automation" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - img "Ui.Vision by a9t9 software - Image-Driven Automation" [ref=e6]
+    - generic [ref=e7]:
+      - text: 
+      - list [ref=e8]:
+        - listitem [ref=e9]:
+          - link "1. Get Ui.Vision (free)" [ref=e10] [cursor=pointer]:
+            - /url: /#get
+          - list [ref=e11]:
+            - listitem [ref=e12]:
+              - link "Open-Source RPA" [ref=e13] [cursor=pointer]:
+                - /url: /rpa
+            - listitem [ref=e14]:
+              - link "Ui.Vision XModules" [ref=e15] [cursor=pointer]:
+                - /url: /rpa/x
+            - listitem [ref=e16]:
+              - link "Classic Browser Automation" [ref=e17] [cursor=pointer]:
+                - /url: /rpa/docs/selenium-ide
+            - listitem [ref=e18]:
+              - link "Desktop Automation" [ref=e19] [cursor=pointer]:
+                - /url: /rpa/x/desktop-automation
+            - listitem [ref=e20]:
+              - link "AI Computer Use" [ref=e21] [cursor=pointer]:
+                - /url: /ai/computeruse
+            - listitem [ref=e22]:
+              - link "Buy RPA PRO and Enterprise" [ref=e23] [cursor=pointer]:
+                - /url: /rpa/x/pricing
+            - listitem [ref=e24]:
+              - link "Visit Our User Forum" [ref=e25] [cursor=pointer]:
+                - /url: https://forum.ocr.space/
+        - listitem [ref=e26]:
+          - link "2. Install XModules" [ref=e27] [cursor=pointer]:
+            - /url: /rpa/x
+        - listitem [ref=e28]:
+          - link "OCR" [ref=e29] [cursor=pointer]:
+            - /url: https://ocr.space
+          - list [ref=e30]:
+            - listitem [ref=e31]:
+              - link "Free PDF OCR API" [ref=e32] [cursor=pointer]:
+                - /url: https://ocr.space/ocrapi
+                - text: Free PDF OCR API
+                - generic [ref=e33]: 
+            - listitem [ref=e34]:
+              - link "Free Online OCR" [ref=e35] [cursor=pointer]:
+                - /url: https://ocr.space
+                - text: Free Online OCR
+                - generic [ref=e36]: 
+            - listitem [ref=e37]:
+              - link "Create Searchable PDF" [ref=e38] [cursor=pointer]:
+                - /url: https://ocr.space/searchablepdf
+                - text: Create Searchable PDF
+                - generic [ref=e39]: 
+            - listitem [ref=e40]:
+              - link "Copyfish OCR" [ref=e41] [cursor=pointer]:
+                - /url: https://ocr.space/copyfish
+        - listitem [ref=e42]:
+          - link "Support" [ref=e43] [cursor=pointer]:
+            - /url: /contact
+          - list [ref=e44]:
+            - listitem [ref=e45]:
+              - link "RPA Docs" [ref=e46] [cursor=pointer]:
+                - /url: /rpa/docs
+            - listitem [ref=e47]:
+              - link "AI Integration Docs" [ref=e48] [cursor=pointer]:
+                - /url: /ai
+            - listitem [ref=e49]:
+              - link "RPA, OCR, AI Forum" [ref=e50] [cursor=pointer]:
+                - /url: https://forum.ocr.space
+            - listitem [ref=e51]:
+              - link "Contact Us" [ref=e52] [cursor=pointer]:
+                - /url: /contact
+            - listitem [ref=e53]:
+              - link "About Us" [ref=e54] [cursor=pointer]:
+                - /url: /about
+  - generic [ref=e55]:
+    - generic [ref=e57]:
+      - generic:
+        - generic:
+          - generic [ref=e58]:
+            - heading "Open-Source RPA Desktop Automation| with Vision, OCR and Anthropic AI" [level=1] [ref=e59]:
+              - text: Open-Source RPA
+              - generic [ref=e60]: Desktop Automation|
+              - text: with Vision, OCR and Anthropic AI
+            - heading "Join 150,000+ users and automate workflows on your desktop and in the browser." [level=2] [ref=e61]:
+              - text: Join
+              - emphasis [ref=e62]: 150,000+ users
+              - text: and automate workflows on your desktop and in the browser.
+            - 'link "Get started:  Install the free browser extension!" [ref=e63] [cursor=pointer]':
+              - /url: "#get"
+              - text: "Get started:"
+              - generic [ref=e64]: 
+              - text: Install the free browser extension!
+          - link "RPA Software, Web Automation and Desktop Automation explained in 12 minutes" [ref=e66] [cursor=pointer]:
+            - /url: "#"
+            - img "RPA Software, Web Automation and Desktop Automation explained in 12 minutes" [ref=e67]
+    - generic [ref=e69]:
+      - paragraph [ref=e70]: Easy hybrid workflow automation with Selenium-style commands, Computer Vision/OCR, and AI - all from a simple browser extension.
+      - paragraph [ref=e71]:
+        - text: "Get started with: Ui.Vision"
+        - link "⭳for Chrome" [ref=e72] [cursor=pointer]:
+          - /url: https://chromewebstore.google.com/detail/uivision/gcbalfbdmfieckjlnblleoemohcganoc
+        - text: ","
+        - link "⭳for Edge" [ref=e73] [cursor=pointer]:
+          - /url: https://microsoftedge.microsoft.com/addons/detail/uivision/goapmjinbaeomoemgdcnnhoedopjnddd
+        - text: ", or"
+        - link "⭳for Firefox" [ref=e74] [cursor=pointer]:
+          - /url: https://addons.mozilla.org/en-US/firefox/addon/rpa/
+        - text: .
+      - paragraph [ref=e75]: The browser extension enables automation of both browser-based workflows and desktop applications across Windows, Mac, and Linux.
+      - paragraph [ref=e76]:
+        - text: Ui.Vision is open-source and provides
+        - link "enterprise-grade security" [ref=e77] [cursor=pointer]:
+          - /url: /rpa#security
+        - text: . Your data never leaves your machine. Everything runs local.
+      - generic [ref=e79]:
+        - generic [ref=e82]:
+          - generic [ref=e83]: Ui.Vision for Chrome
+          - img "Ui.Vision for Chrome" [ref=e84]
+          - generic [ref=e85] [cursor=pointer]:
+            - generic [ref=e86]: 
+            - link "One Click Install" [ref=e87]:
+              - /url: https://chromewebstore.google.com/detail/uivision/gcbalfbdmfieckjlnblleoemohcganoc
+          - generic [ref=e88]: (Link goes to Chrome Web Store)
+        - generic [ref=e91]:
+          - generic [ref=e92]: Ui.Vision for Edge
+          - img "Ui.Vision for Edge" [ref=e93]
+          - generic [ref=e94] [cursor=pointer]:
+            - generic [ref=e95]: 
+            - link "One Click Install" [ref=e96]:
+              - /url: https://microsoftedge.microsoft.com/addons/detail/uivision/goapmjinbaeomoemgdcnnhoedopjnddd
+          - generic [ref=e97]: (Link goes to Edge Add-ons Store)
+        - generic [ref=e100]:
+          - generic [ref=e101]: Ui.Vision for Firefox
+          - img "Ui.Vision for Firefox" [ref=e102]
+          - generic [ref=e103] [cursor=pointer]:
+            - generic [ref=e104]: 
+            - link "One Click Install" [ref=e105]:
+              - /url: https://addons.mozilla.org/firefox/addon/rpa
+          - generic [ref=e106]: (Link goes to Firefox Add-on Gallery)
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - generic [ref=e110]:
+            - generic [ref=e111]: 
+            - link "Browser Automation" [ref=e112] [cursor=pointer]:
+              - /url: /rpa/#web
+            - text: and
+            - link "Selenium IDE" [ref=e113] [cursor=pointer]:
+              - /url: /rpa/#selenium-ide
+            - text: import/export
+          - generic [ref=e114]:
+            - generic [ref=e115]: 
+            - link "Command Line API" [ref=e116] [cursor=pointer]:
+              - /url: /rpa/#cmd
+        - generic [ref=e117]:
+          - generic [ref=e118]:
+            - generic [ref=e119]: 
+            - link "Desktop Automation" [ref=e120] [cursor=pointer]:
+              - /url: /rpa/x/desktop-automation
+          - generic [ref=e121]:
+            - generic [ref=e122]: 
+            - text: "New:"
+            - link "Anthropic Claude Computer Use" [ref=e123] [cursor=pointer]:
+              - /url: /ai/computeruse
+            - text: Integration
+      - generic [ref=e124]:
+        - generic [ref=e125]:
+          - heading "More information" [level=2] [ref=e126]
+          - paragraph [ref=e127]:
+            - text: For more information about our
+            - link "free and open-source RPA tool" [ref=e128] [cursor=pointer]:
+              - /url: /rpa/
+            - text: visit the detailed
+            - link "user manual" [ref=e129] [cursor=pointer]:
+              - /url: /rpa/docs/
+            - text: page and meet fellow automation experts in the
+            - link "RPA software forum" [ref=e130] [cursor=pointer]:
+              - /url: https://forum.ocr.space/
+            - text: .
+        - generic:
+          - generic [ref=e131]:
+            - heading "Use Ui.Vision for..." [level=3] [ref=e132]
+            - list [ref=e133]:
+              - listitem [ref=e134]:
+                - generic [ref=e135]: 
+                - text: ... for
+                - link "Browser Automation" [ref=e136] [cursor=pointer]:
+                  - /url: /rpa
+              - listitem [ref=e137]:
+                - generic [ref=e138]: 
+                - text: ... for
+                - link "Desktop Automation" [ref=e139] [cursor=pointer]:
+                  - /url: /rpa/x/desktop-automation
+              - listitem [ref=e140]:
+                - generic [ref=e141]: 
+                - text: ... for
+                - link "Web Scraping" [ref=e142] [cursor=pointer]:
+                  - /url: /rpa/docs/selenium-ide/web-scraping
+              - listitem [ref=e143]:
+                - generic [ref=e144]: 
+                - text: ... for
+                - link "Screen Scraping with OCR" [ref=e145] [cursor=pointer]:
+                  - /url: /rpa/x/desktop-automation/screen-scraping
+              - listitem [ref=e146]:
+                - generic [ref=e147]: 
+                - text: ... for
+                - link "AI Computer Use" [ref=e148] [cursor=pointer]:
+                  - /url: /ai
+          - generic [ref=e149]:
+            - heading "Ui.Vision RPA in Key Points" [level=3] [ref=e150]:
+              - generic [ref=e151]:
+                - emphasis [ref=e152]: Ui.Vision RPA
+                - text: in Key Points
+            - list [ref=e153]:
+              - listitem [ref=e154]:
+                - generic [ref=e155]: 
+                - text: Screenshot-Driven Automation
+              - listitem [ref=e156]:
+                - generic [ref=e157]: 
+                - text: Works on the most complex websites
+              - listitem [ref=e158]:
+                - generic [ref=e159]: 
+                - text: Visual Record & Replay
+              - listitem [ref=e160]:
+                - generic [ref=e161]: 
+                - text: Automate File Downloads/Uploads
+              - listitem [ref=e162]:
+                - generic [ref=e163]: 
+                - text: Data-driven testing with CSV file import
+              - listitem [ref=e164]:
+                - generic [ref=e165]: 
+                - text: Built-in Anthropic Claude
+                - link "Computer Use" [ref=e166] [cursor=pointer]:
+                  - /url: /ai/computeruse
+          - generic [ref=e167]:
+            - heading "Ui.Vision RPA Resources" [level=3] [ref=e168]:
+              - generic [ref=e169]:
+                - emphasis [ref=e170]: Ui.Vision RPA
+                - text: Resources
+            - list [ref=e171]:
+              - listitem [ref=e172]:
+                - generic [ref=e173]: 
+                - link "User Manual/Command line syntax" [ref=e174] [cursor=pointer]:
+                  - /url: /rpa/docs
+              - listitem [ref=e175]:
+                - generic [ref=e176]: 
+                - link "Computer Use Demo" [ref=e177] [cursor=pointer]:
+                  - /url: /ai/computeruse
+              - listitem [ref=e178]:
+                - generic [ref=e179]: 
+                - link "Our Open-Source RPA Blog" [ref=e180] [cursor=pointer]:
+                  - /url: /blog
+              - listitem [ref=e181]:
+                - generic [ref=e182]: 
+                - link "Ui.Vision Source Code:" [ref=e183] [cursor=pointer]:
+                  - /url: https://github.com/A9T9/RPA
+              - listitem [ref=e184]
+              - listitem [ref=e186]
+  - generic [ref=e189]:
+    - generic [ref=e190]:
+      - 'heading "Fresh from the Ui.Vision Forum: The Latest 3 Topics. Join the discussions:" [level=2] [ref=e191]'
+      - iframe [ref=e193]:
+        - generic [active] [ref=f1e1]:
+          - link "Create new topic" [ref=f1e2] [cursor=pointer]:
+            - /url: https://forum.ocr.space/new-topic?
+            - button "Create new topic" [ref=f1e3]:
+              - generic [ref=f1e5]: Create new topic
+          - generic [ref=f1e6]:
+            - generic [ref=f1e10]:
+              - link "How to have UI.Vision identify a comment section on TikTok and type a comment once the comment section has been identified" [ref=f1e12] [cursor=pointer]:
+                - /url: https://forum.ocr.space/t/how-to-have-ui-vision-identify-a-comment-section-on-tiktok-and-type-a-comment-once-the-comment-section-has-been-identified/11766
+              - generic "May 29, 2026 10:38pm" [ref=f1e13]: Last reply 2 days ago
+              - generic [ref=f1e14]:
+                - img [ref=f1e15]
+                - text: Charlton101 Created over 3 years ago
+              - generic [ref=f1e17]: 5 replies
+            - generic [ref=f1e21]:
+              - link "Odoo - Each part has a different URL - how to work around" [ref=f1e23] [cursor=pointer]:
+                - /url: https://forum.ocr.space/t/odoo-each-part-has-a-different-url-how-to-work-around/29777
+              - generic [ref=f1e24]:
+                - img [ref=f1e25]
+                - text: kyoung Created 3 days ago
+            - generic [ref=f1e30]:
+              - link "Answers for science" [ref=f1e32] [cursor=pointer]:
+                - /url: https://forum.ocr.space/t/answers-for-science/29776
+              - generic [ref=f1e33]:
+                - img [ref=f1e34]
+                - text: Gabriela_Mercado Created 4 days ago
+    - generic [ref=e194]:
+      - link " RPA, OCR, AI Forums" [ref=e195] [cursor=pointer]:
+        - /url: https://forum.ocr.space/
+        - generic [ref=e196]: 
+        - text: RPA, OCR, AI Forums
+      - link " Desktop Automation" [ref=e197] [cursor=pointer]:
+        - /url: /rpa/x/desktop-automation
+        - generic [ref=e198]: 
+        - text: Desktop Automation
+      - link " Selenium IDE" [ref=e199] [cursor=pointer]:
+        - /url: /rpa/#selenium-ide
+        - generic [ref=e200]: 
+        - text: Selenium IDE
+      - link " AI Claude Computer Use" [ref=e201] [cursor=pointer]:
+        - /url: /ai/computeruse
+        - generic [ref=e202]: 
+        - text: AI Claude Computer Use
+      - link " Ui.Vision Source Code:" [ref=e203] [cursor=pointer]:
+        - /url: https://github.com/A9T9/RPA
+        - generic [ref=e204]: 
+        - text: "Ui.Vision Source Code:"
+    - generic [ref=e207]:
+      - text: ← Meet the Ui.Vision team and users in our
+      - link "forums" [ref=e208] [cursor=pointer]:
+        - /url: https://forum.ocr.space
+      - text: .
+  - paragraph [ref=e216]:
+    - text: Copyright © 2016-2026 by a9t9 software GmbH.
+    - link "Our Privacy Policy" [ref=e217] [cursor=pointer]:
+      - /url: /privacypolicy
+    - text: ". Website Version: V5.17"
+```
