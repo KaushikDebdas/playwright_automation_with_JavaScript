@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 1
+      "actualWorkers": 3
     },
     "preserveOutput": "always",
     "reporter": [
@@ -53,7 +53,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 3
         },
         "id": "chromium",
         "name": "chromium",
@@ -69,7 +69,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 3
         },
         "id": "firefox",
         "name": "firefox",
@@ -85,7 +85,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 3
         },
         "id": "webkit",
         "name": "webkit",
@@ -106,14 +106,57 @@
   },
   "suites": [
     {
-      "title": "iFrameNested.spec.js",
-      "file": "iFrameNested.spec.js",
+      "title": "Table.spec.js",
+      "file": "Table.spec.js",
       "column": 0,
       "line": 0,
       "specs": [
         {
-          "title": "iFrame Handling",
-          "ok": false,
+          "title": "Table Data Extraction",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "location": {
+                    "file": "F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\tests\\Table.spec.js",
+                    "line": 3,
+                    "column": 6
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": -1,
+                  "parallelIndex": -1,
+                  "status": "skipped",
+                  "duration": 0,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-02T15:37:02.730Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0c82e0270907cb59ec27-e018908bbdbb95bb176c",
+          "file": "Table.spec.js",
+          "line": 3,
+          "column": 6
+        },
+        {
+          "title": "Print First Page Data from Table using for loop",
+          "ok": true,
           "tags": [],
           "tests": [
             {
@@ -125,53 +168,375 @@
               "results": [
                 {
                   "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "timedOut",
-                  "duration": 30046,
-                  "error": {
-                    "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
-                    "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
-                  },
-                  "errors": [
-                    {
-                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
-                    },
-                    {
-                      "location": {
-                        "file": "F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\tests\\iFrameNested.spec.js",
-                        "column": 86,
-                        "line": 21
-                      },
-                      "message": "Error: locator.check: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('//*[@id=\"i9\"]/div[3]/div//input[@type=\"checkbox\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 19 |\u001b[39m     \u001b[36mconst\u001b[39m childFrame \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m frame3\u001b[33m.\u001b[39mchildFrames()\u001b[33m;\u001b[39m \u001b[90m// Get the child frames of the current frame\u001b[39m\n \u001b[90m 20 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m\"Total Nested iFrames inside frame3:\"\u001b[39m\u001b[33m,\u001b[39m childFrame\u001b[33m.\u001b[39mlength)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m childFrame[\u001b[35m0\u001b[39m]\u001b[33m.\u001b[39mlocator(\u001b[32m'//*[@id=\"i9\"]/div[3]/div//input[@type=\"checkbox\"]'\u001b[39m)\u001b[33m.\u001b[39mcheck()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m5000\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// Wait for 5 seconds\u001b[39m\n \u001b[90m 24 |\u001b[39m\u001b[0m\n\u001b[2m    at F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\tests\\iFrameNested.spec.js:21:86\u001b[22m"
-                    }
-                  ],
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 8510,
+                  "errors": [],
                   "stdout": [
                     {
-                      "text": "Total iFrames: \u001b[33m2\u001b[39m\n"
+                      "text": "Total Columns: 4\n"
                     },
                     {
-                      "text": "Total Nested iFrames inside frame3: \u001b[33m1\u001b[39m\n"
+                      "text": "Total Rows: 5\n"
+                    },
+                    {
+                      "text": "1\n"
+                    },
+                    {
+                      "text": "Smartphone\n"
+                    },
+                    {
+                      "text": "$10.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "2\n"
+                    },
+                    {
+                      "text": "Laptop\n"
+                    },
+                    {
+                      "text": "$19.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "3\n"
+                    },
+                    {
+                      "text": "Tablet \n"
+                    },
+                    {
+                      "text": "$5.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "4\n"
+                    },
+                    {
+                      "text": "Smartwatch\n"
+                    },
+                    {
+                      "text": "$7.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "5\n"
+                    },
+                    {
+                      "text": "Wireless Earbuds\n"
+                    },
+                    {
+                      "text": "$8.99\n"
+                    },
+                    {
+                      "text": "\n"
                     }
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-05-31T17:26:14.007Z",
+                  "startTime": "2026-06-02T15:37:03.351Z",
                   "annotations": [],
-                  "attachments": [
-                    {
-                      "name": "error-context",
-                      "contentType": "text/markdown",
-                      "path": "F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\test-results\\iFrameNested-iFrame-Handling-chromium\\error-context.md"
-                    }
-                  ]
+                  "attachments": []
                 }
               ],
-              "status": "unexpected"
+              "status": "expected"
             }
           ],
-          "id": "a49e81e2cacd5aaa0b3b-cb5b3b691bb7b1296014",
-          "file": "iFrameNested.spec.js",
-          "line": 3,
+          "id": "0c82e0270907cb59ec27-fe666f726832c0cc9f05",
+          "file": "Table.spec.js",
+          "line": 55,
+          "column": 5
+        },
+        {
+          "title": "Handle Pagination in Table",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 29795,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Total Columns: 4\n"
+                    },
+                    {
+                      "text": "Total Rows: 5\n"
+                    },
+                    {
+                      "text": "Number of pagination links: \u001b[33m4\u001b[39m\n"
+                    },
+                    {
+                      "text": "1\n"
+                    },
+                    {
+                      "text": "Smartphone\n"
+                    },
+                    {
+                      "text": "$10.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "2\n"
+                    },
+                    {
+                      "text": "Laptop\n"
+                    },
+                    {
+                      "text": "$19.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "3\n"
+                    },
+                    {
+                      "text": "Tablet \n"
+                    },
+                    {
+                      "text": "$5.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "4\n"
+                    },
+                    {
+                      "text": "Smartwatch\n"
+                    },
+                    {
+                      "text": "$7.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "5\n"
+                    },
+                    {
+                      "text": "Wireless Earbuds\n"
+                    },
+                    {
+                      "text": "$8.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "6\n"
+                    },
+                    {
+                      "text": "Bluetooth Speaker\n"
+                    },
+                    {
+                      "text": "$9.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "7\n"
+                    },
+                    {
+                      "text": "Television\n"
+                    },
+                    {
+                      "text": "$20.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "8\n"
+                    },
+                    {
+                      "text": "Action Camera\n"
+                    },
+                    {
+                      "text": "$15.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "9\n"
+                    },
+                    {
+                      "text": "Gaming Console\n"
+                    },
+                    {
+                      "text": "$5.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "10\n"
+                    },
+                    {
+                      "text": "Digital Camera\n"
+                    },
+                    {
+                      "text": "$16.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "11\n"
+                    },
+                    {
+                      "text": "Smart Home Hub\n"
+                    },
+                    {
+                      "text": "$20.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "12\n"
+                    },
+                    {
+                      "text": "Router\n"
+                    },
+                    {
+                      "text": "$24.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "13\n"
+                    },
+                    {
+                      "text": "Portable Charger\n"
+                    },
+                    {
+                      "text": "$30.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "14\n"
+                    },
+                    {
+                      "text": "Fitness Tracker\n"
+                    },
+                    {
+                      "text": "$19.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "15\n"
+                    },
+                    {
+                      "text": "Desktop Computer\n"
+                    },
+                    {
+                      "text": "$2.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "16\n"
+                    },
+                    {
+                      "text": "E-Reader\n"
+                    },
+                    {
+                      "text": "$10.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "17\n"
+                    },
+                    {
+                      "text": "VR Headset\n"
+                    },
+                    {
+                      "text": "$11.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "18\n"
+                    },
+                    {
+                      "text": "Streaming Device\n"
+                    },
+                    {
+                      "text": "$13.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "19\n"
+                    },
+                    {
+                      "text": "Soundbar\n"
+                    },
+                    {
+                      "text": "$16.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    },
+                    {
+                      "text": "20\n"
+                    },
+                    {
+                      "text": "Wireless Mouse 20\n"
+                    },
+                    {
+                      "text": "$17.99\n"
+                    },
+                    {
+                      "text": "\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-02T15:37:03.351Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0c82e0270907cb59ec27-5326b98ebea92acddb73",
+          "file": "Table.spec.js",
+          "line": 92,
           "column": 5
         }
       ]
@@ -179,11 +544,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-05-31T17:26:13.473Z",
-    "duration": 30850.972999999998,
-    "expected": 0,
-    "skipped": 0,
-    "unexpected": 1,
+    "startTime": "2026-06-02T15:37:02.708Z",
+    "duration": 30763.982,
+    "expected": 2,
+    "skipped": 1,
+    "unexpected": 0,
     "flaky": 0
   }
 }

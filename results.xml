@@ -1,33 +1,125 @@
-<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="30.850973">
-<testsuite name="iFrameNested.spec.js" timestamp="2026-05-31T17:26:13.488Z" hostname="chromium" tests="1" failures="1" skipped="0" time="30.046" errors="0">
-<testcase name="iFrame Handling" classname="iFrameNested.spec.js" time="30.046">
-<failure message="iFrameNested.spec.js:3:5 iFrame Handling" type="FAILURE">
-<![CDATA[  [chromium] › iFrameNested.spec.js:3:5 › iFrame Handling ──────────────────────────────────────────
-
-    Test timeout of 30000ms exceeded.
-
-    Error: locator.check: Test timeout of 30000ms exceeded.
-    Call log:
-      - waiting for locator('//*[@id="i9"]/div[3]/div//input[@type="checkbox"]')
-
-
-      19 |     const childFrame = await frame3.childFrames(); // Get the child frames of the current frame
-      20 |     console.log("Total Nested iFrames inside frame3:", childFrame.length);
-    > 21 |     await childFrame[0].locator('//*[@id="i9"]/div[3]/div//input[@type="checkbox"]').check();
-         |                                                                                      ^
-      22 |
-      23 |     await page.waitForTimeout(5000); // Wait for 5 seconds
-      24 |
-        at F:\Study Videos\SQA\SQA Batch - 15\Projects\PlaywrightAutomation\playwright_automation_with_JavaScript\tests\iFrameNested.spec.js:21:86
-
-    Error Context: ..\test-results\iFrameNested-iFrame-Handling-chromium\error-context.md
-]]>
-</failure>
+<testsuites id="" name="" tests="3" failures="0" skipped="1" errors="0" time="30.763982">
+<testsuite name="Table.spec.js" timestamp="2026-06-02T15:37:02.728Z" hostname="chromium" tests="3" failures="0" skipped="1" time="38.305" errors="0">
+<testcase name="Table Data Extraction" classname="Table.spec.js" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Print First Page Data from Table using for loop" classname="Table.spec.js" time="8.51">
 <system-out>
-<![CDATA[Total iFrames: [33m2[39m
-Total Nested iFrames inside frame3: [33m1[39m
+<![CDATA[Total Columns: 4
+Total Rows: 5
+1
+Smartphone
+$10.99
 
-[[ATTACHMENT|test-results\iFrameNested-iFrame-Handling-chromium\error-context.md]]
+2
+Laptop
+$19.99
+
+3
+Tablet 
+$5.99
+
+4
+Smartwatch
+$7.99
+
+5
+Wireless Earbuds
+$8.99
+
+]]>
+</system-out>
+</testcase>
+<testcase name="Handle Pagination in Table" classname="Table.spec.js" time="29.795">
+<system-out>
+<![CDATA[Total Columns: 4
+Total Rows: 5
+Number of pagination links: [33m4[39m
+1
+Smartphone
+$10.99
+
+2
+Laptop
+$19.99
+
+3
+Tablet 
+$5.99
+
+4
+Smartwatch
+$7.99
+
+5
+Wireless Earbuds
+$8.99
+
+6
+Bluetooth Speaker
+$9.99
+
+7
+Television
+$20.99
+
+8
+Action Camera
+$15.99
+
+9
+Gaming Console
+$5.99
+
+10
+Digital Camera
+$16.99
+
+11
+Smart Home Hub
+$20.99
+
+12
+Router
+$24.99
+
+13
+Portable Charger
+$30.99
+
+14
+Fitness Tracker
+$19.99
+
+15
+Desktop Computer
+$2.99
+
+16
+E-Reader
+$10.99
+
+17
+VR Headset
+$11.99
+
+18
+Streaming Device
+$13.99
+
+19
+Soundbar
+$16.99
+
+20
+Wireless Mouse 20
+$17.99
+
 ]]>
 </system-out>
 </testcase>
