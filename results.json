@@ -99,20 +99,20 @@
     ],
     "shard": null,
     "updateSnapshots": "missing",
-    "updateSourceMethod": "3way",
+    "updateSourceMethod": "patch",
     "version": "1.56.0",
     "workers": 6,
     "webServer": null
   },
   "suites": [
     {
-      "title": "20.MouseHover.spec.js",
-      "file": "20.MouseHover.spec.js",
+      "title": "22.MouseDoubleClick.spec.js",
+      "file": "22.MouseDoubleClick.spec.js",
       "column": 0,
       "line": 0,
       "specs": [
         {
-          "title": "Mouse Hover Action with Assertions",
+          "title": "Mouse Double Click Action",
           "ok": true,
           "tags": [],
           "tests": [
@@ -127,12 +127,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 22167,
+                  "duration": 14662,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-05T17:29:50.228Z",
+                  "startTime": "2026-09-05T17:36:34.358Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -140,9 +140,9 @@
               "status": "expected"
             }
           ],
-          "id": "0af68ee708cadcfa638c-59b364dccfde54975677",
-          "file": "20.MouseHover.spec.js",
-          "line": 29,
+          "id": "562d78062452bcbd4bd4-5a762bcb63bad7f86f62",
+          "file": "22.MouseDoubleClick.spec.js",
+          "line": 3,
           "column": 5
         }
       ]
@@ -150,8 +150,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-09-05T17:29:48.982Z",
-    "duration": 23561.34800000023,
+    "startTime": "2026-09-05T17:36:33.800Z",
+    "duration": 15552.902,
     "expected": 1,
     "skipped": 0,
     "unexpected": 0,
