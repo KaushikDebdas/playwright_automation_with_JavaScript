@@ -25,3 +25,17 @@ test('Mouse Hover Action', async ({ page }) => {
   await page.waitForTimeout(5000); // Wait for 5 seconds to ensure the page is fully loaded
 
 });
+
+test('Mouse Hover Action with Assertions', async ({ page }) => {
+  await page.goto('https://testautomationpractice.blogspot.com/');
+
+  await page.getByRole('button', { name: 'Point Me' }).hover();
+  await page.waitForTimeout(5000); // Wait for 5 seconds to ensure the page is fully loaded
+
+  await page.getByRole('link', { name: 'Mobiles' }).hover();
+  await page.waitForTimeout(5000); // Wait for 5 seconds to ensure the page is fully loaded
+
+  await page.getByRole('link', { name: 'Laptops' }).hover();
+  await page.waitForTimeout(5000); // Wait for 5 seconds to ensure the page is fully loaded
+
+});

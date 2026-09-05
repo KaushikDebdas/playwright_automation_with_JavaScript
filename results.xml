@@ -1,8 +1,6 @@
-<testsuites id="" name="" tests="2" failures="0" skipped="0" errors="0" time="6.632364">
-<testsuite name="21.MouseRightLeftClick.spec.js" timestamp="2026-09-05T17:24:58.613Z" hostname="chromium" tests="2" failures="0" skipped="0" time="11.185" errors="0">
-<testcase name="Mouse Right Click Action" classname="21.MouseRightLeftClick.spec.js" time="5.676">
-</testcase>
-<testcase name="Mouse Left Click Action" classname="21.MouseRightLeftClick.spec.js" time="5.509">
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="23.56134800000023">
+<testsuite name="20.MouseHover.spec.js" timestamp="2026-09-05T17:29:49.589Z" hostname="chromium" tests="1" failures="0" skipped="0" time="22.167" errors="0">
+<testcase name="Mouse Hover Action with Assertions" classname="20.MouseHover.spec.js" time="22.167">
 </testcase>
 </testsuite>
 </testsuites>

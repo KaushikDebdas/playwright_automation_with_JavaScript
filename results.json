@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 2
+      "actualWorkers": 1
     },
     "preserveOutput": "always",
     "reporter": [
@@ -53,7 +53,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 2
+          "actualWorkers": 1
         },
         "id": "chromium",
         "name": "chromium",
@@ -69,7 +69,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 2
+          "actualWorkers": 1
         },
         "id": "firefox",
         "name": "firefox",
@@ -85,7 +85,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 2
+          "actualWorkers": 1
         },
         "id": "webkit",
         "name": "webkit",
@@ -99,20 +99,20 @@
     ],
     "shard": null,
     "updateSnapshots": "missing",
-    "updateSourceMethod": "patch",
+    "updateSourceMethod": "3way",
     "version": "1.56.0",
     "workers": 6,
     "webServer": null
   },
   "suites": [
     {
-      "title": "21.MouseRightLeftClick.spec.js",
-      "file": "21.MouseRightLeftClick.spec.js",
+      "title": "20.MouseHover.spec.js",
+      "file": "20.MouseHover.spec.js",
       "column": 0,
       "line": 0,
       "specs": [
         {
-          "title": "Mouse Right Click Action",
+          "title": "Mouse Hover Action with Assertions",
           "ok": true,
           "tags": [],
           "tests": [
@@ -127,12 +127,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5676,
+                  "duration": 22167,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-05T17:24:59.193Z",
+                  "startTime": "2026-09-05T17:29:50.228Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -140,43 +140,9 @@
               "status": "expected"
             }
           ],
-          "id": "bca3acc479abaa4bcdd9-e309e1b3fce2e4bccbb8",
-          "file": "21.MouseRightLeftClick.spec.js",
-          "line": 3,
-          "column": 5
-        },
-        {
-          "title": "Mouse Left Click Action",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 30000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium",
-              "projectName": "chromium",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 1,
-                  "status": "passed",
-                  "duration": 5509,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-09-05T17:24:59.197Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "bca3acc479abaa4bcdd9-1c6e345af4ae123cac13",
-          "file": "21.MouseRightLeftClick.spec.js",
-          "line": 15,
+          "id": "0af68ee708cadcfa638c-59b364dccfde54975677",
+          "file": "20.MouseHover.spec.js",
+          "line": 29,
           "column": 5
         }
       ]
@@ -184,9 +150,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-09-05T17:24:58.598Z",
-    "duration": 6632.364,
-    "expected": 2,
+    "startTime": "2026-09-05T17:29:48.982Z",
+    "duration": 23561.34800000023,
+    "expected": 1,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
