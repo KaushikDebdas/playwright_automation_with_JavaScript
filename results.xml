@@ -1,6 +1,28 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="15.552902">
-<testsuite name="22.MouseDoubleClick.spec.js" timestamp="2026-09-05T17:36:33.815Z" hostname="chromium" tests="1" failures="0" skipped="0" time="14.662" errors="0">
-<testcase name="Mouse Double Click Action" classname="22.MouseDoubleClick.spec.js" time="14.662">
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="7.935494999999995">
+<testsuite name="23.DragAndDrop.spec.js" timestamp="2026-09-05T17:50:33.101Z" hostname="chromium" tests="1" failures="1" skipped="0" time="6.575" errors="0">
+<testcase name="Drag and Drop using JavaScript" classname="23.DragAndDrop.spec.js" time="6.575">
+<failure message="23.DragAndDrop.spec.js:40:5 Drag and Drop using JavaScript" type="FAILURE">
+<![CDATA[  [chromium] › 23.DragAndDrop.spec.js:40:5 › Drag and Drop using JavaScript ────────────────────────
+
+    Error: Too many arguments. If you need to pass more than 1 argument to the function wrap them in an object.
+
+      43 |   const droppable = await page.locator("#droppable"); // Locate the droppable element
+      44 |   // Perform drag and drop action using JavaScript
+    > 45 |   await page.evaluate((draggable, droppable) => {
+         |              ^
+      46 |     const dataTransfer = new DataTransfer();
+      47 |     draggable.dispatchEvent(new DragEvent('dragstart', { dataTransfer }));
+      48 |     droppable.dispatchEvent(new DragEvent('drop', { dataTransfer }));
+        at F:\Study Videos\SQA\SQA Batch - 15\Projects\PlaywrightAutomation\playwright_automation_with_JavaScript\tests\23.DragAndDrop.spec.js:45:14
+
+    Error Context: ..\test-results\23.DragAndDrop-Drag-and-Drop-using-JavaScript-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\23.DragAndDrop-Drag-and-Drop-using-JavaScript-chromium\error-context.md]]
+]]>
+</system-out>
 </testcase>
 </testsuite>
 </testsuites>

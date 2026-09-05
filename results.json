@@ -99,21 +99,21 @@
     ],
     "shard": null,
     "updateSnapshots": "missing",
-    "updateSourceMethod": "patch",
+    "updateSourceMethod": "3way",
     "version": "1.56.0",
     "workers": 6,
     "webServer": null
   },
   "suites": [
     {
-      "title": "22.MouseDoubleClick.spec.js",
-      "file": "22.MouseDoubleClick.spec.js",
+      "title": "23.DragAndDrop.spec.js",
+      "file": "23.DragAndDrop.spec.js",
       "column": 0,
       "line": 0,
       "specs": [
         {
-          "title": "Mouse Double Click Action",
-          "ok": true,
+          "title": "Drag and Drop using JavaScript",
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -126,23 +126,53 @@
                 {
                   "workerIndex": 0,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 14662,
-                  "errors": [],
+                  "status": "failed",
+                  "duration": 6575,
+                  "error": {
+                    "message": "Error: Too many arguments. If you need to pass more than 1 argument to the function wrap them in an object.",
+                    "stack": "Error: Too many arguments. If you need to pass more than 1 argument to the function wrap them in an object.\n    at F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\tests\\23.DragAndDrop.spec.js:45:14",
+                    "location": {
+                      "file": "F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\tests\\23.DragAndDrop.spec.js",
+                      "column": 14,
+                      "line": 45
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 43 |\u001b[39m   \u001b[36mconst\u001b[39m droppable \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m\"#droppable\"\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// Locate the droppable element\u001b[39m\n \u001b[90m 44 |\u001b[39m   \u001b[90m// Perform drag and drop action using JavaScript\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 45 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mevaluate((draggable\u001b[33m,\u001b[39m droppable) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 46 |\u001b[39m     \u001b[36mconst\u001b[39m dataTransfer \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDataTransfer\u001b[39m()\u001b[33m;\u001b[39m\n \u001b[90m 47 |\u001b[39m     draggable\u001b[33m.\u001b[39mdispatchEvent(\u001b[36mnew\u001b[39m \u001b[33mDragEvent\u001b[39m(\u001b[32m'dragstart'\u001b[39m\u001b[33m,\u001b[39m { dataTransfer }))\u001b[33m;\u001b[39m\n \u001b[90m 48 |\u001b[39m     droppable\u001b[33m.\u001b[39mdispatchEvent(\u001b[36mnew\u001b[39m \u001b[33mDragEvent\u001b[39m(\u001b[32m'drop'\u001b[39m\u001b[33m,\u001b[39m { dataTransfer }))\u001b[33m;\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\tests\\23.DragAndDrop.spec.js",
+                        "column": 14,
+                        "line": 45
+                      },
+                      "message": "Error: Too many arguments. If you need to pass more than 1 argument to the function wrap them in an object.\n\n\u001b[0m \u001b[90m 43 |\u001b[39m   \u001b[36mconst\u001b[39m droppable \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m\"#droppable\"\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// Locate the droppable element\u001b[39m\n \u001b[90m 44 |\u001b[39m   \u001b[90m// Perform drag and drop action using JavaScript\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 45 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mevaluate((draggable\u001b[33m,\u001b[39m droppable) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 46 |\u001b[39m     \u001b[36mconst\u001b[39m dataTransfer \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDataTransfer\u001b[39m()\u001b[33m;\u001b[39m\n \u001b[90m 47 |\u001b[39m     draggable\u001b[33m.\u001b[39mdispatchEvent(\u001b[36mnew\u001b[39m \u001b[33mDragEvent\u001b[39m(\u001b[32m'dragstart'\u001b[39m\u001b[33m,\u001b[39m { dataTransfer }))\u001b[33m;\u001b[39m\n \u001b[90m 48 |\u001b[39m     droppable\u001b[33m.\u001b[39mdispatchEvent(\u001b[36mnew\u001b[39m \u001b[33mDragEvent\u001b[39m(\u001b[32m'drop'\u001b[39m\u001b[33m,\u001b[39m { dataTransfer }))\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\tests\\23.DragAndDrop.spec.js:45:14\u001b[22m"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-05T17:36:34.358Z",
+                  "startTime": "2026-09-05T17:50:33.707Z",
                   "annotations": [],
-                  "attachments": []
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\test-results\\23.DragAndDrop-Drag-and-Drop-using-JavaScript-chromium\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\tests\\23.DragAndDrop.spec.js",
+                    "column": 14,
+                    "line": 45
+                  }
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
-          "id": "562d78062452bcbd4bd4-5a762bcb63bad7f86f62",
-          "file": "22.MouseDoubleClick.spec.js",
-          "line": 3,
+          "id": "c46fe5d1895de9aa7d42-2358dd4ece0490001f3a",
+          "file": "23.DragAndDrop.spec.js",
+          "line": 40,
           "column": 5
         }
       ]
@@ -150,11 +180,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-09-05T17:36:33.800Z",
-    "duration": 15552.902,
-    "expected": 1,
+    "startTime": "2026-09-05T17:50:32.489Z",
+    "duration": 7935.494999999995,
+    "expected": 0,
     "skipped": 0,
-    "unexpected": 0,
+    "unexpected": 1,
     "flaky": 0
   }
 }
