@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 2
+      "actualWorkers": 1
     },
     "preserveOutput": "always",
     "reporter": [
@@ -53,7 +53,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 2
+          "actualWorkers": 1
         },
         "id": "chromium",
         "name": "chromium",
@@ -69,7 +69,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 2
+          "actualWorkers": 1
         },
         "id": "firefox",
         "name": "firefox",
@@ -85,7 +85,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 2
+          "actualWorkers": 1
         },
         "id": "webkit",
         "name": "webkit",
@@ -106,14 +106,14 @@
   },
   "suites": [
     {
-      "title": "19.DatePicker.spec.js",
-      "file": "19.DatePicker.spec.js",
+      "title": "20.MouseHover.spec.js",
+      "file": "20.MouseHover.spec.js",
       "column": 0,
       "line": 0,
       "specs": [
         {
-          "title": "Date Picker Test with Fill",
-          "ok": true,
+          "title": "Mouse Hover Action",
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -126,57 +126,45 @@
                 {
                   "workerIndex": 0,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 3359,
-                  "errors": [],
+                  "status": "timedOut",
+                  "duration": 30041,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\tests\\20.MouseHover.spec.js",
+                        "column": 14,
+                        "line": 28
+                      },
+                      "message": "Error: page.waitForTimeout: Test timeout of 30000ms exceeded.\n\n\u001b[0m \u001b[90m 26 |\u001b[39m\n \u001b[90m 27 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 28 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m5000\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// Wait for 5 seconds to ensure the page is fully loaded\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 29 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\tests\\20.MouseHover.spec.js:28:14\u001b[22m"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-05T16:12:48.112Z",
+                  "startTime": "2026-09-05T17:01:39.418Z",
                   "annotations": [],
-                  "attachments": []
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "F:\\Study Videos\\SQA\\SQA Batch - 15\\Projects\\PlaywrightAutomation\\playwright_automation_with_JavaScript\\test-results\\20.MouseHover-Mouse-Hover-Action-chromium\\error-context.md"
+                    }
+                  ]
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
-          "id": "6e5de874c3fd1f0ab47f-ed9d9b5ec20242087976",
-          "file": "19.DatePicker.spec.js",
+          "id": "0af68ee708cadcfa638c-b44cee2ceed56b02a8c0",
+          "file": "20.MouseHover.spec.js",
           "line": 3,
-          "column": 5
-        },
-        {
-          "title": "Date Picker Test using Navigation",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 30000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium",
-              "projectName": "chromium",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 1,
-                  "status": "passed",
-                  "duration": 7029,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-09-05T16:12:48.112Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "6e5de874c3fd1f0ab47f-d176764329d4291f145d",
-          "file": "19.DatePicker.spec.js",
-          "line": 10,
           "column": 5
         }
       ]
@@ -184,11 +172,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-09-05T16:12:47.430Z",
-    "duration": 8081.473,
-    "expected": 2,
+    "startTime": "2026-09-05T17:01:38.857Z",
+    "duration": 30944.803,
+    "expected": 0,
     "skipped": 0,
-    "unexpected": 0,
+    "unexpected": 1,
     "flaky": 0
   }
 }

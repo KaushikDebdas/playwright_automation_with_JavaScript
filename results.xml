@@ -1,8 +1,28 @@
-<testsuites id="" name="" tests="2" failures="0" skipped="0" errors="0" time="8.081473">
-<testsuite name="19.DatePicker.spec.js" timestamp="2026-09-05T16:12:47.451Z" hostname="chromium" tests="2" failures="0" skipped="0" time="10.388" errors="0">
-<testcase name="Date Picker Test with Fill" classname="19.DatePicker.spec.js" time="3.359">
-</testcase>
-<testcase name="Date Picker Test using Navigation" classname="19.DatePicker.spec.js" time="7.029">
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="30.944803">
+<testsuite name="20.MouseHover.spec.js" timestamp="2026-09-05T17:01:38.873Z" hostname="chromium" tests="1" failures="1" skipped="0" time="30.041" errors="0">
+<testcase name="Mouse Hover Action" classname="20.MouseHover.spec.js" time="30.041">
+<failure message="20.MouseHover.spec.js:3:5 Mouse Hover Action" type="FAILURE">
+<![CDATA[  [chromium] › 20.MouseHover.spec.js:3:5 › Mouse Hover Action ──────────────────────────────────────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.waitForTimeout: Test timeout of 30000ms exceeded.
+
+      26 |
+      27 |
+    > 28 |   await page.waitForTimeout(5000); // Wait for 5 seconds to ensure the page is fully loaded
+         |              ^
+      29 | });
+        at F:\Study Videos\SQA\SQA Batch - 15\Projects\PlaywrightAutomation\playwright_automation_with_JavaScript\tests\20.MouseHover.spec.js:28:14
+
+    Error Context: ..\test-results\20.MouseHover-Mouse-Hover-Action-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\20.MouseHover-Mouse-Hover-Action-chromium\error-context.md]]
+]]>
+</system-out>
 </testcase>
 </testsuite>
 </testsuites>
